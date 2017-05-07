@@ -1,22 +1,31 @@
 import java.util.ArrayList;
 /**
- * Write a description of class DungeonLevel here.
+ * Stores all of the tiles in a single level of a dungeon. Also contains the methods for randomly generating a dungeon.
  * 
- * @author (your name) 
+ * @author Nikolai Trintchouk, Jonathan Knowles
  * @version (a version number or a date)
  */
 public class DungeonLevel
 {
     Tile[][] map;
     ArrayList<int[]> rooms;
-    final int level;
+    int level;
     int region;
     ArrayList<Integer> connectedRegions;
-
+    
+    /**
+     * Creates a square dungeon level of width 101 spaces.
+     * @param depth Affects difficulty of spawns on the level
+     */
     public DungeonLevel(int depth){
         this(depth,101);
     }
     
+    /**
+     * Creates a square dungeon level.
+     * @param depth Affects difficulty of spawns on the level.
+     * @param x width of the level
+     */
     public DungeonLevel(int depth, int x){
         map = new Tile[x][x];
         level = depth;
@@ -24,7 +33,10 @@ public class DungeonLevel
         region = 1;
         connectedRegions = new ArrayList<Integer>();
     }
-
+    
+    /**
+     * Generates the dungeon level.
+     */
     public void generateLevel(){
         for(int i = 0; i < map.length; i++){
             for(int j = 0; j < map[0].length; j++){
@@ -36,7 +48,11 @@ public class DungeonLevel
         createConnectors();
         cullMaze();
     }
-
+    
+    /**
+     * Creates rectangular rooms in the open spaces of the level.
+     * @param attemptLimit The number of times the generator will attempt to place rooms.
+     */
     private void createRooms(int attemptLimit){
         int x;
         int y;
@@ -59,7 +75,10 @@ public class DungeonLevel
             }
         }
     }
-
+    
+    /**
+     * Prints an "image" of the dungeon level to console. Used to debug dungeon generator.
+     */
     public void printMap(){
         for(int i = 0; i < map.length; i++){
             for(int j = 0; j < map[0].length; j++){
@@ -72,7 +91,15 @@ public class DungeonLevel
         }
         System.out.println("Rooms: " + rooms.size());
     }
-
+    
+    /**
+     * Checks that a point is a valid position for a room to be generated.
+     * @param x The horizontal position of the room center
+     * @param y The vertical position of the room center
+     * @param xLen The horizontal width of the room
+     * @param yLen The vertical length of the room
+     * @return
+     */
     private boolean validSpace(int x, int y, int xLen, int yLen){
         for(int i = x-xLen-1; i <= x+xLen+1; i++){
             for(int j = y-yLen-1; j <= y+yLen+1; j++){
@@ -83,16 +110,26 @@ public class DungeonLevel
         }
         return true;
     }
-
+    
+    /**
+     * Generates a random number for an ordinate of the room of a certain dimension.
+     * @param len the dimension of the room
+     * @return a random ordinate for the room to exist.
+     */
     private int generateValidMidpoint(int len){
         return 1+len+(2 * (int)(Math.random() * ((map.length / 2)-len)));
     }
-
+    /**
+     * generates a valid room length
+     * @return a random number 2 to 7
+     */
     private int generateValidLen(){
         //return 2 + 2 * (int)(Math.random() * 2);
         return 2 + (int)(Math.random() * 4);
     }
-
+    /**
+     * Goes to every other point and if it is rock, starts to fill a maze.
+     */
     private void createMaze(){
         for(int i = 1; i < map.length - 1; i+=2){
             for(int j = 1; j < map[0].length; j+=2){
@@ -103,7 +140,11 @@ public class DungeonLevel
             }
         }
     }
-
+    /**
+     * recursive flood fill method for generating a maze.
+     * @param x the starting horizontal ordinate
+     * @param y the starting vertical ordinate
+     */
     private void fill(int x, int y){
         map[x][y].setType(false);
         ArrayList<int[]> validSpots = getValidSpotsOverOne(x,y);
@@ -119,7 +160,12 @@ public class DungeonLevel
         }
 
     }
-
+    /**
+     * Returns a list of coordinates which are valid places for the maze to continue
+     * @param x horizontal middle ordinate
+     * @param y vertical middle ordinate
+     * @return list of valid coordinates for the maze.
+     */
     private ArrayList<int[]> getValidSpotsOverOne(int x, int y){
         int[][] spots = {{x-2, y}, {x+2,y}, {x,y-2} ,{x, y+2}};
         for(int i = 0; i < 4; i++){
@@ -136,7 +182,9 @@ public class DungeonLevel
         }
         return validSpots;
     }
-
+    /**
+     * Creates all doors necessary to connect all regions of the maze, plus a random number of extra doors to make the dungeon more interesting.
+     */
     private void createConnectors(){
         connectedRegions.add(1);
 
@@ -153,7 +201,11 @@ public class DungeonLevel
             connectors.get(choice).addEntity(new Door());
         }
     }
-
+    /**
+     * Finds all tiles which are valid doors. 
+     * A valid door is connected by two empty spaces of different regions, and is not adjacent to another door.
+     * @return List of all Tiles which can be connectors
+     */
     private ArrayList<Tile> findAllConnectors(){
         ArrayList<Tile> connectors = new ArrayList<Tile>();
         ArrayList<Integer> nearRegions;
@@ -188,7 +240,10 @@ public class DungeonLevel
         }
         return connectors;
     }
-
+    /**
+     * Finds all tiles connected to the currently working regions.
+     * @return a List of Tile connected to the currently worked regions.
+     */
     private ArrayList<Tile> getConnectorsToMainRegion(){
         ArrayList<Tile> connectors = findAllConnectors();
         //ArrayList<Integer> nearRegions;
@@ -210,7 +265,10 @@ public class DungeonLevel
         }
         return connectors;
     }
-
+    /**
+     * Takes a random valid connector to main region and opens it. 
+     * @return whether or not there were connectors to open during execution.
+     */
     private boolean openConnector(){
         ArrayList<Tile> connectors = getConnectorsToMainRegion();
 
@@ -228,7 +286,11 @@ public class DungeonLevel
         }
         return true;
     }
-
+    /**
+     * checks if a region is in the currently working regions
+     * @param r region about which to inquire
+     * @return true if the region is in the current regions.
+     */
     private boolean isMainRegion(int r)
     {
         for (Integer i:connectedRegions){
@@ -238,7 +300,12 @@ public class DungeonLevel
         }
         return false;
     }
-
+    /**
+     * finds all empty spots cardinally adjacent to a point
+     * @param x horizontal ordinate of point
+     * @param y vertical ordinate of point
+     * @return List of empty spots
+     */
     private ArrayList<int[]> getValidSpots(int x, int y){
         int[][] spots = {{x-1, y}, {x+1,y}, {x,y-1} ,{x, y+1}};
         for(int i = 0; i < 4; i++){
@@ -255,7 +322,9 @@ public class DungeonLevel
         }
         return validSpots;
     }
-
+    /**
+     * Removes all 1 wide dead end paths.
+     */
     private void cullMaze(){
         for(int i = 0; i < map.length; i++){
             for(int j = 0; j < map[0].length; j++){

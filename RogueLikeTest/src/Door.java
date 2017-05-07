@@ -1,13 +1,14 @@
 
 /**
- * Write a description of class Door here.
+ * Acts as a transition between rooms.
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Nikolai Trintchouk
+ * @version 5/6/2017
  */
 public class Door implements Entity
 {
     private Tile myTile;
+    
     public Door(){
         
     }
