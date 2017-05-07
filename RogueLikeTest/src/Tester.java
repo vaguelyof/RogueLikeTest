@@ -13,7 +13,15 @@ public class Tester
         dun.printMap();
     }
     
+    public static void TestGUI(){
+    	GameGUI gui = new GameGUI();
+    	gui.pack();
+    	gui.setVisible(true);
+    	
+    }
+    
     public static void main(String[] args){
     	TestDungeonGenerator();
+    	TestGUI();
     }
 }
