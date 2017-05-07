@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 /**
- * Write a description of class Tile here.
+ * A Tile in a dungeon. Has a coordinate position and a list of Entities in it.
  * 
  * @author (your name) 
  * @version (a version number or a date)
@@ -13,6 +13,13 @@ public class Tile
     private int myRegion;
     private int myY;
     private int myX;
+    /**
+     * Creates a tile.
+     * @param type true if impassable rock
+     * @param dungeon the DungeonLevel in which the tile exists
+     * @param x horizontal ordinate
+     * @param y vertical ordinate
+     */
     public Tile(boolean type, DungeonLevel dungeon, int x, int y){
         isRock = type;
         containedDungeon = dungeon;

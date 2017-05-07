@@ -1,9 +1,9 @@
 
 /**
- * Write a description of interface Entity here.
+ * Used for all "things" in the dungeon. Doors, monsters, items, etc. Has a name, description, and a location.
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Nikolai Trintchouk
+ * @version 5/6/2017
  */
 public interface Entity
 {
