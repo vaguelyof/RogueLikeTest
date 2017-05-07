@@ -180,6 +180,10 @@ public class DungeonLevel
 
                     connectors.add(map[i][j]);
                 }
+                for(int[] place: spotsAroundTile){
+                	if(map[place[0]][place[1]].getRegion() == -1)
+                		connectors.remove(map[i][j]);
+                }
             }
         }
         return connectors;
