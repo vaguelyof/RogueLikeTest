@@ -29,6 +29,10 @@ public class Tile
         myX = x;
     }
     
+    /**
+     * Sets whether or not the tile is an impassable rock
+     * @param type true if rock
+     */
     public void setType(boolean type){
         isRock = type;
     }
