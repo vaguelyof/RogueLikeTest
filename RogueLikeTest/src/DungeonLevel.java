@@ -135,27 +135,60 @@ public class DungeonLevel
             for(int j = 1; j < map[0].length; j+=2){
                 if(map[i][j].getIsRock()){
                     region++;
-                    fill(i,j);
+                    startMaze(i,j);
                 }
             }
         }
+    }
+    /**
+     * begins flood fill
+     * @param x the starting horizontal ordinate
+     * @param y the starting vertical ordinate
+     */
+    private void startMaze(int x, int y){
+        map[x][y].setType(false);
+        ArrayList<int[]> validSpots = getValidSpotsOverOne(x,y);
+        while(validSpots.size() > 0){
+            
+            int chosenOne = (int)(Math.random() * validSpots.size());
+            int tempX = (validSpots.get(chosenOne)[0])/2;
+            int tempY = (validSpots.get(chosenOne)[1])/2;
+            map[tempX+x][tempY+y].setType(false);
+            map[tempX+x][tempY+y].setRegion(region);
+            fill(validSpots.get(chosenOne)[0]+x,validSpots.get(chosenOne)[1]+y,validSpots.get(chosenOne),0);
+            validSpots = getValidSpotsOverOne(x,y);
+        }
+
     }
     /**
      * recursive flood fill method for generating a maze.
      * @param x the starting horizontal ordinate
      * @param y the starting vertical ordinate
      */
-    private void fill(int x, int y){
+    private void fill(int x, int y, int[] dir, int t){
+    	t++;
+    	int[] temp = dir;
         map[x][y].setType(false);
         ArrayList<int[]> validSpots = getValidSpotsOverOne(x,y);
         while(validSpots.size() > 0){
-            
+            if (dir[0]+x > 0 && dir[0]+x < map.length - 1 && dir[1]+y > 0 && dir[1]+y < map.length - 1 && map[dir[0]+x][dir[1]+y].getIsRock()){
+            	validSpots.add(dir);
+            }
             int chosenOne = (int)(Math.random() * validSpots.size());
-            int tempX = (validSpots.get(chosenOne)[0] + x)/2;
-            int tempY = (validSpots.get(chosenOne)[1] + y)/2;
-            map[tempX][tempY].setType(false);
-            map[tempX][tempY].setRegion(region);
-            fill(validSpots.get(chosenOne)[0],validSpots.get(chosenOne)[1]);
+            int tempX = (validSpots.get(chosenOne)[0])/2;
+            int tempY = (validSpots.get(chosenOne)[1])/2;
+            map[tempX+x][tempY+y].setType(false);
+            map[tempX+x][tempY+y].setRegion(region);
+            if (!validSpots.get(chosenOne).equals(dir)){
+            	if (t>5){
+            		t = 0;
+            		temp = validSpots.get(chosenOne);
+            	}
+            }
+            else{
+            	t = 0;
+            }
+            fill(validSpots.get(chosenOne)[0]+x,validSpots.get(chosenOne)[1]+y,dir,y);
             validSpots = getValidSpotsOverOne(x,y);
         }
 
@@ -167,9 +200,9 @@ public class DungeonLevel
      * @return list of valid coordinates for the maze.
      */
     private ArrayList<int[]> getValidSpotsOverOne(int x, int y){
-        int[][] spots = {{x-2, y}, {x+2,y}, {x,y-2} ,{x, y+2}};
+        int[][] spots = {{-2, 0}, {2,0}, {0,-2} ,{0, 2}};
         for(int i = 0; i < 4; i++){
-            if(spots[i][0] < 1 || spots[i][0] > map.length - 2 || spots[i][1] < 1 || spots[i][1] > map.length - 2 || !map[spots[i][0]][spots[i][1]].getIsRock()){
+            if(spots[i][0]+x < 1 || spots[i][0]+x > map.length - 2 || spots[i][1]+y < 1 || spots[i][1]+y > map.length - 2 || !map[spots[i][0]+x][spots[i][1]+y].getIsRock()){
                 spots[i] = null;
             }
         }

@@ -1,3 +1,8 @@
-/GameGUI.class
-/ButtonHandler.class
+/Door.class
+/DungeonLevel.class
+/Entity.class
 /GameGUI$ButtonHandler.class
+/GameGUI.class
+/Position.class
+/Tester.class
+/Tile.class
