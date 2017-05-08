@@ -2,8 +2,8 @@ import java.util.ArrayList;
 /**
  * A Tile in a dungeon. Has a coordinate position and a list of Entities in it.
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Nikolai Trintchouk
+ * @version 5/6/2017
  */
 public class Tile
 {
