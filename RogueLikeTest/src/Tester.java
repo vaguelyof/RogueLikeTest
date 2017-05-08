@@ -15,7 +15,7 @@ public class Tester
     
     public static void TestGUI(){
     	GameGUI gui = new GameGUI();
-    	gui.pack();
+    	
     	gui.setVisible(true);
     	
     }
