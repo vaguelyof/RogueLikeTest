@@ -169,20 +169,22 @@ public class DungeonLevel
     private void fill(int x, int y, int[] dir, int t){
         map[x][y].setType(false);
         ArrayList<int[]> validSpots = getValidSpotsOverOne(x,y);
-        while(validSpots.size() > 0){
-        	if(dir[0]+x < 1 || dir[0]+x > map.length - 2 || dir[1]+y < 1 || dir[1]+y > map.length - 2 || !map[dir[0]+x][dir[1]+y].getIsRock()){
-                t = -1;
-            }
-        	for (int i=0;i<=t;i++){
+    	if(dir[0]+x > 0 && dir[0]+x < map.length - 1 && dir[1]+y > 0 && dir[1]+y < map.length - 1 && map[dir[0]+x][dir[1]+y].getIsRock()){
+    		for (int i=0;i<=t;i++){
         		validSpots.add(dir);
         	}
+        }
+    	else{
+    		t++;
+    	}
+        while(validSpots.size() > 0){
             int chosenOne = (int)(Math.random() * validSpots.size());
             int tempX = (validSpots.get(chosenOne)[0])/2;
             int tempY = (validSpots.get(chosenOne)[1])/2;
             map[tempX+x][tempY+y].setType(false);
             map[tempX+x][tempY+y].setRegion(region);
             if (!validSpots.get(chosenOne).equals(dir)){
-            	if (t>3||t==-1){
+            	if (t>3){
                     fill(validSpots.get(chosenOne)[0]+x,validSpots.get(chosenOne)[1]+y,validSpots.get(chosenOne),0);
             	}
             	else{
@@ -191,8 +193,14 @@ public class DungeonLevel
             }
             else{
                 fill(validSpots.get(chosenOne)[0]+x,validSpots.get(chosenOne)[1]+y,dir,0);
+                t = 4;
             }
             validSpots = getValidSpotsOverOne(x,y);
+        	if(dir[0]+x > 0 && dir[0]+x < map.length - 1 && dir[1]+y > 0 && dir[1]+y < map.length - 1 && map[dir[0]+x][dir[1]+y].getIsRock()){
+            	for (int i=0;i<=t;i++){
+            		validSpots.add(dir);
+            	}
+            }
         }
 
     }
