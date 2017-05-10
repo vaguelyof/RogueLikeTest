@@ -13,6 +13,7 @@ public class Tile
     private int myRegion;
     private int myY;
     private int myX;
+    
     /**
      * Creates a tile.
      * @param type true if impassable rock

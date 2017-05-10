@@ -7,6 +7,7 @@ public class GameGUI extends JFrame {
 	private JButton[][] buttonArray;
 	private JButton newGameButton;
 	private JButton exitButton;
+	private JButton helpButton;
 	private JLabel health;
 	final static int NUM_ROWS = 11;
 	final static int NUM_COLS = 11;
@@ -18,19 +19,24 @@ public class GameGUI extends JFrame {
 		setSize(300,500);
 		setResizable(false);
 		Container container = getContentPane();
-		container.setLayout(new GridLayout(4,1));
+		container.setLayout(new GridLayout(3,1));
 		
 		newGameButton = new JButton("Start New Game");
 		exitButton = new JButton("Exit");
-	    
+	    helpButton = new JButton("How To Play");
+		
 		MenuHandler menuHandler = new MenuHandler(this);
 		
 		container.add(newGameButton);
 		newGameButton.addActionListener(menuHandler);
 		
+		container.add(helpButton);
+		helpButton.addActionListener(menuHandler);
+		
 		container.add(exitButton);
 		exitButton.addActionListener(menuHandler);
 		
+				
 		
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -61,12 +67,14 @@ public class GameGUI extends JFrame {
 	private class HelpGUI extends JFrame{
 		public HelpGUI(){
 			super("How To Play");
+			setSize(300,200);
 		}
 		
 	}
 	
 	private class MenuHandler implements ActionListener {
-		GameGUI gui;
+		private GameGUI gui;
+		private HelpGUI help;
 		public MenuHandler(GameGUI g){
 			super();
 			gui = g;
@@ -76,6 +84,11 @@ public class GameGUI extends JFrame {
 			if(e.getSource() == exitButton){
 				gui.setVisible(false);
 				gui.dispose();
+				if(help != null){
+					help.setVisible(false);
+					help.dispose();
+					help = null;
+				}
 			}
 			else if(e.getSource() == newGameButton){
 				gui.setVisible(false);
@@ -84,6 +97,16 @@ public class GameGUI extends JFrame {
 				g.setVisible(true);
 				g.setLocationRelativeTo(null);
 				gui.dispose();
+			}
+			else if(e.getSource() == helpButton){
+				if(help != null){
+					help.setVisible(false);
+					help.dispose();
+					help = null;
+					
+				}
+				help = new HelpGUI();
+				help.setVisible(true);
 			}
 		}
 		
