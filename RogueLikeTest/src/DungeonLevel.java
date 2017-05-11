@@ -12,6 +12,7 @@ public class DungeonLevel
     int level;
     int region;
     ArrayList<Integer> connectedRegions;
+    ArrayList<Double> doorsPerRegiont;
     double[] doorsPerRegion;
     
     /**
@@ -33,7 +34,6 @@ public class DungeonLevel
         rooms = new ArrayList<int[]>();
         region = 1;
         connectedRegions = new ArrayList<Integer>();
-    	doorsPerRegion = new double[x*x/100];
     }
     
     /**
@@ -47,6 +47,7 @@ public class DungeonLevel
         }
         createRooms(100);
         createMaze();
+    	doorsPerRegion = new double[region];
         createConnectors();
         cullMaze();
     }
@@ -135,8 +136,8 @@ public class DungeonLevel
         for(int i = 1; i < map.length - 1; i+=2){
             for(int j = 1; j < map[0].length; j+=2){
                 if(map[i][j].getIsRock()){
-                    region++;
                     startMaze(i,j);
+                    region++;
                 }
             }
         }
