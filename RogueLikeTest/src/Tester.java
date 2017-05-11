@@ -14,7 +14,8 @@ public class Tester
     }
     
     public static void TestGUI(){
-    	
+    	FrameBuilder f = new FrameBuilder();
+    	f.buildFrame(50, 50);	
     	
     }
     
