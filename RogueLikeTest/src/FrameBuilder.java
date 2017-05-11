@@ -7,8 +7,8 @@ public class FrameBuilder {
 		
 	}
 	
-	public JFrame buildFrame(int x, int y){
-		JFrame frame = new JFrame("RogueLike");
+	public GameFrame buildFrame(int x, int y){
+		GameFrame frame = new GameFrame("RogueLike");
 		AsciiFont font = AsciiFont.CP437_8x8;
 		
 		AsciiPanel panel1 = new AsciiPanel(x,y,font);
@@ -22,4 +22,5 @@ public class FrameBuilder {
 		frame.setVisible(true);
 		return frame;
 	}
+	
 }
