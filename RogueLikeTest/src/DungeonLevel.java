@@ -390,4 +390,16 @@ public class DungeonLevel
             }
         }
     }
+    
+    public Tile[][] getMap(){
+    	return map;
+    }
+    
+    public Tile getTile(int x, int y){
+		if(x >= 0 && x < map.length && y >= 0 && y < map.length){
+			return map[x][y];
+		}
+		else
+			return null;
+    }
 }
