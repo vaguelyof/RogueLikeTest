@@ -21,10 +21,11 @@ public class Tester
     
     public static void main(String[] args){
     	Game g = new Game();
-    	TestDungeonGenerator();
+    	//TestDungeonGenerator();
     	TestGUI(g);
     	g.generateNextLevel();
     	DungeonLevel dun = g.getLevel(0);
+    	g.getLevel(0).printMap();
         Tile t = dun.getMap()[25][25];
         g.displayMapAroundTile(t, 0);
     }

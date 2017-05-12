@@ -5,6 +5,7 @@ import asciiPanel.AsciiPanel;
 public class Game {
 	ArrayList<DungeonLevel> levels;
 	AsciiPanel panel;
+	
 
 	public Game() {
 		levels = new ArrayList<DungeonLevel>();
@@ -40,6 +41,11 @@ public class Game {
 			}
 
 		}
+		createBorder();
+	}
+	
+	public void createBorder(){
+		
 		panel.updateUI();
 	}
 
