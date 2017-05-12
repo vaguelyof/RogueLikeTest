@@ -23,10 +23,11 @@ public class Tester
     	Game g = new Game();
     	//TestDungeonGenerator();
     	TestGUI(g);
-    	g.generateNextLevel();
-    	DungeonLevel dun = g.getLevel(0);
-    	g.getLevel(0).printMap();
-        Tile t = dun.getMap()[25][25];
-        g.displayMapAroundTile(t, 0);
+    	//g.generateNextLevel();
+    	//DungeonLevel dun = g.getLevel(0);
+    	//g.getLevel(0).printMap();
+    	
+        //Tile t = dun.getMap()[25][25];
+        g.start();
     }
 }

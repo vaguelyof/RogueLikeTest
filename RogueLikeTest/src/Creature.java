@@ -1,20 +1,20 @@
 
 public class Creature implements Entity{
 	
-	String name;
-	String des;
-	int currentHealth;
-	int maxHealth;
-	int damage;
-	Tile myT;
+	private String name;
+	private String des;
+	private int currentHealth;
+	private int maxHealth;
+	private int damage;
+	private Tile myT;
 	
-	public Creature(String aName, String description, int health, int d)
+	public Creature(String aName, String description, int health, int dmg)
 	{
 		name = aName;
 		des = description;
 		currentHealth = health;	//creature always starts with max health
 		maxHealth = health;
-		damage = d;
+		damage = dmg;
 	}
 	
 	public String getName()

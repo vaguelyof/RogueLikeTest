@@ -7,12 +7,14 @@ import java.util.ArrayList;
  */
 public class DungeonLevel
 {
-    Tile[][] map;
-    ArrayList<int[]> rooms;
-    int level;
-    int region;
-    ArrayList<Integer> connectedRegions;
-    int[][] regionConnections;
+    private Tile[][] map;
+    private ArrayList<int[]> rooms;
+    private int level;
+    private int region;
+    private ArrayList<Integer> connectedRegions;
+    private int[][] regionConnections;
+    private Tile entry;
+    private Tile exit;
     
     /**
      * Creates a square dungeon level of width 101 spaces.
@@ -49,6 +51,11 @@ public class DungeonLevel
     	regionConnections = new int[region][region];
         createConnectors();
         cullMaze();
+        entry = map[rooms.get(0)[0]][rooms.get(0)[1]];
+        entry.addEntity(new UpStairs());
+        int choice = 1 + (int)((rooms.size() - 1) * Math.random());
+        exit = map[rooms.get(choice)[0]][rooms.get(choice)[1]];
+        exit.addEntity(new DownStairs());
     }
     
     /**
@@ -431,5 +438,11 @@ public class DungeonLevel
     	return false;
     }
     
+    public Tile getEntrance(){
+    	return entry;
+    }
+    public Tile getExit(){
+    	return exit;
+    }
    
 }

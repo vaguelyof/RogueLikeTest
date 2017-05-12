@@ -43,8 +43,14 @@ public class Tile
     }
     
     public void addEntity(Entity e){
+    	if(e.getTile() != null){
+    		e.getTile().removeEntity(e);
+    	}
         thingsInTile.add(e);
         e.setTile(this);
+    }
+    private void removeEntity(Entity e){
+    	thingsInTile.remove(e);
     }
     
     public void setRegion(int region){
@@ -71,5 +77,30 @@ public class Tile
     	if(thingsInTile.size() == 0)
     		return null;
     	return thingsInTile.get(thingsInTile.size() - 1);
+    }
+    
+    public Tile getTileInDirection(int direction){
+    	direction += 2;
+    	direction %= 8;
+    	int xOff = 0;
+    	int yOff = 0;
+    	
+    	if(direction >= 3 && direction <= 5){
+    		yOff++;
+    	}
+    	if(direction <=1 || direction >= 7){
+    		yOff--;
+    	}
+    	if(direction >=1 && direction <= 3){
+    		xOff--;
+    	}
+    	if(direction <=7 && direction >= 5){
+    		xOff++;
+    	}
+    	xOff += getX();
+    	yOff += getY();
+    	if(yOff >= 0 && xOff >= 0 && yOff < getDungeon().getMap().length && xOff < getDungeon().getMap().length)
+    		return getDungeon().getTile(xOff, yOff);
+    	return null;
     }
 }

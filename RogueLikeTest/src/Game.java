@@ -1,14 +1,35 @@
+import java.awt.Color;
 import java.util.ArrayList;
 
 import asciiPanel.AsciiPanel;
 
 public class Game {
-	ArrayList<DungeonLevel> levels;
-	AsciiPanel panel;
-	Player player;
-
+	private ArrayList<DungeonLevel> levels;
+	private AsciiPanel panel;
+	private Player player;
+	private int currentLevel;
+	public static int NORTH = 0;
+	public static int NORTH_EAST = 1;
+	public static int EAST = 2;
+	public static int SOUTH_EAST = 3;
+	public static int SOUTH = 4;
+	public static int SOUTH_WEST = 5;
+	public static int WEST = 6;
+	public static int NORTH_WEST = 7;
+	
 	public Game() {
+		
 		levels = new ArrayList<DungeonLevel>();
+		
+	}
+	
+	public void start(){
+		createPlayer();
+		generateNextLevel();
+		currentLevel = 0;
+		createPlayer();
+		insertEntity(player, levels.get(0).getEntrance());
+		displayMapAroundTile(player.getTile(), 0);
 	}
 
 	public void addPanel(AsciiPanel p) {
@@ -21,7 +42,11 @@ public class Game {
 	}
 	
 	public void createPlayer(){
-		player = new Player("Player", "", null);
+		player = new Player("Player", "", 20, 3);
+	}
+	
+	public void insertEntity(Entity e, Tile t){
+		t.addEntity(e);
 	}
 
 	public void displayMapAroundTile(Tile t, int level) {
@@ -42,14 +67,22 @@ public class Game {
 						panel.setCursorPosition(j, i);
 						Entity e = d.getTile(posX,posY).getTopEntity();
 						if(e == null)
-							panel.write(' ');
+							panel.write(' ', Color.WHITE);
 						else if(e instanceof Player)
-							panel.write('@');
+							panel.write('@', Color.BLUE);
 						else if(e instanceof Door)
-							panel.write('+');
+							panel.write('+', Color.GRAY);
+						else if(e instanceof UpStairs)
+							panel.write('<', Color.GRAY);
+						else if(e instanceof DownStairs)
+							panel.write('>', Color.GRAY);
 						else 
-							panel.write('?');
+							panel.write('?', Color.PINK);
 					}
+				}
+				else{
+					panel.setCursorPosition(j, i);
+					panel.write('#');
 				}
 			}
 
@@ -80,8 +113,40 @@ public class Game {
 		return null;
 	}
 	
+	public boolean creatureCanMoveInDirection(Creature c, int direction){
+		if(!c.getTile().getTileInDirection(direction).getIsRock()){
+			return true;
+		}
+		return false;
+	}
+	
+	public void movePlayer(int direction){
+		if(creatureCanMoveInDirection(player,direction)){
+			player.getTile().getTileInDirection(direction).addEntity(player);
+		}
+		displayMapAroundTile(player.getTile(), currentLevel);
+	}
+	
 	public void getKeyPress(String keyText){
 		
-		System.out.println(keyText + " press recieved.");
+		if(keyText.length() == 1){
+			switch(keyText.charAt(0)){
+			case 'W':
+				movePlayer(NORTH);
+				break;
+			case 'A':
+				movePlayer(WEST);
+				break;
+			case 'S':
+				movePlayer(SOUTH);
+				break;
+			case 'D':
+				movePlayer(EAST);
+				break;
+			}
+			return;
+		}
+		
+		
 	}
 }

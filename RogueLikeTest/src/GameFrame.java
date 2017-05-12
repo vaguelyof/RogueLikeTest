@@ -23,7 +23,6 @@ public class GameFrame extends JFrame {
 		
 		@Override
 		public void keyPressed(KeyEvent e) {
-			System.out.println(KeyEvent.getKeyText(e.getKeyCode()) + " pressed");
 			game.getKeyPress(KeyEvent.getKeyText(e.getKeyCode()));
 		}
 
