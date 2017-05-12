@@ -31,7 +31,7 @@ public class Game {
 				if (d.getTile(posX,posY) != null) {
 					if (d.getTile(posX, posY).getIsRock()) {
 						panel.setCursorPosition(i, j);
-						panel.write('R');
+						panel.write('#');
 
 					} else {
 						panel.setCursorPosition(i, j);
@@ -45,6 +45,15 @@ public class Game {
 	}
 	
 	public void createBorder(){
+		int borderHeight = 3;
+		for(int i = 0; i < panel.getWidthInCharacters(); i++){
+			for(int j = 0; j < borderHeight; j++){
+				panel.setCursorPosition(i, j);
+				panel.write(' ');
+			}
+			panel.setCursorPosition(i, borderHeight);
+			panel.write('=');
+		}
 		
 		panel.updateUI();
 	}
