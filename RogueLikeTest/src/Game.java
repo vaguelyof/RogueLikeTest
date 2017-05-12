@@ -49,4 +49,9 @@ public class Game {
 		}
 		return null;
 	}
+	
+	public void getKeyPress(String keyText){
+		
+		System.out.println(keyText + " press recieved.");
+	}
 }
