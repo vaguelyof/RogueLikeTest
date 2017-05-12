@@ -15,7 +15,7 @@ public class Tester
     
     public static void TestGUI(Game g){
     	FrameBuilder f = new FrameBuilder();
-    	f.buildFrame(50, 50, g);	
+    	f.buildFrame(100, 50, g);	
     	
     }
     

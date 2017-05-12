@@ -30,11 +30,11 @@ public class Game {
 				int posY = j + t.getY() - panel.getWidthInCharacters()/2;
 				if (d.getTile(posX,posY) != null) {
 					if (d.getTile(posX, posY).getIsRock()) {
-						panel.setCursorPosition(i, j);
+						panel.setCursorPosition(j, i);
 						panel.write('#');
 
 					} else {
-						panel.setCursorPosition(i, j);
+						panel.setCursorPosition(j, i);
 						panel.write(' ');
 					}
 				}
