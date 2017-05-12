@@ -13,14 +13,19 @@ public class Tester
         dun.printMap();
     }
     
-    public static void TestGUI(){
+    public static void TestGUI(Game g){
     	FrameBuilder f = new FrameBuilder();
-    	f.buildFrame(50, 50);	
+    	f.buildFrame(50, 50, g);	
     	
     }
     
     public static void main(String[] args){
+    	Game g = new Game();
     	TestDungeonGenerator();
-    	TestGUI();
+    	TestGUI(g);
+    	g.generateNextLevel();
+    	DungeonLevel dun = g.getLevel(0);
+        Tile t = dun.getMap()[25][25];
+        g.displayMapAroundTile(t, 0);
     }
 }

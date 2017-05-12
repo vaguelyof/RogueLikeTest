@@ -7,13 +7,15 @@ public class FrameBuilder {
 		
 	}
 	
-	public GameFrame buildFrame(int x, int y){
-		GameFrame frame = new GameFrame("RogueLike");
+	public GameFrame buildFrame(int x, int y, Game g){
+		
 		AsciiFont font = AsciiFont.CP437_8x8;
 		
 		AsciiPanel panel1 = new AsciiPanel(x,y,font);
 		int fontWidth = font.getWidth();
 		int fontHeight = font.getHeight();
+		GameFrame frame = new GameFrame("RogueLike", g);
+		g.addPanel(panel1);
 		frame.add(panel1);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
