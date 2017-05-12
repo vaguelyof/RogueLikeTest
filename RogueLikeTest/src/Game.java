@@ -5,7 +5,7 @@ import asciiPanel.AsciiPanel;
 public class Game {
 	ArrayList<DungeonLevel> levels;
 	AsciiPanel panel;
-	
+	Player player;
 
 	public Game() {
 		levels = new ArrayList<DungeonLevel>();
@@ -18,6 +18,10 @@ public class Game {
 	public void generateNextLevel() {
 		levels.add(new DungeonLevel(levels.size(), 51));
 		levels.get(levels.size() - 1).generateLevel();
+	}
+	
+	public void createPlayer(){
+		player = new Player("Player", "", null);
 	}
 
 	public void displayMapAroundTile(Tile t, int level) {
@@ -32,15 +36,26 @@ public class Game {
 					if (d.getTile(posX, posY).getIsRock()) {
 						panel.setCursorPosition(j, i);
 						panel.write('#');
-
+						
+						
 					} else {
 						panel.setCursorPosition(j, i);
-						panel.write(' ');
+						Entity e = d.getTile(posX,posY).getTopEntity();
+						if(e == null)
+							panel.write(' ');
+						else if(e instanceof Player)
+							panel.write('@');
+						else if(e instanceof Door)
+							panel.write('+');
+						else 
+							panel.write('?');
 					}
 				}
 			}
 
 		}
+		
+		
 		createBorder();
 	}
 	

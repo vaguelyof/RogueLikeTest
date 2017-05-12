@@ -66,4 +66,10 @@ public class Tile
     public DungeonLevel getDungeon(){
     	return containedDungeon;
     }
+    
+    public Entity getTopEntity(){
+    	if(thingsInTile.size() == 0)
+    		return null;
+    	return thingsInTile.get(thingsInTile.size() - 1);
+    }
 }
