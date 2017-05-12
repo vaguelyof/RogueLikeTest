@@ -67,13 +67,3 @@ public class Tile
     	return containedDungeon;
     }
 }
-    /*
-    public void setAdjacentRegions(int a, int b){
-        adjacentRegions[0] = a;
-        adjacentRegions[1] = b;
-    }
-    
-    public int[] getAdjacentRegions(){
-        return adjacentRegions;
-    }
-    */
