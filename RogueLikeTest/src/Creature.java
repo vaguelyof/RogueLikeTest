@@ -3,13 +3,18 @@ public class Creature implements Entity{
 	
 	String name;
 	String des;
+	int currentHealth;
+	int maxHealth;
+	int damage;
 	Tile myT;
 	
-	public Creature(String aName, String description, Tile t)
+	public Creature(String aName, String description, int health, int d)
 	{
 		name = aName;
 		des = description;
-		myT = t;
+		currentHealth = health;	//creature always starts with max health
+		maxHealth = health;
+		damage = d;
 	}
 	
 	public String getName()
@@ -22,11 +27,32 @@ public class Creature implements Entity{
     	return des;
     }
     
+    public int getHealth()
+    {
+    	return currentHealth;
+    }
+    
+    public int getMaxHealth()
+    {
+    	return maxHealth;
+    }
+    
+    public int attack()
+    {
+    	return damage;
+    }
+    
     public Tile getTile()
     {
     	return myT;
     }
     
+    public void die()
+    {
+    	//stop existing
+    }
+    
+    //same functionality as a "move" method
     public void setTile(Tile t)
     {
     	myT = t;
