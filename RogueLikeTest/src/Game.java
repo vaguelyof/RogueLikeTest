@@ -8,6 +8,7 @@ public class Game {
 	private AsciiPanel panel;
 	private Player player;
 	private int currentLevel;
+	private ArrayList<String> helpItems;
 	public static int NORTH = 0;
 	public static int NORTH_EAST = 1;
 	public static int EAST = 2;
@@ -20,7 +21,11 @@ public class Game {
 	public Game() {
 		
 		levels = new ArrayList<DungeonLevel>();
-		
+		helpItems = new ArrayList<String>();
+		helpItems.add("W - Move North");
+		helpItems.add("A - Move West");
+		helpItems.add("S - Move South");
+		helpItems.add("D - Move East");
 	}
 	
 	public void start(){
@@ -55,8 +60,8 @@ public class Game {
 		for (int i = 0; i < panel.getHeightInCharacters(); i++) {
 
 			for (int j = 0; j < panel.getWidthInCharacters(); j++) {
-				int posX = i + t.getX() - panel.getHeightInCharacters()/2;
-				int posY = j + t.getY() - panel.getWidthInCharacters()/2;
+				int posX = i + t.getX() - panel.getHeightInCharacters()/2 - 3;
+				int posY = j + t.getY() - panel.getWidthInCharacters()/2 + 8;
 				if (d.getTile(posX,posY) != null) {
 					if (d.getTile(posX, posY).getIsRock()) {
 						panel.setCursorPosition(j, i);
@@ -89,10 +94,12 @@ public class Game {
 		}
 		
 		
-		createBorder();
+		createUpperBorder();
+		createHelpMenu();
+		panel.updateUI();
 	}
 	
-	public void createBorder(){
+	public void createUpperBorder(){
 		int borderHeight = 3;
 		for(int i = 0; i < panel.getWidthInCharacters(); i++){
 			for(int j = 0; j < borderHeight; j++){
@@ -103,7 +110,23 @@ public class Game {
 			panel.write('=');
 		}
 		
-		panel.updateUI();
+	}
+	
+	public void createHelpMenu(){
+		int menuWidth = 20;
+		for(int i = 4; i < panel.getHeightInCharacters(); i++){
+			for(int j = panel.getWidthInCharacters() - menuWidth; j < panel.getWidthInCharacters(); j++){
+				panel.setCursorPosition(j, i);
+				panel.write(' ');
+			}
+			panel.setCursorPosition(panel.getWidthInCharacters() - menuWidth - 1, i);
+			panel.write('|');
+		}
+		for(int i = 4; i < panel.getHeightInCharacters() && i - 4  < helpItems.size(); i++){
+			panel.setCursorPosition(panel.getWidthInCharacters() - menuWidth, i);
+			panel.write(helpItems.get(i - 4));
+		}
+		
 	}
 
 	public DungeonLevel getLevel(int d) {
