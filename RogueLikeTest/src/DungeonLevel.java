@@ -246,8 +246,6 @@ public class DungeonLevel
         double doors;
         int[] region = new int[2];
         int[] t;
-        //int[] place0;
-        //int[] place1;
         ArrayList<Tile> connectors;
         for(int i = 0; i < 50; i++){
             connectors = findAllConnectors();
@@ -259,21 +257,19 @@ public class DungeonLevel
             	t = getValidSpots(connectors.get(choice).getX(), connectors.get(choice).getY()).get(j);
             	region[j] = map[t[0]][t[1]].getRegion();
             	for (int k=0;k<regionConnections[map[t[0]][t[1]].getRegion()].length;k++){
-            		if (k<=rooms.size())
+            		if (region[j]<=rooms.size())
             			doors+=regionConnections[map[t[0]][t[1]].getRegion()][k];
             		else
-            			doors+=regionConnections[map[t[0]][t[1]].getRegion()][k]/4.0;
+            			doors+=regionConnections[map[t[0]][t[1]].getRegion()][k]/2.0;
             	}
             }
-            if (region[0]<=rooms.size()&&region[0]<=rooms.size()&&areRegionsConnected(region[0],region[1])){
-            	doors++;
+            if (region[0]<=rooms.size()&&region[1]<=rooms.size()&&areRegionsConnected(region[0],region[1])){
+            	doors*=1.3;
             }
             if (Math.random()*doors<2){
             	connectors.get(choice).setType(false);
             	connectors.get(choice).setRegion(-1);
             	connectors.get(choice).addEntity(new Door());
-                //place0 = getValidSpots(connectors.get(choice).getX(), connectors.get(choice).getY()).get(0);
-                //place1 = getValidSpots(connectors.get(choice).getX(), connectors.get(choice).getY()).get(1);
                 regionConnections[region[0]][region[1]]++;
                 regionConnections[region[1]][region[0]]++;
             }
