@@ -3,6 +3,8 @@ import java.util.ArrayList;
 
 import asciiPanel.AsciiPanel;
 
+
+
 public class Game {
 	private ArrayList<DungeonLevel> levels;
 	private AsciiPanel panel;
@@ -87,7 +89,7 @@ public class Game {
 				}
 				else{
 					panel.setCursorPosition(j, i);
-					panel.write('#');
+					panel.write(' ', Color.WHITE, Color.GRAY);
 				}
 			}
 
