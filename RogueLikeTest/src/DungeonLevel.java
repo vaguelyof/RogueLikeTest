@@ -242,12 +242,19 @@ public class DungeonLevel
         connectedRegions.add(1);
 
         while(openConnector()){}
+        createRandomConnectors(50);
+    }
+    /**
+     * Generates random connectors
+     * @param tries number of attemptes
+     */
+    private void createRandomConnectors(int tries){
         int choice;
         double doors;
         int[] region = new int[2];
         int[] t;
         ArrayList<Tile> connectors;
-        for(int i = 0; i < 50; i++){
+        for(int i = 0; i < tries; i++){
             connectors = findAllConnectors();
             if(connectors.size() == 0)
                 break;
@@ -275,6 +282,7 @@ public class DungeonLevel
             }
         }
     }
+    
     /**
      * Finds all tiles which are valid doors. 
      * A valid door is connected by two empty spaces of different regions, and is not adjacent to another door.
