@@ -150,7 +150,7 @@ public class Game {
 		ArrayList<Tile> seen = new ArrayList<Tile>();
 		for(int i = 0; i < fovmap.length; i++){
 			for(int j = 0 ; j < fovmap[0].length; j++){
-				if(fovmap[i][j] < 0.4){
+				if(fovmap[i][j] < 0.5){
 					seen.add(dun.getTile(i, j));
 				}
 			}
