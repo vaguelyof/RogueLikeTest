@@ -92,7 +92,10 @@ public class DungeonLevel
         for(int i = 0; i < map.length; i++){
             for(int j = 0; j < map[0].length; j++){
                 if(map[i][j].getIsRock())
-                    System.out.print("[]");
+					if (map[i][j].getRegion()==0)
+						System.out.print("[]");
+					else
+						System.out.print("XX");
                 else
                     System.out.print("  ");
             }
