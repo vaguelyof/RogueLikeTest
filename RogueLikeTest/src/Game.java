@@ -12,6 +12,7 @@ public class Game {
 	private Player player;
 	private int currentLevel;
 	private ArrayList<String> helpItems;
+	private ArrayList<ArrayList<Tile>> seenTiles;
 
 	public static int NORTH = 0;
 	public static int NORTH_EAST = 1;
@@ -21,18 +22,26 @@ public class Game {
 	public static int SOUTH_WEST = 5;
 	public static int WEST = 6;
 	public static int NORTH_WEST = 7;
-	
+
+	private double fovmap[][];
+
+	FOV fov;
+
 	public Game() {
-		
+
 		levels = new ArrayList<DungeonLevel>();
 		helpItems = new ArrayList<String>();
+
 		helpItems.add("W - Move North");
 		helpItems.add("A - Move West");
 		helpItems.add("S - Move South");
 		helpItems.add("D - Move East");
+
+		fov = new FOV(FOV.SHADOW);
+		seenTiles = new ArrayList<ArrayList<Tile>>();
 	}
-	
-	public void start(){
+
+	public void start() {
 		createPlayer();
 		generateNextLevel();
 		currentLevel = 0;
@@ -48,124 +57,135 @@ public class Game {
 	public void generateNextLevel() {
 		levels.add(new DungeonLevel(levels.size(), 51));
 		levels.get(levels.size() - 1).generateLevel();
+		seenTiles.add(new ArrayList<Tile>());
 	}
-	
-	public void createPlayer(){
+
+	public void createPlayer() {
 		player = new Player("Player", "", 20, 3);
 	}
-	
-	public void insertEntity(Entity e, Tile t){
+
+	public void insertEntity(Entity e, Tile t) {
 		t.addEntity(e);
 	}
 
 	public void displayMapAroundTile(Tile t, int level) {
 		DungeonLevel d = getLevel(level);
+		ArrayList<Tile> currentlySeenTiles = new ArrayList<Tile>();
+		currentlySeenTiles = calcFOV(player.getTile().getX(), player.getTile().getY(), d, currentlySeenTiles);
+
+		for (Tile tile : currentlySeenTiles) {
+			if (!seenTiles.get(level).contains(tile)) {
+				seenTiles.get(level).add(tile);
+			}
+		}
 
 		for (int i = 0; i < panel.getHeightInCharacters(); i++) {
 
 			for (int j = 0; j < panel.getWidthInCharacters(); j++) {
-				int posX = i + t.getX() - panel.getHeightInCharacters()/2 - 3;
-				int posY = j + t.getY() - panel.getWidthInCharacters()/2 + 8;
-				ArrayList<Tile> currentlySeenTiles = calcFOV(t.getX(), t.getY(),d);
-				
-				
-				if (d.getTile(posX,posY) != null && !currentlySeenTiles.contains(d.getTile(posX, posY))) {
+				int posX = i + t.getX() - panel.getHeightInCharacters() / 2 - 3;
+				int posY = j + t.getY() - panel.getWidthInCharacters() / 2 + 8;
+
+				if (d.getTile(posX, posY) != null && seenTiles.get(level).contains(d.getTile(posX, posY))) {
+					Color c;
+					if(!currentlySeenTiles.contains(d.getTile(posX,posY))){
+						c = Color.DARK_GRAY;
+					}
+					else{
+						c = AsciiPanel.black;
+					}
 					if (d.getTile(posX, posY).getIsRock()) {
 						panel.setCursorPosition(j, i);
-						panel.write('#');
-						
-						
+						panel.write('#', Color.WHITE, c);
+
 					} else {
 						panel.setCursorPosition(j, i);
-						Entity e = d.getTile(posX,posY).getTopEntity();
-						if(e == null)
-							panel.write(' ', Color.WHITE);
-						else if(e instanceof Player)
-							panel.write('@', Color.BLUE);
-						else if(e instanceof Door)
-							panel.write('+', Color.GRAY);
-						else if(e instanceof UpStairs)
-							panel.write('<', Color.GRAY);
-						else if(e instanceof DownStairs)
-							panel.write('>', Color.GRAY);
-						else 
-							panel.write('?', Color.PINK);
+						Entity e = d.getTile(posX, posY).getTopEntity();
+						
+						
+						if (e == null)
+							panel.write(' ', Color.WHITE,c);
+						else if (e instanceof Player)
+							panel.write('@', Color.BLUE,c);
+						else if (e instanceof Door)
+							panel.write('+', Color.GRAY,c);
+						else if (e instanceof UpStairs)
+							panel.write('<', Color.GRAY,c);
+						else if (e instanceof DownStairs)
+							panel.write('>', Color.GRAY,c);
+						else
+							panel.write('?', Color.PINK,c);
+
 					}
-				}
-				else{
+					
+					
+				} else {
 					panel.setCursorPosition(j, i);
 					panel.write(' ', Color.WHITE, Color.GRAY);
 				}
 			}
 
 		}
-		
-		
 		createUpperBorder();
 		createHelpMenu();
 		panel.updateUI();
 	}
 	
-	public void createUpperBorder(){
+	public void createUpperBorder() {
 		int borderHeight = 3;
-		for(int i = 0; i < panel.getWidthInCharacters(); i++){
-			for(int j = 0; j < borderHeight; j++){
+		for (int i = 0; i < panel.getWidthInCharacters(); i++) {
+			for (int j = 0; j < borderHeight; j++) {
 				panel.setCursorPosition(i, j);
 				panel.write(' ');
 			}
 			panel.setCursorPosition(i, borderHeight);
 			panel.write('=');
 		}
-		
+
 	}
-	
-	public void createHelpMenu(){
+
+	public void createHelpMenu() {
 		int menuWidth = 20;
-		for(int i = 4; i < panel.getHeightInCharacters(); i++){
-			for(int j = panel.getWidthInCharacters() - menuWidth; j < panel.getWidthInCharacters(); j++){
+		for (int i = 4; i < panel.getHeightInCharacters(); i++) {
+			for (int j = panel.getWidthInCharacters() - menuWidth; j < panel.getWidthInCharacters(); j++) {
 				panel.setCursorPosition(j, i);
 				panel.write(' ');
 			}
 			panel.setCursorPosition(panel.getWidthInCharacters() - menuWidth - 1, i);
 			panel.write('|');
 		}
-		for(int i = 4; i < panel.getHeightInCharacters() && i - 4  < helpItems.size(); i++){
+		for (int i = 4; i < panel.getHeightInCharacters() && i - 4 < helpItems.size(); i++) {
 			panel.setCursorPosition(panel.getWidthInCharacters() - menuWidth, i);
 			panel.write(helpItems.get(i - 4));
 		}
-		
+
 	}
-	
-	public ArrayList<Tile> calcFOV(int x, int y, DungeonLevel dun){
-		double[][] fovmap;
-		FOV fov = new FOV(FOV.SHADOW);
-		
-				
+
+	public ArrayList<Tile> calcFOV(int x, int y, DungeonLevel dun, ArrayList<Tile> seen) {
+
 		int startx = x;
 		int starty = y;
-		
-		fovmap = fov.calculateFOV(generateResistances(dun), startx, starty, 8, Radius.SQUARE);
-		
-		
-		ArrayList<Tile> seen = new ArrayList<Tile>();
-		for(int i = 0; i < fovmap.length; i++){
-			for(int j = 0 ; j < fovmap[0].length; j++){
-				if(fovmap[i][j] < 0.5){
+
+		fovmap = fov.calculateFOV(generateResistances(dun), startx, starty, 10, Radius.DIAMOND);
+
+		seen.clear();
+		for (int i = 0; i < fovmap.length; i++) {
+			for (int j = 0; j < fovmap[0].length; j++) {
+				if (fovmap[i][j] > 0.5) {
 					seen.add(dun.getTile(i, j));
 				}
 			}
 		}
 		return seen;
 	}
-	
-	private double[][] generateResistances(DungeonLevel dun){
-		double [][] map = new double[dun.getMap().length][dun.getMap().length];
-		for(int i = 0; i < dun.getMap().length; i++){
-			for(int j = 0; j < dun.getMap().length; j++){
-				if(dun.getTile(i, j).getIsRock() || dun.getTile(i, j).getTopEntity() instanceof Door){
+
+	private double[][] generateResistances(DungeonLevel dun) {
+		double[][] map = new double[dun.getMap().length][dun.getMap().length];
+		for (int i = 0; i < dun.getMap().length; i++) {
+			for (int j = 0; j < dun.getMap().length; j++) {
+				if (dun.getTile(i, j).getIsRock() || dun.getTile(i, j).getTopEntity() instanceof Door) {
 					map[i][j] = 1;
 				}
-				
+
 			}
 		}
 		return map;
@@ -177,25 +197,25 @@ public class Game {
 		}
 		return null;
 	}
-	
-	public boolean creatureCanMoveInDirection(Creature c, int direction){
-		if(!c.getTile().getTileInDirection(direction).getIsRock()){
+
+	public boolean creatureCanMoveInDirection(Creature c, int direction) {
+		if (!c.getTile().getTileInDirection(direction).getIsRock()) {
 			return true;
 		}
 		return false;
 	}
-	
-	public void movePlayer(int direction){
-		if(creatureCanMoveInDirection(player,direction)){
+
+	public void movePlayer(int direction) {
+		if (creatureCanMoveInDirection(player, direction)) {
 			player.getTile().getTileInDirection(direction).addEntity(player);
 		}
 		displayMapAroundTile(player.getTile(), currentLevel);
 	}
-	
-	public void getKeyPress(String keyText){
-		
-		if(keyText.length() == 1){
-			switch(keyText.charAt(0)){
+
+	public void getKeyPress(String keyText) {
+
+		if (keyText.length() == 1) {
+			switch (keyText.charAt(0)) {
 			case 'W':
 				movePlayer(NORTH);
 				break;
@@ -211,7 +231,6 @@ public class Game {
 			}
 			return;
 		}
-		
-		
+
 	}
 }
