@@ -56,6 +56,7 @@ public class DungeonLevel
         int choice = 1 + (int)((rooms.size() - 1) * Math.random());
         exit = map[rooms.get(choice)[0]][rooms.get(choice)[1]];
         exit.addEntity(new DownStairs());
+        printMap();
     }
     
     /**
@@ -183,13 +184,13 @@ public class DungeonLevel
         ArrayList<int[]> validSpots = getValidSpotsOverOne(x,y);
     	if(dir[0]+x > 0 && dir[0]+x < map.length - 1 && dir[1]+y > 0 && dir[1]+y < map.length - 1){
     		if (map[dir[0]+x][dir[1]+y].getIsRock()){
-	    		for (int i=-1;i<=t;i++){
+	    		for (int i=0;i<=t*2;i++){
 	        		validSpots.add(dir);
 	        	}
     		}
         }
     	else{
-    		t = 4;
+    		t = 3;
     	}
         while(validSpots.size() > 0){
             int chosenOne = (int)(Math.random() * validSpots.size());
@@ -198,7 +199,7 @@ public class DungeonLevel
             map[tempX+x][tempY+y].setType(false);
             map[tempX+x][tempY+y].setRegion(region);
             if (!validSpots.get(chosenOne).equals(dir)){
-            	if (t>3){
+            	if (t>2){
                     fill(validSpots.get(chosenOne)[0]+x,validSpots.get(chosenOne)[1]+y,validSpots.get(chosenOne),0);
             	}
             	else{
@@ -207,7 +208,7 @@ public class DungeonLevel
             }
             else{
                 fill(validSpots.get(chosenOne)[0]+x,validSpots.get(chosenOne)[1]+y,dir,0);
-                t = 4;
+                t = 3;
             }
             validSpots = getValidSpotsOverOne(x,y);
         	if(dir[0]+x > 0 && dir[0]+x < map.length - 1 && dir[1]+y > 0 && dir[1]+y < map.length - 1 && map[dir[0]+x][dir[1]+y].getIsRock()){
