@@ -175,6 +175,7 @@ public class DungeonLevel
      */
     private void fill(int x, int y, int[] dir, int t){
         map[x][y].setType(false);
+        map[x][y].setRegion(region);
         ArrayList<int[]> validSpots = getValidSpotsOverOne(x,y);
     	if(dir[0]+x > 0 && dir[0]+x < map.length - 1 && dir[1]+y > 0 && dir[1]+y < map.length - 1){
     		if (map[dir[0]+x][dir[1]+y].getIsRock()){
