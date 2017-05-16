@@ -179,6 +179,8 @@ public class DungeonLevel
      * @param y the starting vertical ordinate
      */
     private void fill(int x, int y, int[] dir, int t){
+    	if (t<0)
+    		t = 0;
         map[x][y].setType(false);
         map[x][y].setRegion(region);
         ArrayList<int[]> validSpots = getValidSpotsOverOne(x,y);
@@ -207,7 +209,7 @@ public class DungeonLevel
             	}
             }
             else{
-                fill(validSpots.get(chosenOne)[0]+x,validSpots.get(chosenOne)[1]+y,dir,0);
+                fill(validSpots.get(chosenOne)[0]+x,validSpots.get(chosenOne)[1]+y,dir,t-1);
                 t = 3;
             }
             validSpots = getValidSpotsOverOne(x,y);
@@ -270,14 +272,20 @@ public class DungeonLevel
             	t = getValidSpots(connectors.get(choice).getX(), connectors.get(choice).getY()).get(j);
             	region[j] = map[t[0]][t[1]].getRegion();
             	for (int k=0;k<regionConnections[map[t[0]][t[1]].getRegion()].length;k++){
-            		if (region[j]<=rooms.size())
+            		if (region[j]<=rooms.size()&&k<=rooms.size())
             			doors+=regionConnections[map[t[0]][t[1]].getRegion()][k];
             		else
-            			doors+=regionConnections[map[t[0]][t[1]].getRegion()][k]/2.0;
+            			doors+=regionConnections[map[t[0]][t[1]].getRegion()][k]*0.65;
             	}
             }
-            if (region[0]<=rooms.size()&&region[1]<=rooms.size()&&areRegionsConnected(region[0],region[1])){
-            	doors*=1.3;
+            if (areRegionsConnected(region[0],region[1])){
+            	if (region[0]<=rooms.size()&&region[1]<=rooms.size())
+            		doors *= 1.5;
+            	else
+            		doors *= 1.3;
+            }
+            else if (region[0]>rooms.size()||region[1]>rooms.size()){
+            	doors*=0.9;
             }
             if (Math.random()*doors<2){
             	connectors.get(choice).setType(false);
