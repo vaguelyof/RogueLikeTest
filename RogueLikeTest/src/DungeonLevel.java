@@ -56,6 +56,7 @@ public class DungeonLevel
         int choice = 1 + (int)((rooms.size() - 1) * Math.random());
         exit = map[rooms.get(choice)[0]][rooms.get(choice)[1]];
         exit.addEntity(new DownStairs());
+        printMap();
     }
     
     /**
@@ -92,7 +93,10 @@ public class DungeonLevel
         for(int i = 0; i < map.length; i++){
             for(int j = 0; j < map[0].length; j++){
                 if(map[i][j].getIsRock())
-                    System.out.print("[]");
+					if (map[i][j].getRegion()==0)
+						System.out.print("[]");
+					else
+						System.out.print("XX");
                 else
                     System.out.print("  ");
             }
@@ -155,6 +159,7 @@ public class DungeonLevel
      */
     private void startMaze(int x, int y){
         map[x][y].setType(false);
+        map[x][y].setRegion(region);
         ArrayList<int[]> validSpots = getValidSpotsOverOne(x,y);
         while(validSpots.size() > 0){
             
@@ -174,17 +179,20 @@ public class DungeonLevel
      * @param y the starting vertical ordinate
      */
     private void fill(int x, int y, int[] dir, int t){
+    	if (t<0)
+    		t = 0;
         map[x][y].setType(false);
+        map[x][y].setRegion(region);
         ArrayList<int[]> validSpots = getValidSpotsOverOne(x,y);
     	if(dir[0]+x > 0 && dir[0]+x < map.length - 1 && dir[1]+y > 0 && dir[1]+y < map.length - 1){
     		if (map[dir[0]+x][dir[1]+y].getIsRock()){
-	    		for (int i=0;i<=t;i++){
+	    		for (int i=0;i<=t*2;i++){
 	        		validSpots.add(dir);
 	        	}
     		}
         }
     	else{
-    		t = 4;
+    		t = 3;
     	}
         while(validSpots.size() > 0){
             int chosenOne = (int)(Math.random() * validSpots.size());
@@ -193,7 +201,7 @@ public class DungeonLevel
             map[tempX+x][tempY+y].setType(false);
             map[tempX+x][tempY+y].setRegion(region);
             if (!validSpots.get(chosenOne).equals(dir)){
-            	if (t>3){
+            	if (t>2){
                     fill(validSpots.get(chosenOne)[0]+x,validSpots.get(chosenOne)[1]+y,validSpots.get(chosenOne),0);
             	}
             	else{
@@ -201,8 +209,8 @@ public class DungeonLevel
             	}
             }
             else{
-                fill(validSpots.get(chosenOne)[0]+x,validSpots.get(chosenOne)[1]+y,dir,0);
-                t = 4;
+                fill(validSpots.get(chosenOne)[0]+x,validSpots.get(chosenOne)[1]+y,dir,t-1);
+                t = 3;
             }
             validSpots = getValidSpotsOverOne(x,y);
         	if(dir[0]+x > 0 && dir[0]+x < map.length - 1 && dir[1]+y > 0 && dir[1]+y < map.length - 1 && map[dir[0]+x][dir[1]+y].getIsRock()){
@@ -242,14 +250,19 @@ public class DungeonLevel
         connectedRegions.add(1);
 
         while(openConnector()){}
+        createRandomConnectors(50);
+    }
+    /**
+     * Generates random connectors
+     * @param tries number of attemptes
+     */
+    private void createRandomConnectors(int tries){
         int choice;
         double doors;
         int[] region = new int[2];
         int[] t;
-        //int[] place0;
-        //int[] place1;
         ArrayList<Tile> connectors;
-        for(int i = 0; i < 50; i++){
+        for(int i = 0; i < tries; i++){
             connectors = findAllConnectors();
             if(connectors.size() == 0)
                 break;
@@ -259,26 +272,31 @@ public class DungeonLevel
             	t = getValidSpots(connectors.get(choice).getX(), connectors.get(choice).getY()).get(j);
             	region[j] = map[t[0]][t[1]].getRegion();
             	for (int k=0;k<regionConnections[map[t[0]][t[1]].getRegion()].length;k++){
-            		if (k<=rooms.size())
+            		if (region[j]<=rooms.size()&&k<=rooms.size())
             			doors+=regionConnections[map[t[0]][t[1]].getRegion()][k];
             		else
-            			doors+=regionConnections[map[t[0]][t[1]].getRegion()][k]/4.0;
+            			doors+=regionConnections[map[t[0]][t[1]].getRegion()][k]*0.65;
             	}
             }
-            if (region[0]<=rooms.size()&&region[0]<=rooms.size()&&areRegionsConnected(region[0],region[1])){
-            	doors++;
+            if (areRegionsConnected(region[0],region[1])){
+            	if (region[0]<=rooms.size()&&region[1]<=rooms.size())
+            		doors *= 1.5;
+            	else
+            		doors *= 1.3;
+            }
+            else if (region[0]>rooms.size()||region[1]>rooms.size()){
+            	doors*=0.9;
             }
             if (Math.random()*doors<2){
             	connectors.get(choice).setType(false);
             	connectors.get(choice).setRegion(-1);
             	connectors.get(choice).addEntity(new Door());
-                //place0 = getValidSpots(connectors.get(choice).getX(), connectors.get(choice).getY()).get(0);
-                //place1 = getValidSpots(connectors.get(choice).getX(), connectors.get(choice).getY()).get(1);
                 regionConnections[region[0]][region[1]]++;
                 regionConnections[region[1]][region[0]]++;
             }
         }
     }
+    
     /**
      * Finds all tiles which are valid doors. 
      * A valid door is connected by two empty spaces of different regions, and is not adjacent to another door.
