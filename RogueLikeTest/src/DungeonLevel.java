@@ -155,6 +155,7 @@ public class DungeonLevel
      */
     private void startMaze(int x, int y){
         map[x][y].setType(false);
+        map[x][y].setRegion(region);
         ArrayList<int[]> validSpots = getValidSpotsOverOne(x,y);
         while(validSpots.size() > 0){
             
@@ -179,7 +180,7 @@ public class DungeonLevel
         ArrayList<int[]> validSpots = getValidSpotsOverOne(x,y);
     	if(dir[0]+x > 0 && dir[0]+x < map.length - 1 && dir[1]+y > 0 && dir[1]+y < map.length - 1){
     		if (map[dir[0]+x][dir[1]+y].getIsRock()){
-	    		for (int i=0;i<=t;i++){
+	    		for (int i=-1;i<=t;i++){
 	        		validSpots.add(dir);
 	        	}
     		}
