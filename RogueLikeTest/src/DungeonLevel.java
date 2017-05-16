@@ -56,6 +56,7 @@ public class DungeonLevel
         int choice = 1 + (int)((rooms.size() - 1) * Math.random());
         exit = map[rooms.get(choice)[0]][rooms.get(choice)[1]];
         exit.addEntity(new DownStairs());
+        printMap();
     }
     
     /**
@@ -178,18 +179,20 @@ public class DungeonLevel
      * @param y the starting vertical ordinate
      */
     private void fill(int x, int y, int[] dir, int t){
+    	if (t<0)
+    		t = 0;
         map[x][y].setType(false);
         map[x][y].setRegion(region);
         ArrayList<int[]> validSpots = getValidSpotsOverOne(x,y);
     	if(dir[0]+x > 0 && dir[0]+x < map.length - 1 && dir[1]+y > 0 && dir[1]+y < map.length - 1){
     		if (map[dir[0]+x][dir[1]+y].getIsRock()){
-	    		for (int i=-1;i<=t;i++){
+	    		for (int i=0;i<=t*2;i++){
 	        		validSpots.add(dir);
 	        	}
     		}
         }
     	else{
-    		t = 4;
+    		t = 3;
     	}
         while(validSpots.size() > 0){
             int chosenOne = (int)(Math.random() * validSpots.size());
@@ -198,7 +201,7 @@ public class DungeonLevel
             map[tempX+x][tempY+y].setType(false);
             map[tempX+x][tempY+y].setRegion(region);
             if (!validSpots.get(chosenOne).equals(dir)){
-            	if (t>3){
+            	if (t>2){
                     fill(validSpots.get(chosenOne)[0]+x,validSpots.get(chosenOne)[1]+y,validSpots.get(chosenOne),0);
             	}
             	else{
@@ -206,8 +209,8 @@ public class DungeonLevel
             	}
             }
             else{
-                fill(validSpots.get(chosenOne)[0]+x,validSpots.get(chosenOne)[1]+y,dir,0);
-                t = 4;
+                fill(validSpots.get(chosenOne)[0]+x,validSpots.get(chosenOne)[1]+y,dir,t-1);
+                t = 3;
             }
             validSpots = getValidSpotsOverOne(x,y);
         	if(dir[0]+x > 0 && dir[0]+x < map.length - 1 && dir[1]+y > 0 && dir[1]+y < map.length - 1 && map[dir[0]+x][dir[1]+y].getIsRock()){
@@ -269,14 +272,20 @@ public class DungeonLevel
             	t = getValidSpots(connectors.get(choice).getX(), connectors.get(choice).getY()).get(j);
             	region[j] = map[t[0]][t[1]].getRegion();
             	for (int k=0;k<regionConnections[map[t[0]][t[1]].getRegion()].length;k++){
-            		if (region[j]<=rooms.size())
+            		if (region[j]<=rooms.size()&&k<=rooms.size())
             			doors+=regionConnections[map[t[0]][t[1]].getRegion()][k];
             		else
-            			doors+=regionConnections[map[t[0]][t[1]].getRegion()][k]/2.0;
+            			doors+=regionConnections[map[t[0]][t[1]].getRegion()][k]*0.65;
             	}
             }
-            if (region[0]<=rooms.size()&&region[1]<=rooms.size()&&areRegionsConnected(region[0],region[1])){
-            	doors*=1.3;
+            if (areRegionsConnected(region[0],region[1])){
+            	if (region[0]<=rooms.size()&&region[1]<=rooms.size())
+            		doors *= 1.5;
+            	else
+            		doors *= 1.3;
+            }
+            else if (region[0]>rooms.size()||region[1]>rooms.size()){
+            	doors*=0.9;
             }
             if (Math.random()*doors<2){
             	connectors.get(choice).setType(false);
