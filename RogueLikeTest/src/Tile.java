@@ -49,7 +49,7 @@ public class Tile
         thingsInTile.add(e);
         e.setTile(this);
     }
-    private void removeEntity(Entity e){
+    public void removeEntity(Entity e){
     	thingsInTile.remove(e);
     }
     
@@ -102,5 +102,27 @@ public class Tile
     	if(yOff >= 0 && xOff >= 0 && yOff < getDungeon().getMap().length && xOff < getDungeon().getMap().length)
     		return getDungeon().getTile(xOff, yOff);
     	return null;
+    }
+    
+    /*
+     * finds tiles to the North, North-East, East, South-East, South, South-West, West, and North-West
+     * of a given Tile t
+     * 
+     * precondition: Tile t must be a valid Tile object in containedDungeon
+     * 
+     *  @param t a Tile object within containedDungeon
+     *  
+     *  @return an ArrayList<Tile> with adjacent tiles listed clockwise from NORTH; any out of bound tiles are listed as null
+     */
+    public ArrayList<Tile> getAdjacentTiles(Tile t){
+    	
+    	ArrayList<Tile> Tiles = new ArrayList<Tile>();
+    	
+    	for(int i = Game.NORTH; i <= Game.NORTH_WEST; i++)
+    	{
+    		Tiles.add(t.getTileInDirection(i));
+    	}
+    	
+    	return Tiles;
     }
 }

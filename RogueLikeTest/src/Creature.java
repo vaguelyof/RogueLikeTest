@@ -5,16 +5,16 @@ public class Creature implements Entity{
 	private String des;
 	private int currentHealth;
 	private int maxHealth;
-	private int damage;
+	private int dmg;
 	private Tile myT;
 	
-	public Creature(String aName, String description, int health, int dmg)
+	public Creature(String aName, String description, int health, int damage)
 	{
 		name = aName;
 		des = description;
 		currentHealth = health;	//creature always starts with max health
 		maxHealth = health;
-		damage = dmg;
+		dmg = damage;
 	}
 	
 	public String getName()
@@ -39,7 +39,7 @@ public class Creature implements Entity{
     
     public int attack()
     {
-    	return damage;
+    	return dmg;
     }
     
     public Tile getTile()
@@ -49,7 +49,7 @@ public class Creature implements Entity{
     
     public void die()
     {
-    	//stop existing
+    	myT.removeEntity(this);
     }
     
     //same functionality as a "move" method

@@ -160,6 +160,11 @@ public class Game {
 
 	}
 
+	public ArrayList<Tile> calcFOV(Creature c){
+		ArrayList<Tile> seen = new ArrayList<Tile>();
+		return calcFOV(c.getTile().getX(), c.getTile().getY(), c.getTile().getDungeon(), seen);
+	}
+	
 	public ArrayList<Tile> calcFOV(int x, int y, DungeonLevel dun, ArrayList<Tile> seen) {
 
 		int startx = x;
