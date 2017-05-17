@@ -456,6 +456,10 @@ public class DungeonLevel
     	return false;
     }
     
+    public boolean isRegionRoom(int region){
+    	return region<rooms.size()&&region>0;
+    }
+    
     public Tile getEntrance(){
     	return entry;
     }

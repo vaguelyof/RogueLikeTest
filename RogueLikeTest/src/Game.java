@@ -47,6 +47,7 @@ public class Game {
 		currentLevel = 0;
 		createPlayer();
 		insertEntity(player, levels.get(0).getEntrance());
+		addRegionToSeen(1,0);
 		displayMapAroundTile(player.getTile(), 0);
 	}
 
@@ -212,12 +213,41 @@ public class Game {
 			return true;
 		}
 		return false;
-	}
+	}	
 	
+	public void addRegionToSeen(int region, int level){
+		Tile[][] map = getLevel(level).getMap();
+		boolean rowFound;
+		for (int i=0;i<map.length;i++){
+			rowFound = false;
+			for (int j=0;j<map[i].length;j++){
+				if (map[i][j].getRegion()==region&&!map[i][j].getIsRock()){
+					rowFound = true;
+					for (int k=-1;k<=1;k++){
+						for (int l=-1;l<=1;l++){
+							seenTiles.get(level).add(map[i+k][j+l]);
+						}
+					}
+					j++;
+				}
+			}
+			if (rowFound)
+				i++;
+		}
+	}
+
 	public void movePlayer(int direction) {
 		if (creatureCanMoveInDirection(player, direction)) {
 			player.getTile().getTileInDirection(direction).addEntity(player);
-			endTurn();
+			if (player.getTile().getRegion()==-1){
+				Tile t;
+				for (int i=0;i<8;i+=2){
+					t = player.getTile().getTileInDirection(i);
+					if (getLevel(currentLevel).isRegionRoom(t.getRegion())){
+						addRegionToSeen(t.getRegion(), currentLevel);
+					}
+				}
+			}
 		}
 		displayMapAroundTile(player.getTile(), currentLevel);
 	}
