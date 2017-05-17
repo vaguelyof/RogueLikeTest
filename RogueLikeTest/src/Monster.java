@@ -12,6 +12,14 @@ public class Monster extends Creature{
 			return;
 		}
 		
+		//if the monster is directly next to the player, it attacks without doing anything else
+		if(super.getTile().getTileInDirection(getDirectionToPlayer()).getTopEntity() instanceof Player){
+			attack();
+			return;
+		}
+		
+		move(getDirectionToPlayer());
+		
 	}
 	
 	private void move(int direction){
@@ -20,8 +28,8 @@ public class Monster extends Creature{
 		}
 	}
 	
-	private void getTileInDirectionOfPlayer(){
-		
+	private int getDirectionToPlayer(){
+		return 0;
 	}
 	
 }
