@@ -10,4 +10,5 @@ public class Player extends Creature {
 	public void move(String dir){
 		
 	}
+	
 }

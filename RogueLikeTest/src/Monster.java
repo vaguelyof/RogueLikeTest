@@ -11,5 +11,17 @@ public class Monster extends Creature{
 			super.die();
 			return;
 		}
+		
 	}
+	
+	private void move(int direction){
+		if (Game.creatureCanMoveInDirection(this, direction)) {
+			this.getTile().getTileInDirection(direction).addEntity(this);
+		}
+	}
+	
+	private void getTileInDirectionOfPlayer(){
+		
+	}
+	
 }

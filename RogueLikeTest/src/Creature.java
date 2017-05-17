@@ -52,7 +52,6 @@ public class Creature implements Entity{
     	myT.removeEntity(this);
     }
     
-    //same functionality as a "move" method
     public void setTile(Tile t)
     {
     	myT = t;
