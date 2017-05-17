@@ -1,4 +1,4 @@
-
+import java.awt.Color;
 /**
  * Used for all "things" in the dungeon. Doors, monsters, items, etc. Has a name, description, and a location.
  * 
@@ -14,4 +14,9 @@ public interface Entity
     public Tile getTile();
     
     public void setTile(Tile t);
+    
+    public char getChar();
+    
+    public Color getColor();
+    
 }
