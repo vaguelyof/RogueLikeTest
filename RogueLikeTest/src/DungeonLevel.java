@@ -56,7 +56,6 @@ public class DungeonLevel
         int choice = 1 + (int)((rooms.size() - 1) * Math.random());
         exit = map[rooms.get(choice)[0]][rooms.get(choice)[1]];
         exit.addEntity(new DownStairs());
-        printMap();
     }
     
     /**
@@ -98,7 +97,12 @@ public class DungeonLevel
 					else
 						System.out.print("XX");
                 else
-                    System.out.print("  ");
+                	if (map[i][j].equals(entry))
+                		System.out.print("^^");
+                	else if (map[i][j].equals(exit))
+                		System.out.print("vv");
+                	else
+                		System.out.print("  ");
             }
             System.out.println();
         }
