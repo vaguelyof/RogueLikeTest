@@ -63,6 +63,10 @@ public class Game {
 	public void createPlayer() {
 		player = new Player("Player", "", 20, 3);
 	}
+	
+	public Monster createLevel1Monster() {
+		return new Monster("Wispy Spirit", "The weakest monster", 1, 1);
+	}
 
 	public void insertEntity(Entity e, Tile t) {
 		t.addEntity(e);
@@ -203,7 +207,7 @@ public class Game {
 		return null;
 	}
 
-	public boolean creatureCanMoveInDirection(Creature c, int direction) {
+	public static boolean creatureCanMoveInDirection(Creature c, int direction) {
 		if (!c.getTile().getTileInDirection(direction).getIsRock()) {
 			return true;
 		}
