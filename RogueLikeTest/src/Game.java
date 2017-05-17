@@ -102,18 +102,25 @@ public class Game {
 						Entity e = d.getTile(posX, posY).getTopEntity();
 						
 						
-						if (e == null)
+						if (e == null) 
 							panel.write(' ', Color.WHITE,c);
-						else if (e instanceof Player)
-							panel.write('@', Color.BLUE,c);
-						else if (e instanceof Door)
-							panel.write('+', Color.GRAY,c);
+						else if (e instanceof Player)				//here go objects whose location should be known even if not in view
+							panel.write('@', Color.BLUE,c);			
+						else if (e instanceof Door)					//else if (e instanceof <type>)	
+							panel.write('+', Color.GRAY,c);			//	  panel.write(<char>, <color>, c); 
 						else if (e instanceof UpStairs)
 							panel.write('<', Color.GRAY,c);
 						else if (e instanceof DownStairs)
 							panel.write('>', Color.GRAY,c);
-						else
-							panel.write('?', Color.PINK,c);
+						
+						else if(currentlySeenTiles.contains(e.getTile())){  //here go objects whose location should NOT be known if in view
+							if (e instanceof Monster)
+								panel.write('!', Color.RED, c);
+						}
+						
+						else											//If an object shows up as this make a case for it in the previous areas
+							panel.write('?', Color.PINK, c);
+							
 
 					}
 					
