@@ -213,14 +213,28 @@ public class Game {
 		}
 		return false;
 	}
-
+	
 	public void movePlayer(int direction) {
 		if (creatureCanMoveInDirection(player, direction)) {
 			player.getTile().getTileInDirection(direction).addEntity(player);
+			endTurn();
 		}
 		displayMapAroundTile(player.getTile(), currentLevel);
 	}
-
+	
+	public void endTurn(){
+		Tile[][] tiles = getLevel(currentLevel).getMap();
+		Tile t;
+		for(int i = 0; i < tiles.length; i++){
+			for(int j = 0; j < tiles[0].length; j++){
+				t = tiles[i][j];
+				if(t.getTopEntity() instanceof Monster){
+					((Monster)(t.getTopEntity())).act();
+				}
+			}
+		}
+	}
+	
 	public void getKeyPress(String keyText) {
 
 		if (keyText.length() == 1) {
