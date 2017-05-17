@@ -111,12 +111,13 @@ public class Game {
 						
 						else if (!(e instanceof Creature))
 							panel.write(e.getChar(), e.getColor(),c);
-						
+							
 						else if(currentlySeenTiles.contains(e.getTile()))
 							panel.write(e.getChar(), e.getColor(), c);
-						
-						else											
-							panel.write('?', Color.PINK, c);
+						else{
+							panel.setCursorPosition(j, i);
+							panel.write(' ', Color.WHITE, Color.DARK_GRAY);
+						}
 							
 
 					}
@@ -174,12 +175,12 @@ public class Game {
 		int startx = x;
 		int starty = y;
 
-		fovmap = fov.calculateFOV(generateResistances(dun), startx, starty, 10, Radius.DIAMOND);
+		fovmap = fov.calculateFOV(generateResistances(dun), startx, starty, 14, Radius.DIAMOND);
 
 		seen.clear();
 		for (int i = 0; i < fovmap.length; i++) {
 			for (int j = 0; j < fovmap[0].length; j++) {
-				if (fovmap[i][j] > 0.5) {
+				if (fovmap[i][j] > .5) {
 					seen.add(dun.getTile(i, j));
 				}
 			}
@@ -191,7 +192,10 @@ public class Game {
 		double[][] map = new double[dun.getMap().length][dun.getMap().length];
 		for (int i = 0; i < dun.getMap().length; i++) {
 			for (int j = 0; j < dun.getMap().length; j++) {
-				if (dun.getTile(i, j).getIsRock() || dun.getTile(i, j).getTopEntity() instanceof Door) {
+				if (dun.getTile(i, j).getIsRock()) {
+					map[i][j] = 1;
+				}
+				if (dun.getTile(i, j).getTopEntity() instanceof Door){
 					map[i][j] = 1;
 				}
 
@@ -208,7 +212,7 @@ public class Game {
 	}
 
 	public static boolean creatureCanMoveInDirection(Creature c, int direction) {
-		if (!c.getTile().getTileInDirection(direction).getIsRock()) {
+		if (!c.getTile().getTileInDirection(direction).getIsRock() && !(c.getTile().getTileInDirection(direction).getTopEntity() instanceof Creature)) {
 			return true;
 		}
 		return false;
@@ -250,6 +254,11 @@ public class Game {
 				break;
 			case 'D':
 				movePlayer(EAST);
+				break;
+			case 'C':
+				Monster m = createLevel1Monster();
+				if(creatureCanMoveInDirection(player, NORTH))
+					player.getTile().getTileInDirection(NORTH).addEntity(m);
 				break;
 			}
 			return;
