@@ -55,6 +55,8 @@ public class Creature implements Entity{
     public void takeDamage(int h)
     {
     	currentHealth -= h;
+    	if(currentHealth <= 0)
+    		die();
     }
     
     public int getDamage()
