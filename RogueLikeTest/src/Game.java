@@ -47,7 +47,7 @@ public class Game {
 		currentLevel = 0;
 		createPlayer();
 		insertEntity(player, levels.get(0).getEntrance());
-		addRegionToSeen(1,0);
+		//addRegionToSeen(1,0);
 		displayMapAroundTile(player.getTile(), 0);
 	}
 
@@ -65,7 +65,7 @@ public class Game {
 		player = new Player("Player", "", 20, 3);
 	}
 	
-	public Monster createLevel1Monster() {
+	public static Monster createLevel1Monster() {
 		return new Monster("Wispy Spirit", "The weakest monster", 1, 1);
 	}
 
@@ -263,10 +263,10 @@ public class Game {
 				Tile t;
 				for (int i=0;i<8;i+=2){
 					t = player.getTile().getTileInDirection(i);
-					if (getLevel(currentLevel).isRegionRoom(t.getRegion())){
+					/*if (getLevel(currentLevel).isRegionRoom(t.getRegion())){
 						addRegionToSeen(t.getRegion(), currentLevel);
 						System.out.println(t.getRegion());
-					}
+					}*/
 				}
 			}
 			endTurn();
