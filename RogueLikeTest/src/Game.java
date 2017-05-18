@@ -47,6 +47,7 @@ public class Game {
 		currentLevel = 0;
 		createPlayer();
 		insertEntity(player, levels.get(0).getEntrance());
+		addRegionToSeen(1,0);
 		displayMapAroundTile(player.getTile(), 0);
 	}
 
@@ -111,12 +112,13 @@ public class Game {
 						
 						else if (!(e instanceof Creature))
 							panel.write(e.getChar(), e.getColor(),c);
-						
+							
 						else if(currentlySeenTiles.contains(e.getTile()))
 							panel.write(e.getChar(), e.getColor(), c);
-						
-						else											
-							panel.write('?', Color.PINK, c);
+						else{
+							panel.setCursorPosition(j, i);
+							panel.write(' ', Color.WHITE, Color.DARK_GRAY);
+						}
 							
 
 					}
@@ -174,12 +176,12 @@ public class Game {
 		int startx = x;
 		int starty = y;
 
-		fovmap = fov.calculateFOV(generateResistances(dun), startx, starty, 10, Radius.DIAMOND);
+		fovmap = fov.calculateFOV(generateResistances(dun), startx, starty, 14, Radius.DIAMOND);
 
 		seen.clear();
 		for (int i = 0; i < fovmap.length; i++) {
 			for (int j = 0; j < fovmap[0].length; j++) {
-				if (fovmap[i][j] > 0.5) {
+				if (fovmap[i][j] > .5) {
 					seen.add(dun.getTile(i, j));
 				}
 			}
@@ -191,7 +193,10 @@ public class Game {
 		double[][] map = new double[dun.getMap().length][dun.getMap().length];
 		for (int i = 0; i < dun.getMap().length; i++) {
 			for (int j = 0; j < dun.getMap().length; j++) {
-				if (dun.getTile(i, j).getIsRock() || dun.getTile(i, j).getTopEntity() instanceof Door) {
+				if (dun.getTile(i, j).getIsRock()) {
+					map[i][j] = 1;
+				}
+				if (dun.getTile(i, j).getTopEntity() instanceof Door){
 					map[i][j] = 1;
 				}
 
@@ -208,19 +213,62 @@ public class Game {
 	}
 
 	public static boolean creatureCanMoveInDirection(Creature c, int direction) {
-		if (!c.getTile().getTileInDirection(direction).getIsRock()) {
+		if (!c.getTile().getTileInDirection(direction).getIsRock() && !(c.getTile().getTileInDirection(direction).getTopEntity() instanceof Creature)) {
 			return true;
 		}
 		return false;
+	}	
+	
+	public void addRegionToSeen(int region, int level){
+		Tile[][] map = getLevel(level).getMap();
+		boolean rowFound;
+		for (int i=0;i<map.length;i++){
+			rowFound = false;
+			for (int j=0;j<map[i].length;j++){
+				if (map[i][j].getRegion()==region&&!map[i][j].getIsRock()){
+					rowFound = true;
+					for (int k=-1;k<=1;k++){
+						for (int l=-1;l<=1;l++){
+							seenTiles.get(level).add(map[i+k][j+l]);
+						}
+					}
+					j++;
+				}
+			}
+			if (rowFound)
+				i++;
+		}
 	}
 
 	public void movePlayer(int direction) {
 		if (creatureCanMoveInDirection(player, direction)) {
 			player.getTile().getTileInDirection(direction).addEntity(player);
+			if (player.getTile().getRegion()==-1){
+				Tile t;
+				for (int i=0;i<8;i+=2){
+					t = player.getTile().getTileInDirection(i);
+					if (getLevel(currentLevel).isRegionRoom(t.getRegion())){
+						addRegionToSeen(t.getRegion(), currentLevel);
+					}
+				}
+			}
 		}
 		displayMapAroundTile(player.getTile(), currentLevel);
 	}
-
+	
+	public void endTurn(){
+		Tile[][] tiles = getLevel(currentLevel).getMap();
+		Tile t;
+		for(int i = 0; i < tiles.length; i++){
+			for(int j = 0; j < tiles[0].length; j++){
+				t = tiles[i][j];
+				if(t.getTopEntity() instanceof Monster){
+					((Monster)(t.getTopEntity())).act();
+				}
+			}
+		}
+	}
+	
 	public void getKeyPress(String keyText) {
 
 		if (keyText.length() == 1) {
@@ -236,6 +284,11 @@ public class Game {
 				break;
 			case 'D':
 				movePlayer(EAST);
+				break;
+			case 'C':
+				Monster m = createLevel1Monster();
+				if(creatureCanMoveInDirection(player, NORTH))
+					player.getTile().getTileInDirection(NORTH).addEntity(m);
 				break;
 			}
 			return;
