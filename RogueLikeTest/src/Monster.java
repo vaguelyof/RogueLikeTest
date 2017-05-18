@@ -13,22 +13,28 @@ public class Monster extends Creature{
 			super.die();
 			return;
 		}
+	
+		ArrayList<Tile> seeable = new ArrayList<Tile>();
 		
-		Game.calcFOV(this);
+		seeable = Game.calcFOV(this);
+		
+		//if the monster can see the player, it moves towards it
+		for(Tile t: seeable)
+		{
+			if(t.getTopEntity() instanceof Player)
+			{
+				move((int)(super.getTile().getDirectionToTile(t)));
+			}
+		}
 	}
 	
 	private void move(int direction){
 		if (Game.creatureCanMoveInDirection(this, direction)) {
 			this.getTile().getTileInDirection(direction).addEntity(this);
 		}
-	}
+	}	
 	
-	private int getDirectionToPlayer(){
-		return 0;
+	private void attack(Creature c){
+		
 	}
-	
-	private boolean canSeePlayer(){
-		return true;
-	}
-	
 }
