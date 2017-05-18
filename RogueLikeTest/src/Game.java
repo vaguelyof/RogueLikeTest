@@ -166,9 +166,25 @@ public class Game {
 
 	}
 
-	public ArrayList<Tile> calcFOV(Creature c){
+	public static ArrayList<Tile> calcFOV(Creature c){
+		FOV fov = new FOV();
+		Game g = new Game();
 		ArrayList<Tile> seen = new ArrayList<Tile>();
-		return calcFOV(c.getTile().getX(), c.getTile().getY(), c.getTile().getDungeon(), seen);
+		
+		int startx = c.getTile().getX();
+		int starty = c.getTile().getY();
+
+		double[][] fovmap = fov.calculateFOV(g.generateResistances(c.getTile().getDungeon()), startx, starty, 14, Radius.DIAMOND);
+
+		seen.clear();
+		for (int i = 0; i < fovmap.length; i++) {
+			for (int j = 0; j < fovmap[0].length; j++) {
+				if (fovmap[i][j] > .5) {
+					seen.add(c.getTile().getDungeon().getTile(i, j));
+				}
+			}
+		}
+		return seen;
 	}
 	
 	public ArrayList<Tile> calcFOV(int x, int y, DungeonLevel dun, ArrayList<Tile> seen) {
