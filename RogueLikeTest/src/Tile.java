@@ -104,7 +104,7 @@ public class Tile
     	return null;
     }
     
-    /*
+    /**
      * finds tiles to the North, North-East, East, South-East, South, South-West, West, and North-West
      * of a given Tile t
      * 
@@ -124,5 +124,9 @@ public class Tile
     	}
     	
     	return Tiles;
+    }
+    
+    public double getDirectionToTile(Tile t){
+    	return ((Math.tan(((double)(myY - t.getY()))/ (myX - getX())))+2)%2;
     }
 }
