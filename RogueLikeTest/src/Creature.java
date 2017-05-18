@@ -1,4 +1,4 @@
-
+import java.awt.Color;
 public class Creature implements Entity{
 	
 	private String name;
@@ -7,6 +7,8 @@ public class Creature implements Entity{
 	private int maxHealth;
 	private int dmg;
 	private Tile myT;
+	private Color myColor;
+	private char myChar;
 	
 	public Creature(String aName, String description, int health, int damage)
 	{
@@ -15,6 +17,8 @@ public class Creature implements Entity{
 		currentHealth = health;	//creature always starts with max health
 		maxHealth = health;
 		dmg = damage;
+		myColor = Color.BLACK;
+		myChar = '@';
 	}
 	
 	public String getName()
@@ -52,8 +56,28 @@ public class Creature implements Entity{
     	myT.removeEntity(this);
     }
     
+    //same functionality as a "move" method
     public void setTile(Tile t)
     {
     	myT = t;
+    }
+
+	@Override
+	public char getChar() {
+		// TODO Auto-generated method stub
+		return myChar;
+	}
+
+	@Override
+	public Color getColor() {
+		return myColor;
+	}
+	
+	protected void setColor(Color c){
+		myColor = c;
+	}
+    
+    protected void setChar(char c) {
+    	myChar = c;
     }
 }

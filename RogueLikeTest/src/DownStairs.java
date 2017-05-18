@@ -1,3 +1,4 @@
+import java.awt.Color;
 
 public class DownStairs implements Entity {
 	private Tile myTile;
@@ -27,6 +28,18 @@ public class DownStairs implements Entity {
 	public void setTile(Tile t) {
 		myTile = t;
 
+	}
+
+	@Override
+	public char getChar() {
+		// TODO Auto-generated method stub
+		return '>';
+	}
+
+	@Override
+	public Color getColor() {
+		// TODO Auto-generated method stub
+		return Color.GRAY;
 	}
 
 }
