@@ -114,13 +114,13 @@ public class Tile
      *  
      *  @return an ArrayList<Tile> with adjacent tiles listed clockwise from NORTH; any out of bound tiles are listed as null
      */
-    public ArrayList<Tile> getAdjacentTiles(Tile t){
+    public ArrayList<Tile> getAdjacentTiles(){
     	
     	ArrayList<Tile> Tiles = new ArrayList<Tile>();
     	
     	for(int i = Game.NORTH; i <= Game.NORTH_WEST; i++)
     	{
-    		Tiles.add(t.getTileInDirection(i));
+    		Tiles.add(getTileInDirection(i));
     	}
     	
     	return Tiles;
