@@ -21,6 +21,17 @@ public class Creature implements Entity{
 		myChar = '@';
 	}
 	
+	public Creature(String aName, String description, int health, int damage, Color c, char letter)
+	{
+		name = aName;
+		des = description;
+		currentHealth = health;	//creature always starts with max health
+		maxHealth = health;
+		dmg = damage;
+		myColor = c;
+		myChar = letter;
+	}
+	
 	public String getName()
 	{
 		return name;

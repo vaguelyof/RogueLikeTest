@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Monster extends Creature{
 
 	Monster(String aName, String description, int health, int dmg)
@@ -11,6 +13,8 @@ public class Monster extends Creature{
 			super.die();
 			return;
 		}
+		
+		Game.calcFOV(this);
 	}
 	
 	private void move(int direction){
@@ -21,6 +25,10 @@ public class Monster extends Creature{
 	
 	private int getDirectionToPlayer(){
 		return 0;
+	}
+	
+	private boolean canSeePlayer(){
+		return true;
 	}
 	
 }
