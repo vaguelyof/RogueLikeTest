@@ -249,11 +249,13 @@ public class Game {
 					t = player.getTile().getTileInDirection(i);
 					if (getLevel(currentLevel).isRegionRoom(t.getRegion())){
 						addRegionToSeen(t.getRegion(), currentLevel);
+						System.out.println(t.getRegion());
 					}
 				}
 			}
+			endTurn();
 		}
-		displayMapAroundTile(player.getTile(), currentLevel);
+		
 	}
 	
 	public void endTurn(){
@@ -267,6 +269,8 @@ public class Game {
 				}
 			}
 		}
+		displayMapAroundTile(player.getTile(), currentLevel);
+		
 	}
 	
 	public void getKeyPress(String keyText) {
