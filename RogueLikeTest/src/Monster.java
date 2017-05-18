@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.util.ArrayList;
 
 public class Monster extends Creature{
@@ -5,6 +6,8 @@ public class Monster extends Creature{
 	Monster(String aName, String description, int health, int dmg)
 	{
 		super(aName, description, health, dmg);
+		setChar('!');
+		setColor(Color.RED);
 	}
 	
 	public void act()
