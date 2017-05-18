@@ -65,7 +65,7 @@ public class Game {
 		player = new Player("Player", "", 20, 3);
 	}
 	
-	public Monster createLevel1Monster() {
+	public static Monster createLevel1Monster() {
 		return new Monster("Wispy Spirit", "The weakest monster", 1, 1);
 	}
 

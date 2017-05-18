@@ -56,6 +56,39 @@ public class DungeonLevel
         int choice = 1 + (int)((rooms.size() - 1) * Math.random());
         exit = map[rooms.get(choice)[0]][rooms.get(choice)[1]];
         exit.addEntity(new DownStairs());
+        populateLevel(30);
+    }
+    
+    private void populateLevel(int times){
+    	int choice;
+    	Entity e;
+    	for(int i = 0; i < times; i++){
+    		choice = (int)(Math.random() * 2);
+    		switch(choice){
+    		case 0:
+    			e = Game.createLevel1Monster();
+    			break;
+    		case 1:
+    			e = new Chest();
+    			break;
+    		default:
+    			e = Game.createLevel1Monster();
+    		}
+    		getRandomEmptyTileInARoom().addEntity(e);
+    	}
+    }
+    private Tile getRandomEmptyTileInARoom(){
+    	int x;
+    	int y;
+    	Tile t;
+    	while(true){
+    		x = (int)(Math.random() * map.length);
+    		y = (int)(Math.random() * map.length);
+    		t = map[x][y];
+    		if(!t.getIsRock() && t.getTopEntity() == null && isRegionRoom(t.getRegion())){
+    			return t;
+    		}
+    	}
     }
     
     /**
