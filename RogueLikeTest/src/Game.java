@@ -263,7 +263,7 @@ public class Game {
 	public void movePlayer(int direction) {
 		if (creatureCanMoveInDirection(player, direction)) {
 			player.getTile().getTileInDirection(direction).addEntity(player);
-			if (player.getTile().getRegion() == -1) {
+			//if (player.getTile().getRegion() == -1) {
 			/*if (player.getTile().getRegion()==-1){
 				Tile t;
 				for (int i = 0; i < 8; i += 2) {
@@ -278,7 +278,6 @@ public class Game {
 			endTurn();
 		}
 
-	}
 	}
 
 	public void endTurn() {
