@@ -3,7 +3,7 @@ import java.awt.Color;
 public class Potion implements Item {
 	private Tile myTile;
 	private int myStack;
-	private int healAmount;
+	protected int healAmount;
 	
 	public Potion(){
 		healAmount = 20;
