@@ -13,4 +13,9 @@ public class RevivePotion extends Potion {
 	public boolean canRevive(){
 		return true;
 	}
+	
+	@Override
+	public int getValue(){
+		return 500;
+	}
 }

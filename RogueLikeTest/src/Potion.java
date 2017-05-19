@@ -57,6 +57,11 @@ public class Potion implements Item {
 	}
 	
 	@Override
+	public int getValue(){
+		return 100;
+	}
+	
+	@Override
 	public boolean canRevive(){
 		return false;
 	}
