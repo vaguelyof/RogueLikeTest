@@ -66,12 +66,10 @@ public class DungeonLevel
     		choice = (int)(Math.random() * 3);
     		switch(choice){
     		case 0:
-    			//e = Game.createLevel1Monster();
-    			e = new Potion();
+    			e = Game.createLevel1Monster();
     			break;
     		case 1:
-    			//e = new Chest();
-    			e = new Potion();
+    			e = new Chest();
     			break;
     		case 2:
     			e = new Potion();
