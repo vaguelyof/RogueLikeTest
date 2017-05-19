@@ -3,19 +3,32 @@ import java.awt.Color;
 public class Potion implements Item {
 	private Tile myTile;
 	private int myStack;
+	private Creature myOwner;
 	private int healAmount;
 	
 	public Potion(){
 		healAmount = 20;
 	}
 	
-	public void use(Creature user){
-		user.heal(healAmount);
-	}
-	
 	@Override
 	public String getName() {
 		return "Potion";
+	}
+
+	
+	@Override
+	public Creature getOwner(){
+		return myOwner;
+	}
+	
+	@Override
+	public void setOwner(Creature owner){
+		myOwner = owner;
+	}
+	
+	@Override
+	public void use(){
+		myOwner.heal(healAmount);
 	}
 
 	@Override
