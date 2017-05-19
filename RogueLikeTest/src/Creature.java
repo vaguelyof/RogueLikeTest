@@ -59,6 +59,13 @@ public class Creature implements Entity{
     		die();
     }
     
+    public void heal(int h)
+    {
+    	currentHealth += h;
+    	if(currentHealth > maxHealth)
+    		currentHealth = maxHealth;
+    }
+    
     public int getDamage()
     {
     	return dmg;

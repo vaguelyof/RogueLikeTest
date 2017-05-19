@@ -3,6 +3,16 @@ import java.awt.Color;
 public class Potion implements Item {
 	private Tile myTile;
 	private int myStack;
+	private int healAmount;
+	
+	public Potion(){
+		healAmount = 20;
+	}
+	
+	public void use(Creature user){
+		user.heal(healAmount);
+	}
+	
 	@Override
 	public String getName() {
 		return "Potion";
