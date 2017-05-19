@@ -72,6 +72,7 @@ public class Creature implements Entity{
     public void die()
     {
     	myT.removeEntity(this);
+    	myT = null;
     }
     
     //same functionality as a "move" method

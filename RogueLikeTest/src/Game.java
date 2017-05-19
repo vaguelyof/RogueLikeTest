@@ -62,7 +62,7 @@ public class Game {
 	}
 
 	public void createPlayer() {
-		player = new Player("Player", "", 20, 3);
+		player = new Player("Player", "", 20, 3, this);
 	}
 
 	public static Monster createLevel1Monster() {
@@ -162,7 +162,7 @@ public class Game {
 
 	}
 
-	public static ArrayList<Tile> calcFOV(Creature c) {
+	public static ArrayList<Tile> calcFOV(Creature c, int diameter) {
 		FOV fov = new FOV();
 		Game g = new Game();
 		ArrayList<Tile> seen = new ArrayList<Tile>();
@@ -170,8 +170,7 @@ public class Game {
 		int startx = c.getTile().getX();
 		int starty = c.getTile().getY();
 
-		double[][] fovmap = fov.calculateFOV(g.generateResistances(c.getTile().getDungeon()), startx, starty, 14,
-				Radius.DIAMOND);
+		double[][] fovmap = fov.calculateFOV(g.generateResistances(c.getTile().getDungeon()), startx, starty, diameter, Radius.DIAMOND);
 
 		seen.clear();
 		for (int i = 0; i < fovmap.length; i++) {
@@ -183,7 +182,7 @@ public class Game {
 		}
 		return seen;
 	}
-
+	
 	public ArrayList<Tile> calcFOV(int x, int y, DungeonLevel dun, ArrayList<Tile> seen) {
 
 		int startx = x;
@@ -318,5 +317,10 @@ public class Game {
 			return;
 		}
 
+	}
+	
+	public void end(){
+		//String 
+		//panel.setCursorPosition(panel.getWidthInCharacters()/2, y);
 	}
 }
