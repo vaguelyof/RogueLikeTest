@@ -15,4 +15,7 @@ public class Player extends Creature {
 		
 	}
 	
+	public void pickUp(){
+		
+	}
 }
