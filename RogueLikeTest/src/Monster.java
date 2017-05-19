@@ -2,18 +2,32 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 public class Monster extends Creature{
+	
+	private int speed;	//how many blocks the creature moves per turn
+	private boolean isSlow;
+	private boolean canMove = true;
 
 	Monster(String aName, String description, int health, int dmg)
 	{
 		super(aName, description, health, dmg);
 		setChar('!');
 		setColor(Color.RED);
+		speed = 1;
+	}
+	
+	Monster(String aName, String description, int health, int dmg, int moveSpeed, boolean slow)
+	{
+		super(aName, description, health, dmg);
+		setChar('!');
+		setColor(Color.RED);
+		speed = moveSpeed;
+		isSlow = slow;
 	}
 	
 	public void act()
 	{
-		if(super.getHealth() == 0){
-			super.die();
+		if(getHealth() == 0){
+			die();
 			return;
 		}
 	
@@ -22,7 +36,7 @@ public class Monster extends Creature{
 		seeable = Game.calcFOV(this);
 		
 		//if the monster is next to the player, it attacks
-		for(Tile t : super.getTile().getAdjacentTiles())
+		for(Tile t : getTile().getAdjacentTiles())
 		{
 			if(t.getTopEntity() instanceof Player)
 			{
@@ -31,24 +45,37 @@ public class Monster extends Creature{
 			}
 		}
 		
-		//if the monster can see the player, it moves towards it
-		for(Tile t: seeable)
+		//makes the monster skip a turn to move when it's slow
+		if(isSlow = true)
+			slow();
+
+		if(canMove)
 		{
-			if(t.getTopEntity() instanceof Player)
+			//if the monster can see the player, it moves towards it
+			for(Tile t: seeable)
 			{
-				move((int)(super.getTile().getDirectionToTile(t)));
-				return;
+				if(t.getTopEntity() instanceof Player)
+				{
+					move((int)(getTile().getDirectionToTile(t)));
+					return;
+				}
 			}
 		}
 	}
 	
 	private void move(int direction){
-		if (Game.creatureCanMoveInDirection(this, direction)) {
-			this.getTile().getTileInDirection(direction).addEntity(this);
+		for (int i = 0; i < speed; i++){
+			if (Game.creatureCanMoveInDirection(this, direction)) {
+				getTile().getTileInDirection(direction).addEntity(this);
+			}
 		}
 	}	
 	
 	private void attack(Creature c){
-		c.takeDamage(super.getDamage());
+		c.takeDamage(getDamage());
+	}
+	
+	private void slow(){
+		canMove = !canMove;
 	}
 }
