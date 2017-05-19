@@ -13,11 +13,6 @@ public class Potion implements Item {
 	public String getName() {
 		return "Potion";
 	}
-	
-	@Override
-	public void use(Creature user){
-		user.heal(healAmount);
-	}
 
 	@Override
 	public String getDescription() {
@@ -44,6 +39,11 @@ public class Potion implements Item {
 	@Override
 	public Color getColor() {
 		return new Color(0,255,0);
+	}
+
+	@Override
+	public void use(Creature user){
+		user.heal(healAmount);
 	}
 	
 	@Override
