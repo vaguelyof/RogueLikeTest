@@ -37,6 +37,18 @@ public class DungeonLevel
         connectedRegions = new ArrayList<Integer>();
     }
     
+    public ArrayList<Monster> getAllMonsters(){
+    	ArrayList<Monster> monsters = new ArrayList<Monster>();
+    	for(int i = 0; i < map.length; i++){
+    		for(int j = 0; j < map.length; j ++){
+    			if( map[i][j].getTopEntity() instanceof Monster){
+    				monsters.add((Monster)map[i][j].getTopEntity());
+    			}
+    		}
+    	}
+    	return monsters;
+    }
+    
     /**
      * Generates the dungeon level.
      */
@@ -63,13 +75,16 @@ public class DungeonLevel
     	int choice;
     	Entity e;
     	for(int i = 0; i < times; i++){
-    		choice = (int)(Math.random() * 2);
+    		choice = (int)(Math.random() * 3);
     		switch(choice){
     		case 0:
     			e = Game.createLevel1Monster();
     			break;
     		case 1:
     			e = new Chest();
+    			break;
+    		case 2:
+    			e = new Potion();
     			break;
     		default:
     			e = Game.createLevel1Monster();
