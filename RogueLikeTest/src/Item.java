@@ -6,9 +6,5 @@ public interface Item extends Entity
 	
 	void setStack(int stack);
 	
-	Creature getOwner();
-	
-	void setOwner(Creature owner);
-	
-	void use();
+	void use(Creature user);
 }
