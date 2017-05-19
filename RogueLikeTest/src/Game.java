@@ -47,7 +47,7 @@ public class Game {
 		currentLevel = 0;
 		createPlayer();
 		insertEntity(player, levels.get(0).getEntrance());
-		//addRegionToSeen(1,0);
+		// addRegionToSeen(1,0);
 		displayMapAroundTile(player.getTile(), 0);
 	}
 
@@ -64,7 +64,7 @@ public class Game {
 	public void createPlayer() {
 		player = new Player("Player", "", 20, 3);
 	}
-	
+
 	public static Monster createLevel1Monster() {
 		return new Monster("Wispy Spirit", "The weakest monster", 1, 1);
 	}
@@ -92,10 +92,9 @@ public class Game {
 
 				if (d.getTile(posX, posY) != null && seenTiles.get(level).contains(d.getTile(posX, posY))) {
 					Color c;
-					if(!currentlySeenTiles.contains(d.getTile(posX,posY))){
+					if (!currentlySeenTiles.contains(d.getTile(posX, posY))) {
 						c = Color.DARK_GRAY;
-					}
-					else{
+					} else {
 						c = AsciiPanel.black;
 					}
 					if (d.getTile(posX, posY).getIsRock()) {
@@ -105,25 +104,22 @@ public class Game {
 					} else {
 						panel.setCursorPosition(j, i);
 						Entity e = d.getTile(posX, posY).getTopEntity();
-						
-						
-						if (e == null) 
-							panel.write(' ', Color.WHITE,c);
-						
+
+						if (e == null)
+							panel.write(' ', Color.WHITE, c);
+
 						else if (!(e instanceof Creature))
-							panel.write(e.getChar(), e.getColor(),c);
-							
-						else if(currentlySeenTiles.contains(e.getTile()))
 							panel.write(e.getChar(), e.getColor(), c);
-						else{
+
+						else if (currentlySeenTiles.contains(e.getTile()))
+							panel.write(e.getChar(), e.getColor(), c);
+						else {
 							panel.setCursorPosition(j, i);
 							panel.write(' ', Color.WHITE, Color.DARK_GRAY);
 						}
-							
 
 					}
-					
-					
+
 				} else {
 					panel.setCursorPosition(j, i);
 					panel.write(' ', Color.WHITE, Color.GRAY);
@@ -135,7 +131,7 @@ public class Game {
 		createHelpMenu();
 		panel.updateUI();
 	}
-	
+
 	public void createUpperBorder() {
 		int borderHeight = 3;
 		for (int i = 0; i < panel.getWidthInCharacters(); i++) {
@@ -166,15 +162,16 @@ public class Game {
 
 	}
 
-	public static ArrayList<Tile> calcFOV(Creature c){
+	public static ArrayList<Tile> calcFOV(Creature c) {
 		FOV fov = new FOV();
 		Game g = new Game();
 		ArrayList<Tile> seen = new ArrayList<Tile>();
-		
+
 		int startx = c.getTile().getX();
 		int starty = c.getTile().getY();
 
-		double[][] fovmap = fov.calculateFOV(g.generateResistances(c.getTile().getDungeon()), startx, starty, 14, Radius.DIAMOND);
+		double[][] fovmap = fov.calculateFOV(g.generateResistances(c.getTile().getDungeon()), startx, starty, 14,
+				Radius.DIAMOND);
 
 		seen.clear();
 		for (int i = 0; i < fovmap.length; i++) {
@@ -186,7 +183,7 @@ public class Game {
 		}
 		return seen;
 	}
-	
+
 	public ArrayList<Tile> calcFOV(int x, int y, DungeonLevel dun, ArrayList<Tile> seen) {
 
 		int startx = x;
@@ -212,7 +209,7 @@ public class Game {
 				if (dun.getTile(i, j).getIsRock()) {
 					map[i][j] = 1;
 				}
-				if (dun.getTile(i, j).getTopEntity() instanceof Door){
+				if (dun.getTile(i, j).getTopEntity() instanceof Door) {
 					map[i][j] = 1;
 				}
 
@@ -229,23 +226,24 @@ public class Game {
 	}
 
 	public static boolean creatureCanMoveInDirection(Creature c, int direction) {
-		if (!c.getTile().getTileInDirection(direction).getIsRock() && !(c.getTile().getTileInDirection(direction).getTopEntity() instanceof Creature)) {
+		if (!c.getTile().getTileInDirection(direction).getIsRock()
+				&& !(c.getTile().getTileInDirection(direction).getTopEntity() instanceof Creature)) {
 			return true;
 		}
 		return false;
-	}	
-	
-	public void addRegionToSeen(int region, int level){
+	}
+
+	public void addRegionToSeen(int region, int level) {
 		Tile[][] map = getLevel(level).getMap();
 		boolean rowFound;
-		for (int i=0;i<map.length;i++){
+		for (int i = 0; i < map.length; i++) {
 			rowFound = false;
-			for (int j=0;j<map[i].length;j++){
-				if (map[i][j].getRegion()==region&&!map[i][j].getIsRock()){
+			for (int j = 0; j < map[i].length; j++) {
+				if (map[i][j].getRegion() == region && !map[i][j].getIsRock()) {
 					rowFound = true;
-					for (int k=-1;k<=1;k++){
-						for (int l=-1;l<=1;l++){
-							seenTiles.get(level).add(map[i+k][j+l]);
+					for (int k = -1; k <= 1; k++) {
+						for (int l = -1; l <= 1; l++) {
+							seenTiles.get(level).add(map[i + k][j + l]);
 						}
 					}
 					j++;
@@ -259,36 +257,32 @@ public class Game {
 	public void movePlayer(int direction) {
 		if (creatureCanMoveInDirection(player, direction)) {
 			player.getTile().getTileInDirection(direction).addEntity(player);
-			if (player.getTile().getRegion()==-1){
+			if (player.getTile().getRegion() == -1) {
 				Tile t;
-				for (int i=0;i<8;i+=2){
+				for (int i = 0; i < 8; i += 2) {
 					t = player.getTile().getTileInDirection(i);
-					/*if (getLevel(currentLevel).isRegionRoom(t.getRegion())){
-						addRegionToSeen(t.getRegion(), currentLevel);
-						System.out.println(t.getRegion());
-					}*/
+					/*
+					 * if (getLevel(currentLevel).isRegionRoom(t.getRegion())){
+					 * addRegionToSeen(t.getRegion(), currentLevel);
+					 * System.out.println(t.getRegion()); }
+					 */
 				}
 			}
 			endTurn();
 		}
-		
+
 	}
-	
-	public void endTurn(){
-		Tile[][] tiles = getLevel(currentLevel).getMap();
-		Tile t;
-		for(int i = 0; i < tiles.length; i++){
-			for(int j = 0; j < tiles[0].length; j++){
-				t = tiles[i][j];
-				if(t.getTopEntity() instanceof Monster){
-					((Monster)(t.getTopEntity())).act();
-				}
-			}
+
+	public void endTurn() {
+
+		for (Monster m : getLevel(currentLevel).getAllMonsters()) {
+			m.act();
 		}
+
 		displayMapAroundTile(player.getTile(), currentLevel);
-		
+
 	}
-	
+
 	public void getKeyPress(String keyText) {
 
 		if (keyText.length() == 1) {
@@ -307,7 +301,7 @@ public class Game {
 				break;
 			case 'C':
 				Monster m = createLevel1Monster();
-				if(creatureCanMoveInDirection(player, NORTH))
+				if (creatureCanMoveInDirection(player, NORTH))
 					player.getTile().getTileInDirection(NORTH).addEntity(m);
 				break;
 			}

@@ -126,7 +126,19 @@ public class Tile
     	return Tiles;
     }
     
-    public double getDirectionToTile(Tile t){
-    	return ((Math.tan(((double)(myY - t.getY()))/ (myX - getX())))+2)%2;
+    public int getDirectionToTile(Tile t){
+    	int dx = t.getY() - getY();
+        int dy = t.getX() - getX();
+        // y axis points opposite to mathematical orientation
+        int angle = (int) Math.toDegrees(Math.atan2(-dy, dx));
+        System.out.println(angle%360);
+        // mathematical angle is counterclockwise from x-axis,
+        // compass angle is clockwise from y-axis
+        int compassAngle = Game.EAST - angle/45;
+        // prepare for truncating division by 45 degrees
+        //compassAngle += Game.NORTH_EAST / 2;
+        // wrap negative angles
+        compassAngle%=8;
+        return compassAngle;
     }
 }

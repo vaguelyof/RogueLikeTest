@@ -37,6 +37,18 @@ public class DungeonLevel
         connectedRegions = new ArrayList<Integer>();
     }
     
+    public ArrayList<Monster> getAllMonsters(){
+    	ArrayList<Monster> monsters = new ArrayList<Monster>();
+    	for(int i = 0; i < map.length; i++){
+    		for(int j = 0; j < map.length; j ++){
+    			if( map[i][j].getTopEntity() instanceof Monster){
+    				monsters.add((Monster)map[i][j].getTopEntity());
+    			}
+    		}
+    	}
+    	return monsters;
+    }
+    
     /**
      * Generates the dungeon level.
      */
