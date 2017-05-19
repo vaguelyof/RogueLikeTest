@@ -55,4 +55,9 @@ public class Potion implements Item {
 	public void setStack(int stack) {
 		myStack = stack;
 	}
+	
+	@Override
+	public boolean canRevive(){
+		return false;
+	}
 }
