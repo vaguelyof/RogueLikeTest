@@ -52,7 +52,12 @@ public class Creature implements Entity{
     	return maxHealth;
     }
     
-    public int attack()
+    public void takeDamage(int h)
+    {
+    	currentHealth -= h;
+    }
+    
+    public int getDamage()
     {
     	return dmg;
     }

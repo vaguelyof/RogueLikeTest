@@ -21,12 +21,23 @@ public class Monster extends Creature{
 		
 		seeable = Game.calcFOV(this);
 		
+		//if the monster is next to the player, it attacks
+		for(Tile t : super.getTile().getAdjacentTiles())
+		{
+			if(t.getTopEntity() instanceof Player)
+			{
+				attack((Creature)t.getTopEntity());
+				return;
+			}
+		}
+		
 		//if the monster can see the player, it moves towards it
 		for(Tile t: seeable)
 		{
 			if(t.getTopEntity() instanceof Player)
 			{
 				move((int)(super.getTile().getDirectionToTile(t)));
+				return;
 			}
 		}
 	}
@@ -38,6 +49,6 @@ public class Monster extends Creature{
 	}	
 	
 	private void attack(Creature c){
-		
+		c.takeDamage(super.getDamage());
 	}
 }
