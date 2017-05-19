@@ -33,7 +33,7 @@ public class Monster extends Creature{
 	
 		ArrayList<Tile> seeable = new ArrayList<Tile>();
 		
-		seeable = Game.calcFOV(this);
+		seeable = Game.calcFOV(this,14);
 		
 		//if the monster is next to the player, it attacks
 		for(Tile t : getTile().getAdjacentTiles())

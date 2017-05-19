@@ -62,7 +62,7 @@ public class Game {
 	}
 
 	public void createPlayer() {
-		player = new Player("Player", "", 20, 3);
+		player = new Player("Player", "", 20, 3, this);
 	}
 
 	public static Monster createLevel1Monster() {
@@ -162,7 +162,7 @@ public class Game {
 
 	}
 
-	public static ArrayList<Tile> calcFOV(Creature c) {
+	public static ArrayList<Tile> calcFOV(Creature c, int diameter) {
 		FOV fov = new FOV();
 		Game g = new Game();
 		ArrayList<Tile> seen = new ArrayList<Tile>();
@@ -170,7 +170,7 @@ public class Game {
 		int startx = c.getTile().getX();
 		int starty = c.getTile().getY();
 
-		double[][] fovmap = fov.calculateFOV(g.generateResistances(c.getTile().getDungeon()), startx, starty, 14, Radius.DIAMOND);
+		double[][] fovmap = fov.calculateFOV(g.generateResistances(c.getTile().getDungeon()), startx, starty, diameter, Radius.DIAMOND);
 
 		seen.clear();
 		for (int i = 0; i < fovmap.length; i++) {
@@ -182,7 +182,7 @@ public class Game {
 		}
 		return seen;
 	}
-
+	
 	public ArrayList<Tile> calcFOV(int x, int y, DungeonLevel dun, ArrayList<Tile> seen) {
 
 		int startx = x;
@@ -239,42 +239,44 @@ public class Game {
 		Tile t;
 		for (int i=1;i<map.length-1;i++){
 			rowFound = false;
-
-			
 			upperBound = 8;
 			for (int j=1;j<map[i].length-1;j++){
 				if (map[i][j].getRegion()==region&&!map[i][j].getIsRock()){
 					rowFound = true;
-					
 					for (int k=0;k<upperBound;k++){
 						t = map[i][j].getTileInDirection(k);
 						if (t.getIsRock()||t.getRegion()==-1)
 							seenTiles.get(level).add(t);
 					}
 					upperBound = 4;
-				}
-				else{
-					upperBound = 8;
+					/*for (int k=-1;k<=1;k++){
+						for (int l=-1;l<=1;l++){
+							seenTiles.get(level).add(map[i+k][j+l]);
+						}
+					}
+					j++;
+					*/
 				}
 			}
+			if (rowFound)
+				i++;
 		}
 	}
 
 	public void movePlayer(int direction) {
 		if (creatureCanMoveInDirection(player, direction)) {
 			player.getTile().getTileInDirection(direction).addEntity(player);
-			//if (player.getTile().getRegion() == -1) {
-			/*if (player.getTile().getRegion()==-1){
+			if (player.getTile().getRegion() == -1) {
 				Tile t;
 				for (int i = 0; i < 8; i += 2) {
 					t = player.getTile().getTileInDirection(i);
-					
-					if (getLevel(currentLevel).isRegionRoom(t.getRegion())){
-					addRegionToSeen(t.getRegion(), currentLevel);
-					 System.out.println(t.getRegion()); }
-					 
+					/*
+					 * if (getLevel(currentLevel).isRegionRoom(t.getRegion())){
+					 * addRegionToSeen(t.getRegion(), currentLevel);
+					 * System.out.println(t.getRegion()); }
+					 */
 				}
-			}*/
+			}
 			endTurn();
 		}
 
@@ -289,7 +291,7 @@ public class Game {
 		displayMapAroundTile(player.getTile(), currentLevel);
 
 	}
-
+	
 	public void getKeyPress(String keyText) {
 
 		if (keyText.length() == 1) {
@@ -315,5 +317,10 @@ public class Game {
 			return;
 		}
 
+	}
+	
+	public void end(){
+		//String 
+		//panel.setCursorPosition(panel.getWidthInCharacters()/2, y);
 	}
 }
