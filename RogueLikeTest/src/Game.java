@@ -252,20 +252,11 @@ public class Game {
 							seenTiles.get(level).add(t);
 					}
 					upperBound = 4;
-					/*for (int k=-1;k<=1;k++){
-						for (int l=-1;l<=1;l++){
-							seenTiles.get(level).add(map[i+k][j+l]);
-						}
-					}
-					j++;*/
 				}
 				else{
 					upperBound = 8;
 				}
 			}
-			upperBound = 8;
-			//if (rowFound)
-			//	i++;
 		}
 	}
 

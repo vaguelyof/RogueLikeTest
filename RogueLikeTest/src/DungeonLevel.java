@@ -75,13 +75,16 @@ public class DungeonLevel
     	int choice;
     	Entity e;
     	for(int i = 0; i < times; i++){
-    		choice = (int)(Math.random() * 2);
+    		choice = (int)(Math.random() * 3);
     		switch(choice){
     		case 0:
     			e = Game.createLevel1Monster();
     			break;
     		case 1:
     			e = new Chest();
+    			break;
+    		case 2:
+    			e = new Potion();
     			break;
     		default:
     			e = Game.createLevel1Monster();
