@@ -74,8 +74,11 @@ public class Creature implements Entity{
     public void takeDamage(int h)
     {
     	//creature can't take negative damage
-    	if(h <= 0 && -1*(h-2)*Math.random()<1){
-    		h = 1;
+    	if(h <= 0){
+    		if (-1*(h-2)*Math.random()<1)
+    			h = 1;
+    		else
+    			return;
     	}
     	
     	currentHealth -= h;
