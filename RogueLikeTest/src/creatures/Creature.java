@@ -5,6 +5,11 @@ import java.util.ArrayList;
 import gameEntities.Entity;
 import items.Item;
 import level.Tile;
+/**
+ * Represents a creature in the game.
+ * @author Nikolai Trintchouk, Ben Burdette
+ *
+ */
 public class Creature implements Entity{
 	
 	private ArrayList<Item> items = new ArrayList<Item>();
@@ -17,6 +22,13 @@ public class Creature implements Entity{
 	private Color myColor;
 	private char myChar;
 	
+	/**
+	 * Creates a creature with a name, description, health and damage.
+	 * @param aName The name of the creature
+	 * @param description The description of the creature
+	 * @param health The health of the creature
+	 * @param damage The attack power of the creature
+	 */
 	public Creature(String aName, String description, int health, int damage)
 	{
 		name = aName;
@@ -28,6 +40,15 @@ public class Creature implements Entity{
 		myChar = '@';
 	}
 	
+	/**
+	 * Creates a creature with a name, description, health, damage, color and display character
+	 * @param aName The name of the creature
+	 * @param description The description of the creature
+	 * @param health The health of the creature
+	 * @param damage The attack power of the creature
+	 * @param c The creature's color
+	 * @param letter The creature's display character
+	 */
 	public Creature(String aName, String description, int health, int damage, Color c, char letter)
 	{
 		name = aName;
@@ -51,26 +72,44 @@ public class Creature implements Entity{
 		return items;
 	}
 	
+	/**
+	 * returns name of creature
+	 */
 	public String getName()
 	{
 		return name;
 	}
     
+	/**
+	 * returns description of creature
+	 */
     public String getDescription()
     {
     	return des;
     }
     
+    /**
+     * returns Health of creature
+     * @return the health of the creature
+     */
     public int getHealth()
     {
     	return currentHealth;
     }
     
+    /**
+     * returns maximum health of creature
+     * @return maximum health of creature
+     */
     public int getMaxHealth()
     {
     	return maxHealth;
     }
     
+    /**
+     * Has creature take an amount of damage. If h is less than or equal to zero the value will default to 1, with a chance of missing
+     * @param h the amount of damage to be taken by the creature.
+     */
     public void takeDamage(int h)
     {
     	if(h <= 0){
@@ -86,6 +125,10 @@ public class Creature implements Entity{
     		die();
     }
     
+    /**
+     * Creature gains amount of health
+     * @param h amount of health gained by the creature. Precondition: h >= 0
+     */
     public void heal(int h)
     {
     	currentHealth += h;
@@ -93,42 +136,66 @@ public class Creature implements Entity{
     		currentHealth = maxHealth;
     }
     
+    /**
+     * returns attack power of creature
+     * @return attack power of creature
+     */
     public int getDamage()
     {
     	return dmg;
     }
     
+    /**
+     * returns the Tile in which the creature exists. Null if not in a tile.
+     */
     public Tile getTile()
     {
     	return myT;
     }
     
+    /**
+     * Removes the creature from the game.
+     */
     public void die()
     {
     	myT.removeEntity(this);
     }
     
-    //same functionality as a "move" method
+    
+    /**
+     * Sets tile of creature. Should only be called from gameBase.Tile
+     */
     public void setTile(Tile t)
     {
     	myT = t;
     }
 
-	@Override
+	/**
+	 * returns the displayed character
+	 */
 	public char getChar() {
-		// TODO Auto-generated method stub
 		return myChar;
 	}
 
-	@Override
+	/**
+	 * returns the color of the creature
+	 */
 	public Color getColor() {
 		return myColor;
 	}
 	
+	/**
+	 * Sets the color of the creature.
+	 * @param c Color to be set
+	 */
 	protected void setColor(Color c){
 		myColor = c;
 	}
     
+	/**
+	 * sets the display character of the creature
+	 * @param c Character to be set
+	 */
     protected void setChar(char c) {
     	myChar = c;
     }

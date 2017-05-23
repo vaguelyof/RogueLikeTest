@@ -347,6 +347,7 @@ public class Game {
 		}
 		
 		insertEntity((Entity) player, levels.get(0).getEntrance());
+		endTurn();
 	}
 
 	public void end() {
