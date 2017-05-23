@@ -84,7 +84,7 @@ public class DungeonLevel
     			e = new Chest();
     			break;
     		case 2:
-    			e = new Potion();
+    			e = new HealthPotion();
     			break;
     		default:
     			e = Game.createLevel1Monster();
