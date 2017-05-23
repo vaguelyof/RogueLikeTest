@@ -1,5 +1,7 @@
-/gameEntities/
-/level/
+/asciiPanel.jar
+/squidlib-util-3.0.0-b8.jar
 /creatures/
-/items/
 /gameBase/
+/gameEntities/
+/items/
+/level/
