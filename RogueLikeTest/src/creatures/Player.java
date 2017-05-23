@@ -40,4 +40,11 @@ public class Player extends Creature {
 		 * and delete item being picked up
 		 */
 	}
+	
+	public void die(){
+		//drop all items
+		//drop all gold
+		super.die();
+		game.revertToBeginning();
+	}
 }

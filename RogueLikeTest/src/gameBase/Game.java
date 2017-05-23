@@ -238,7 +238,8 @@ public class Game {
 	}
 
 	public static boolean creatureCanMoveInDirection(Creature c, int direction) {
-		if (!c.getTile().getTileInDirection(direction).getIsRock()
+		if (c.getTile().getTileInDirection(direction)!=null
+				&& !c.getTile().getTileInDirection(direction).getIsRock()
 				&& !(c.getTile().getTileInDirection(direction).getTopEntity() instanceof Creature)) {
 			return true;
 		}
@@ -329,6 +330,13 @@ public class Game {
 			return;
 		}
 
+	}
+	
+	//after the player dies, he must go back to the beginning of the level
+	//he keeps his level, but loses all items and gold in his inventory(handled in Player's die method)
+	//the player keeps his seenTiles
+	public void revertToBeginning(){
+		insertEntity((Entity) player, levels.get(0).getEntrance());
 	}
 
 	public void end() {

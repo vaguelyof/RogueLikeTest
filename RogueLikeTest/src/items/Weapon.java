@@ -9,7 +9,7 @@ import level.Tile;
  */
 public class Weapon implements Item{
 
-	boolean twoHanded;
+	boolean twoHanded;	//if true, takes up both of the Player's inventory spots
 	@Override
 	public String getName() {
 		// TODO Auto-generated method stub
