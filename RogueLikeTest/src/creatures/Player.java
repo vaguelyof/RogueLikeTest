@@ -48,8 +48,8 @@ public class Player extends Creature {
 	public int getDamage(){
 		
 		if(equippedWeapon == null)
-			super.getDamage();
-		
+			return super.getDamage();
+		else
 		//equippedWeapon.getValue() will always be positive
 		return super.getDamage() + equippedWeapon.getValue();
 	}
@@ -60,5 +60,12 @@ public class Player extends Creature {
 		 * then call equipArmor or equipWeapon
 		 * and delete item being picked up
 		 */
+	}
+	
+	public void die(){
+		//drop all items
+		//drop all gold
+		super.die();
+		game.revertToBeginning();
 	}
 }

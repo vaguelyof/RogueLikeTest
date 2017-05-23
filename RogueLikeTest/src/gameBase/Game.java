@@ -331,6 +331,13 @@ public class Game {
 		}
 
 	}
+	
+	//after the player dies, he must go back to the beginning of the level
+	//he keeps his level, but loses all items and gold in his inventory(handled in Player's die method)
+	//the player keeps his seenTiles
+	public void revertToBeginning(){
+		insertEntity((Entity) player, levels.get(0).getEntrance());
+	}
 
 	public void end() {
 		// String
