@@ -78,7 +78,7 @@ public class Game {
 	}
 
 	public void createPlayer() {
-		player = new Player("Player", "", 20, 3, this);
+		player = new Player("Player", "It's you!", 20, 3, this);
 	}
 
 	public static Monster createLevel1Monster() {
