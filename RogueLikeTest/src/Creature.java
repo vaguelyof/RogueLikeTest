@@ -8,7 +8,7 @@ public class Creature implements Entity{
 	private int currentHealth;
 	private int maxHealth;
 	private int dmg;
-	private Tile myT;
+	protected Tile myT;
 	private Color myColor;
 	private char myChar;
 	

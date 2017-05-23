@@ -3,8 +3,9 @@ import java.awt.Color;
 public class Player extends Creature {
 
 	Game game;
-	private Item equippedArmor; 
-	private Item equippedWeapon;
+	private Armor equippedArmor; 
+	private Weapon equippedWeapon;
+	private Weapon equippedSpecial;
 	
 	public Player(String aName, String description, int health, int dmg, Game g) {
 		super(aName, description, health, dmg);
@@ -13,12 +14,22 @@ public class Player extends Creature {
 		game = g;
 	}
 	
-	public void equipWeapon(Weapon wep){
-		
+	public void equipArmor(Armor arm){
+		equippedArmor = arm;
 	}
 	
-	public void equipArmor(Armor arm){
-		
+	public void equipWeapon(Weapon wep){
+		if(wep.isTwoHanded() == true)
+		{
+			equippedWeapon = wep;
+			equippedSpecial = wep;
+		}
+		else		
+		equippedWeapon = wep;
+	}
+	
+	public void equipSpecial(Weapon spec){
+		equippedSpecial = spec;
 	}
 	
 	public void takeDamage(int d){
@@ -34,6 +45,10 @@ public class Player extends Creature {
 	}
 	
 	public void pickUp(){
-		
+		/*find out whether the item being picked up
+		 * is an Armor or Weapon
+		 * then call equipArmor or equipWeapon
+		 * and delete item being picked up
+		 */
 	}
 }
