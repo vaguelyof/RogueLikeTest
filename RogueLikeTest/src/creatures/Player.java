@@ -48,8 +48,8 @@ public class Player extends Creature {
 	public int getDamage(){
 		
 		if(equippedWeapon == null)
-			super.getDamage();
-		
+			return super.getDamage();
+		else
 		//equippedWeapon.getValue() will always be positive
 		return super.getDamage() + equippedWeapon.getValue();
 	}
