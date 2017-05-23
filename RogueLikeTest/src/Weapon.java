@@ -5,6 +5,7 @@ import java.awt.Color;
  */
 public class Weapon implements Item{
 
+	boolean twoHanded;
 	@Override
 	public String getName() {
 		// TODO Auto-generated method stub
@@ -71,4 +72,7 @@ public class Weapon implements Item{
 		return false;
 	}
 
+	public boolean isTwoHanded(){
+		return twoHanded;
+	}
 }
