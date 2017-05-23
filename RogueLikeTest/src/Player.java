@@ -17,6 +17,7 @@ public class Player extends Creature {
 		
 	}
 	
+<<<<<<< HEAD
 	public void equipArmor(Armor arm){
 		
 	}
@@ -31,5 +32,9 @@ public class Player extends Creature {
 		
 		//equippedWeapon.getValue() will always be positive
 		return super.getDamage() + equippedWeapon.getValue();
+=======
+	public void pickUp(){
+		
+>>>>>>> branch 'master' of https://github.com/SovietTesla/RogueLikeTest.git
 	}
 }

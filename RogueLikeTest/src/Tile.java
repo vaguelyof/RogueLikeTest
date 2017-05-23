@@ -51,6 +51,7 @@ public class Tile
     }
     public void removeEntity(Entity e){
     	thingsInTile.remove(e);
+    	e.setTile(null);
     }
     
     public void setRegion(int region){

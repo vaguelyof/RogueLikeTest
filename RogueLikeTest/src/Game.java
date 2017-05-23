@@ -298,10 +298,8 @@ public class Game {
 			case 'D':
 				movePlayer(EAST);
 				break;
-			case 'C':
-				Monster m = createLevel1Monster();
-				if (creatureCanMoveInDirection(player, NORTH))
-					player.getTile().getTileInDirection(NORTH).addEntity(m);
+			case 'P':
+				
 				break;
 			}
 			return;
