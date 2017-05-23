@@ -13,6 +13,7 @@ public class Game {
 	private int currentLevel;
 	private ArrayList<String> helpItems;
 	private ArrayList<ArrayList<Tile>> seenTiles;
+	private Searcher search;
 
 	public static int NORTH = 0;
 	public static int NORTH_EAST = 1;
@@ -25,6 +26,8 @@ public class Game {
 
 	private double fovmap[][];
 
+	private boolean searching;
+
 	FOV fov;
 
 	public Game() {
@@ -36,9 +39,11 @@ public class Game {
 		helpItems.add("A - Move West");
 		helpItems.add("S - Move South");
 		helpItems.add("D - Move East");
+		helpItems.add("F - Inspect");
 
 		fov = new FOV(FOV.SHADOW);
 		seenTiles = new ArrayList<ArrayList<Tile>>();
+		searching = false;
 	}
 
 	public void start() {
@@ -92,7 +97,9 @@ public class Game {
 
 				if (d.getTile(posX, posY) != null && seenTiles.get(level).contains(d.getTile(posX, posY))) {
 					Color c;
-					if (!currentlySeenTiles.contains(d.getTile(posX, posY))) {
+					if(searching && search.getTile() == d.getTile(posX, posY))
+						c = Color.YELLOW;
+					else if (!currentlySeenTiles.contains(d.getTile(posX, posY))) {
 						c = Color.DARK_GRAY;
 					} else {
 						c = AsciiPanel.black;
@@ -104,19 +111,21 @@ public class Game {
 					} else {
 						panel.setCursorPosition(j, i);
 						Entity e = d.getTile(posX, posY).getTopEntity();
-
+						
+						
 						if (e == null)
 							panel.write(' ', Color.WHITE, c);
-
 						else if (!(e instanceof Creature))
 							panel.write(e.getChar(), e.getColor(), c);
 
 						else if (currentlySeenTiles.contains(e.getTile()))
 							panel.write(e.getChar(), e.getColor(), c);
+						
 						else {
 							panel.setCursorPosition(j, i);
 							panel.write(' ', Color.WHITE, Color.DARK_GRAY);
 						}
+						
 
 					}
 
@@ -170,7 +179,8 @@ public class Game {
 		int startx = c.getTile().getX();
 		int starty = c.getTile().getY();
 
-		double[][] fovmap = fov.calculateFOV(g.generateResistances(c.getTile().getDungeon()), startx, starty, diameter, Radius.DIAMOND);
+		double[][] fovmap = fov.calculateFOV(g.generateResistances(c.getTile().getDungeon()), startx, starty, diameter,
+				Radius.DIAMOND);
 
 		seen.clear();
 		for (int i = 0; i < fovmap.length; i++) {
@@ -182,7 +192,7 @@ public class Game {
 		}
 		return seen;
 	}
-	
+
 	public ArrayList<Tile> calcFOV(int x, int y, DungeonLevel dun, ArrayList<Tile> seen) {
 
 		int startx = x;
@@ -236,18 +246,17 @@ public class Game {
 		Tile[][] map = getLevel(level).getMap();
 		int upperBound;
 		Tile t;
-		for (int i=1;i<map.length-1;i++){
+		for (int i = 1; i < map.length - 1; i++) {
 			upperBound = 8;
-			for (int j=1;j<map[i].length-1;j++){
-				if (map[i][j].getRegion()==region&&!map[i][j].getIsRock()){
-					for (int k=0;k<upperBound;k++){
+			for (int j = 1; j < map[i].length - 1; j++) {
+				if (map[i][j].getRegion() == region && !map[i][j].getIsRock()) {
+					for (int k = 0; k < upperBound; k++) {
 						t = map[i][j].getTileInDirection(k);
-						if (t.getIsRock()||t.getRegion()==-1)
+						if (t.getIsRock() || t.getRegion() == -1)
 							seenTiles.get(level).add(t);
 					}
 					upperBound = 4;
-				}
-				else
+				} else
 					upperBound = 8;
 			}
 		}
@@ -256,20 +265,20 @@ public class Game {
 	public void movePlayer(int direction) {
 		if (creatureCanMoveInDirection(player, direction)) {
 			player.getTile().getTileInDirection(direction).addEntity(player);
-			if (player.getTile().getRegion() == -1) {
-				Tile t;
-				for (int i = 0; i < 8; i += 2) {
-					t = player.getTile().getTileInDirection(i);
-					/*
-					 * if (getLevel(currentLevel).isRegionRoom(t.getRegion())){
-					 * addRegionToSeen(t.getRegion(), currentLevel);
-					 * System.out.println(t.getRegion()); }
-					 */
-				}
-			}
 			endTurn();
 		}
 
+	}
+
+	public void moveAction(int direction) {
+		if (!searching) {
+			movePlayer(direction);
+		} else {
+			if (search.getTile().getTileInDirection(direction) != null) {
+				search.setTile(search.getTile().getTileInDirection(direction));
+			}
+			displayMapAroundTile(search.getTile(), currentLevel);
+		}
 	}
 
 	public void endTurn() {
@@ -281,34 +290,46 @@ public class Game {
 		displayMapAroundTile(player.getTile(), currentLevel);
 
 	}
-	
+
 	public void getKeyPress(String keyText) {
 
 		if (keyText.length() == 1) {
 			switch (keyText.charAt(0)) {
 			case 'W':
-				movePlayer(NORTH);
+				moveAction(NORTH);
 				break;
 			case 'A':
-				movePlayer(WEST);
+				moveAction(WEST);
 				break;
 			case 'S':
-				movePlayer(SOUTH);
+				moveAction(SOUTH);
 				break;
 			case 'D':
-				movePlayer(EAST);
+				moveAction(EAST);
 				break;
-			case 'P':
-				
+			case 'F':
+				if (!searching) {
+					search = new Searcher(player.getTile());
+					searching = true;
+				} else {
+					if(calcFOV(player, 14).contains(search.getTile())){
+						System.out.println(search.getPropertiesOfTile());
+					}
+					else{
+						System.out.println("You can't see what is there");
+					}
+					searching = false;
+				}
+				panel.updateUI();
 				break;
 			}
 			return;
 		}
 
 	}
-	
-	public void end(){
-		//String 
-		//panel.setCursorPosition(panel.getWidthInCharacters()/2, y);
+
+	public void end() {
+		// String
+		// panel.setCursorPosition(panel.getWidthInCharacters()/2, y);
 	}
 }

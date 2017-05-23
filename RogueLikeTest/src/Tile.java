@@ -127,12 +127,21 @@ public class Tile
     	return Tiles;
     }
     
+    public String toString(){
+    	if(isRock){
+    		return "There is an impassable wall here";
+    	}
+    	if(getTopEntity() != null){
+    		return getTopEntity().getName() + ": " +getTopEntity().getDescription();
+    	}
+    	return "There is nothing here";
+    }
+    
     public int getDirectionToTile(Tile t){
     	int dx = t.getY() - getY();
         int dy = t.getX() - getX();
         // y axis points opposite to mathematical orientation
         int angle = (int) Math.toDegrees(Math.atan2(-dy, dx));
-        System.out.println(angle%360);
         // mathematical angle is counterclockwise from x-axis,
         // compass angle is clockwise from y-axis
         int compassAngle = Game.EAST - angle/45;
