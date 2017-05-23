@@ -337,6 +337,7 @@ public class Game {
 	//the player keeps his seenTiles
 	public void revertToBeginning(){
 		insertEntity((Entity) player, levels.get(0).getEntrance());
+		endTurn();
 	}
 
 	public void end() {
