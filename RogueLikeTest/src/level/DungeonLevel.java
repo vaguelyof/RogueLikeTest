@@ -8,7 +8,7 @@ import gameEntities.Door;
 import gameEntities.DownStairs;
 import gameEntities.Entity;
 import gameEntities.UpStairs;
-import items.HealthPotion;
+import items.*;
 /**
  * Stores all of the tiles in a single level of a dungeon. Also contains the methods for randomly generating a dungeon.
  * 
@@ -94,7 +94,10 @@ public class DungeonLevel
     			e = new Chest();
     			break;
     		case 2:
-    			e = new HealthPotion();
+    			if (Math.random() * 4 < 1)
+    				e = new RevivePotion();
+    			else
+    				e = new HealthPotion();
     			break;
     		default:
     			e = Game.createLevel1Monster();
