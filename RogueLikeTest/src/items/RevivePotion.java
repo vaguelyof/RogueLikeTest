@@ -21,7 +21,7 @@ public class RevivePotion extends Potion {
 	
 	@Override
 	public int getValue(){
-		return 500;
+		return 10;
 	}
 	
 	@Override

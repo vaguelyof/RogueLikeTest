@@ -11,4 +11,9 @@ public class HealthPotion extends Potion {
 	public Color getColor() {
 		return new Color(0,255,0);
 	}
+	
+	@Override
+	public int getValue(){
+		return 2;
+	}
 }

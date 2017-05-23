@@ -66,7 +66,7 @@ public class Potion implements Item {
 	
 	@Override
 	public int getValue(){
-		return 100;
+		return 0;
 	}
 	
 	@Override
