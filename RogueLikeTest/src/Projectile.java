@@ -98,11 +98,15 @@ public class Projectile implements Entity{
 			return thrownItem.getChar();
 		else if (dir==0)
 			return '^';
+		else if (dir==1)
+			return '7';
 		else if (dir<4)
 			return '>';
-		else if (dir>4)
-			return '<';
-		else
+		else if (dir==4)
 			return 'v';
+		else if (dir==5)
+			return 'L';
+		else
+			return '<';
 	}
 }
