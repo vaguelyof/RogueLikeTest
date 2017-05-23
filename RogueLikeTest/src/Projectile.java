@@ -85,6 +85,6 @@ public class Projectile implements Entity{
 	@Override
 	public char getChar() {
 		// TODO Auto-generated method stub
-		return 'v';
+		return '^';
 	}
 }
