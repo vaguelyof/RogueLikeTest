@@ -1,6 +1,8 @@
 import java.awt.Color;
+import java.util.ArrayList;
 public class Creature implements Entity{
 	
+	private ArrayList<Item> items = new ArrayList<Item>();
 	private String name;
 	private String des;
 	private int currentHealth;
@@ -32,6 +34,18 @@ public class Creature implements Entity{
 		myChar = letter;
 	}
 	
+	public void addItem(Item i){
+		items.add(i);
+	}
+	
+	public void deleteItem(Item i){
+		items.remove(i);
+	}
+	
+	public ArrayList<Item> getItems(){
+		return items;
+	}
+	
 	public String getName()
 	{
 		return name;
@@ -54,6 +68,10 @@ public class Creature implements Entity{
     
     public void takeDamage(int h)
     {
+    	//creature can't take negative damage
+    	if(h <= 0)
+    		return;
+    	
     	currentHealth -= h;
     	if(currentHealth <= 0)
     		die();
