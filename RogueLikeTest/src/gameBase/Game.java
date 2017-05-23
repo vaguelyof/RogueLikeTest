@@ -92,7 +92,7 @@ public class Game {
 	public void displayMapAroundTile(Tile t, int level) {
 		DungeonLevel d = getLevel(level);
 		ArrayList<Tile> currentlySeenTiles = new ArrayList<Tile>();
-		currentlySeenTiles = calcFOV(player.getTile().getX(), player.getTile().getY(), d, currentlySeenTiles);
+		currentlySeenTiles = calcFOV(player, 14);
 
 		for (Tile tile : currentlySeenTiles) {
 			if (!seenTiles.get(level).contains(tile)) {
@@ -201,22 +201,14 @@ public class Game {
 				}
 			}
 		}
-		return seen;
-	}
-
-	public ArrayList<Tile> calcFOV(int x, int y, DungeonLevel dun, ArrayList<Tile> seen) {
-
-		int startx = x;
-		int starty = y;
-
-		fovmap = fov.calculateFOV(generateResistances(dun), startx, starty, 14, Radius.DIAMOND);
-
-		seen.clear();
-		for (int i = 0; i < fovmap.length; i++) {
-			for (int j = 0; j < fovmap[0].length; j++) {
-				if (fovmap[i][j] > .5) {
-					seen.add(dun.getTile(i, j));
-				}
+		for(Tile t : c.getTile().getAdjacentTiles()){
+			if(t.getTopEntity() instanceof Door){
+				for(Tile j : t.getAdjacentTiles())
+					for(int i = 0; i < 8; i += 2){
+						if(j.getTileInDirection(i) == t){
+							seen.add(j);
+						}
+					}
 			}
 		}
 		return seen;
