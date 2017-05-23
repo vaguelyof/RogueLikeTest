@@ -3,7 +3,7 @@ import java.awt.Color;
 public class RevivePotion extends Potion {
 	
 	public RevivePotion(){
-		super(15);
+		super(30);
 	}
 	
 	@Override
@@ -19,5 +19,13 @@ public class RevivePotion extends Potion {
 	@Override
 	public int getValue(){
 		return 500;
+	}
+	
+	@Override
+	public void use(Creature user){
+		if (user.getHealth() == 0)
+			user.heal(user.getMaxHealth()/2);
+		else
+			super.use(user);
 	}
 }
