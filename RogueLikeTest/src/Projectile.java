@@ -11,6 +11,7 @@ public class Projectile implements Entity{
 	private Tile myT;
 	private int myDamage;
 	private Color myColor;
+	private Item thrownItem;
 	
 	public Projectile(int direction, int damage){
 		myColor = Color.WHITE;
@@ -22,6 +23,12 @@ public class Projectile implements Entity{
 		myColor = color;
 		dir = direction;
 		myDamage = damage;
+	}
+	
+	public Projectile(int direction, Item thrown){
+		myColor = thrown.getColor();
+		dir = direction;
+		thrownItem = thrown;
 	}
 	
 	public void act(){
@@ -45,7 +52,10 @@ public class Projectile implements Entity{
 	}
 	
 	private void attack(Creature c){
-		c.takeDamage(myDamage);
+		if (thrownItem!=null)
+			thrownItem.use(c);
+		else
+			c.takeDamage(myDamage);
 		getTile().removeEntity(this);	//deletes itself when it hits
 	}
 	
@@ -84,7 +94,9 @@ public class Projectile implements Entity{
 	
 	@Override
 	public char getChar() {
-		// TODO Auto-generated method stub
-		return '^';
+		if (thrownItem!=null)
+			return thrownItem.getChar();
+		else
+			return '^';
 	}
 }
