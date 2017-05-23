@@ -5,7 +5,7 @@ public class Monster extends Creature{
 	
 	private int speed;	//how many blocks the creature moves per turn
 	private boolean isSlow;
-	private boolean canMove = true;
+	private boolean canMove;
 
 	Monster(String aName, String description, int health, int dmg)
 	{
@@ -13,6 +13,8 @@ public class Monster extends Creature{
 		setChar('!');
 		setColor(Color.RED);
 		speed = 1;
+		isSlow = false;
+		canMove = true;
 	}
 	
 	Monster(String aName, String description, int health, int dmg, int moveSpeed, boolean slow)
@@ -22,6 +24,7 @@ public class Monster extends Creature{
 		setColor(Color.RED);
 		speed = moveSpeed;
 		isSlow = slow;
+		canMove = true;
 	}
 	
 	public void act()
@@ -54,13 +57,17 @@ public class Monster extends Creature{
 			//if the monster can see the player, it moves towards it
 			for(Tile t: seeable)
 			{
-				if(t.getTopEntity() instanceof Player)
+				if(canAttackPlayer(t))
 				{
 					move((int)(getTile().getDirectionToTile(t)));
 					return;
 				}
 			}
 		}
+	}
+	
+	private boolean canAttackPlayer(Tile t){
+		return (t.getTopEntity() instanceof Player);
 	}
 	
 	private void move(int direction){

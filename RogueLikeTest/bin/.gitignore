@@ -15,6 +15,12 @@
 /Tile.class
 /UpStairs.class
 /Chest.class
+/Projectile.class
 /Item.class
 /Potion.class
 /Inventory.class
+<<<<<<< HEAD
+/ShootingMonster.class
+=======
+/RevivePotion.class
+>>>>>>> branch 'master' of https://github.com/SovietTesla/RogueLikeTest.git
