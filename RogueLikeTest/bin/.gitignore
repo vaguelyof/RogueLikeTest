@@ -1,31 +1,5 @@
-/asciiPanel.jar
-/squidlib-util-3.0.0-b8.jar
-/Creature.class
-/Door.class
-/DownStairs.class
-/DungeonLevel.class
-/Entity.class
-/FrameBuilder.class
-/Game.class
-/GameFrame$KeyHandler.class
-/GameFrame.class
-/Monster.class
-/Player.class
-/Tester.class
-/Tile.class
-/UpStairs.class
-/Chest.class
-/Projectile.class
-/Item.class
-/Potion.class
-/Inventory.class
-<<<<<<< HEAD
-/ShootingMonster.class
-=======
-/RevivePotion.class
->>>>>>> branch 'master' of https://github.com/SovietTesla/RogueLikeTest.git
-/Searcher.class
-/Weapon.class
-/Armor.class
-=======
-/HealthPotion.class
+/gameEntities/
+/level/
+/creatures/
+/items/
+/gameBase/
