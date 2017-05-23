@@ -239,7 +239,8 @@ public class Game {
 
 	public static boolean creatureCanMoveInDirection(Creature c, int direction) {
 		if (!c.getTile().getTileInDirection(direction).getIsRock()
-				&& !(c.getTile().getTileInDirection(direction).getTopEntity() instanceof Creature)) {
+				&& (c.getTile().getTileInDirection(direction).getTopEntity() == null
+				|| !(c.getTile().getTileInDirection(direction).getTopEntity() instanceof Creature))) {
 			return true;
 		}
 		return false;
