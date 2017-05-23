@@ -41,9 +41,8 @@ public class Player extends Creature {
 		
 		if(equippedArmor == null)
 			super.takeDamage(d);
-		
-		//Creature will catch if value is negative
-		super.takeDamage(d - equippedArmor.getValue());
+		else
+			super.takeDamage(d - equippedArmor.getValue()); //Creature will catch if value is negative
 	}
 	
 	public int getDamage(){
