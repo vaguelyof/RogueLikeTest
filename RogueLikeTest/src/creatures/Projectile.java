@@ -98,6 +98,13 @@ public class Projectile implements Entity{
 	}
 	
 	@Override
+	//that's awesome
+	/*
+	 * (non-Javadoc)
+	 * @see gameEntities.Entity#getChar()
+	 * 
+	 * projectile has character resembling arrow pointing in the direction it moves
+	 */
 	public char getChar() {
 		if (thrownItem!=null)
 			return thrownItem.getChar();

@@ -343,11 +343,11 @@ public class Game {
 	//the player keeps his seenTiles
 	public void revertToBeginning(){
 		//removes any blockages of the entrance or the tiles around it
-		for(Tile t : levels.get(0).getEntrance().getAdjacentTiles()){
-			for(Tile o : t.getAdjacentTiles()){
-				o.removeEntity(o.getTopEntity());
-			}
-		}
+		//for(Tile t : levels.get(0).getEntrance().getAdjacentTiles()){
+			//for(Tile o : t.getAdjacentTiles()){
+				//o.removeEntity(o.getTopEntity());
+			//}
+		//}
 		
 		insertEntity((Entity) player, levels.get(0).getEntrance());
 		player.heal(player.getMaxHealth());

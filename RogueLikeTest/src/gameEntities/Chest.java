@@ -5,10 +5,12 @@ import level.Tile;
 
 public class Chest implements Entity {
 	
-	private Tile myTile;
+	//needs to have an inventory of treasure and gold
+	private Tile myT;
+	private boolean locked;
 	
 	public Chest(){
-		
+		locked = true;
 	}
 	
 	@Override
@@ -18,18 +20,21 @@ public class Chest implements Entity {
 
 	@Override
 	public String getDescription() {
-		return "Open it up to see what's inside!";
+		if(isLocked())
+			return "Find a key to unlock what's inside!";
+		else
+			return "Open it up to see what's inside!";
 	}
 
 	@Override
 	public Tile getTile() {
 		// TODO Auto-generated method stub
-		return myTile;
+		return myT;
 	}
 
 	@Override
 	public void setTile(Tile t) {
-		myTile = t;
+		myT = t;
 
 	}
 
@@ -44,4 +49,7 @@ public class Chest implements Entity {
 		return new Color(255,215,0);
 	}
 
+	public boolean isLocked(){
+		return locked;
+	}
 }
