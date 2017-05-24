@@ -10,6 +10,7 @@ import gameEntities.Searcher;
 import level.DungeonLevel;
 import level.Tile;
 import squidpony.squidgrid.Radius;
+import statusEffects.StatusEffect;
 import squidpony.squidgrid.FOV;
 
 public class Game {
@@ -292,7 +293,7 @@ public class Game {
 	}
 
 	public void endTurn() {
-
+		player.tickAllEffects();
 		for (Monster m : getLevel(currentLevel).getAllMonsters()) {
 			m.act();
 		}
