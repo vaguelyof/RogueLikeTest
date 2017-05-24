@@ -190,9 +190,9 @@ public class Game {
 		int i = startY + 1;
 		if(log == null)
 			return;
-		for(String msg : log.getMessages()){
+		for(Message msg : log.getMessages()){
 			panel.setCursorPosition(panel.getWidthInCharacters() - rightSideMenuWidth, i);
-			panel.write(msg);
+			panel.write(msg.toString(), msg.getColor());
 			i++;
 		}
 	}
