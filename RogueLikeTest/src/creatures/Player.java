@@ -3,6 +3,7 @@ import java.awt.Color;
 
 import gameBase.Game;
 import items.Inventory;
+import items.Item;
 
 public class Player extends Creature {
 	Inventory myInv;
@@ -14,7 +15,7 @@ public class Player extends Creature {
 		setColor(Color.BLUE);
 		setChar((char) 1);
 		game = g;
-		myInv = new Inventory(this);
+		myInv = new Inventory();
 	}
 	
 	public void takeDamage(int d){
@@ -34,11 +35,16 @@ public class Player extends Creature {
 	}
 	
 	public void pickUp(){
-		/*find out whether the item being picked up
-		 * is an Armor or Weapon
-		 * then call equipArmor or equipWeapon
-		 * and delete item being picked up
+		/* TODO: find out whether the item being picked up
+		 * 		is an Armor or Weapon
+		 * 		then call equipArmor or equipWeapon
+		 * 		and delete item being picked up
 		 */
+		
+	}
+	
+	public void dropItem(Item e){
+		
 	}
 	
 	public void die(){

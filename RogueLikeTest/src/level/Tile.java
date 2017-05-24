@@ -47,11 +47,13 @@ public class Tile
     }
     
     public void addEntity(Entity e){
-    	if(e.getTile() != null){
-    		e.getTile().removeEntity(e);
+    	if(e != null){
+	    	if(e.getTile() != null){
+	    		e.getTile().removeEntity(e);
+	    	}
+	        thingsInTile.add(e);
+	        e.setTile(this);
     	}
-        thingsInTile.add(e);
-        e.setTile(this);
     }
     public void removeEntity(Entity e){
     	thingsInTile.remove(e);
@@ -132,13 +134,19 @@ public class Tile
     }
     
     public String toString(){
+    	String des;
     	if(isRock){
     		return "There is an impassable wall here";
     	}
     	if(getTopEntity() != null){
-    		return getTopEntity().getName() + ": " +getTopEntity().getDescription();
+    		des = new String(getTopEntity().getName());
+    		if(getTopEntity().getDescription() != null && getTopEntity().getDescription().length() > 0){
+    			des = des + ": " + getTopEntity().getDescription();
+    		}
+    		return des;
     	}
-    	return "There is nothing here";
+    	
+    	return "There is nothing here.";
     }
     
     public int getDirectionToTile(Tile t){

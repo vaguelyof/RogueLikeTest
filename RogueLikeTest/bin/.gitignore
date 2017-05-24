@@ -1,5 +1,8 @@
-/gameEntities/
-/level/
+/asciiPanel.jar
 /creatures/
-/items/
 /gameBase/
+/gameEntities/
+/items/
+/level/
+/squidlib-util-3.0.0-b8.jar
+/Tester.class

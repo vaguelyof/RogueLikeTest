@@ -1,17 +1,16 @@
 package items;
-import java.util.ArrayList;
+
 
 import creatures.Player;
 
 public class Inventory {
-	private Player myOwner;
+
 	private Weapon myWeapon;
 	private Armor myArmor;
 	private Potion myPotion;
 	private Item mySpecial;
 	
-	public Inventory(Player p){
-		setMyOwner(p);
+	public Inventory(){
 	}
 	
 	public Item pickUpItem(Item i){
@@ -25,11 +24,6 @@ public class Inventory {
 			return setMySpecial(i);
 		return null;
 	}
-	
-	public void setMyOwner(Player myOwner) {
-		this.myOwner = myOwner;
-	}
-
 	public Weapon getMyWeapon() {
 		return myWeapon;
 	}

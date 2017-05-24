@@ -102,7 +102,7 @@ public class DungeonLevel
     		default:
     			e = Game.createLevel1Monster();
     		}
-    		getRandomEmptyTileInARoom().addEntity(e);
+    		getRandomEmptyTileInARoomExcludingSpawnRegion().addEntity(e);
     	}
     }
     private Tile getRandomEmptyTileInARoom(){
@@ -114,6 +114,19 @@ public class DungeonLevel
     		y = (int)(Math.random() * map.length);
     		t = map[x][y];
     		if(!t.getIsRock() && t.getTopEntity() == null && isRegionRoom(t.getRegion())){
+    			return t;
+    		}
+    	}
+    }
+    private Tile getRandomEmptyTileInARoomExcludingSpawnRegion(){
+    	int x;
+    	int y;
+    	Tile t;
+    	while(true){
+    		x = (int)(Math.random() * map.length);
+    		y = (int)(Math.random() * map.length);
+    		t = map[x][y];
+    		if(!t.getIsRock() && t.getTopEntity() == null && isRegionRoom(t.getRegion()) && t.getRegion() != entry.getRegion()){
     			return t;
     		}
     	}

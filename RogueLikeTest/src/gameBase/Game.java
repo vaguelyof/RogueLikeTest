@@ -3,12 +3,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 import creatures.*;
-
-
 import asciiPanel.AsciiPanel;
-import creatures.Creature;
-import creatures.Monster;
-import creatures.Player;
 import gameEntities.Door;
 import gameEntities.Entity;
 import gameEntities.Searcher;
@@ -34,8 +29,6 @@ public class Game {
 	public static int SOUTH_WEST = 5;
 	public static int WEST = 6;
 	public static int NORTH_WEST = 7;
-
-	private double fovmap[][];
 
 	private boolean searching;
 
@@ -149,6 +142,7 @@ public class Game {
 		}
 		createUpperBorder();
 		createHelpMenu();
+		displayLog();
 		panel.updateUI();
 	}
 
@@ -180,6 +174,15 @@ public class Game {
 			panel.write(helpItems.get(i - 4));
 		}
 
+	}
+	
+	public void displayLog(){
+		int menuWidth = 20;
+		int startY = 4 + helpItems.size();
+		for(int i = panel.getWidthInCharacters() - menuWidth; i < panel.getWidthInCharacters(); i ++){
+			panel.setCursorPosition(i, startY);
+			panel.write('=');
+		}
 	}
 
 	public static ArrayList<Tile> calcFOV(Creature c, int diameter) {
@@ -324,7 +327,7 @@ public class Game {
 					}
 					searching = false;
 				}
-				panel.updateUI();
+				displayMapAroundTile(player.getTile(), currentLevel);
 				break;
 			}
 			return;
@@ -337,7 +340,9 @@ public class Game {
 	//the player keeps his seenTiles
 	public void revertToBeginning(){
 		insertEntity((Entity) player, levels.get(0).getEntrance());
+		player.heal(player.getMaxHealth());
 		endTurn();
+		player.heal(player.getMaxHealth());
 	}
 
 	public void end() {
