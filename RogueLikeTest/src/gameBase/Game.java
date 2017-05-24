@@ -71,7 +71,7 @@ public class Game {
 	}
 
 	public void createPlayer() {
-		player = new Player("Player", "It's you!", 20, 3, this);
+		player = new Player("Player", "", 20, 3, this);
 	}
 
 	public static Monster createLevel1Monster() {
@@ -241,9 +241,12 @@ public class Game {
 	}
 
 	public static boolean creatureCanMoveInDirection(Creature c, int direction) {
-		if (c.getTile().getTileInDirection(direction)!=null
-				&& !c.getTile().getTileInDirection(direction).getIsRock()
-				&& !(c.getTile().getTileInDirection(direction).getTopEntity() instanceof Creature)) {
+		if (c == null)
+			return false;
+		
+		if (!c.getTile().getTileInDirection(direction).getIsRock()
+				&& (c.getTile().getTileInDirection(direction).getTopEntity() == null
+				|| !(c.getTile().getTileInDirection(direction).getTopEntity() instanceof Creature))) {
 			return true;
 		}
 		return false;
@@ -339,6 +342,13 @@ public class Game {
 	//he keeps his level, but loses all items and gold in his inventory(handled in Player's die method)
 	//the player keeps his seenTiles
 	public void revertToBeginning(){
+		//removes any blockages of the entrance or the tiles around it
+		for(Tile t : levels.get(0).getEntrance().getAdjacentTiles()){
+			for(Tile o : t.getAdjacentTiles()){
+				o.removeEntity(o.getTopEntity());
+			}
+		}
+		
 		insertEntity((Entity) player, levels.get(0).getEntrance());
 		player.heal(player.getMaxHealth());
 		endTurn();
