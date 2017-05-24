@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import gameBase.Game;
 import level.Tile;
+import statusEffects.StatusEffect;
 
 public class Monster extends Creature{
 	
@@ -33,6 +34,11 @@ public class Monster extends Creature{
 	
 	public void act()
 	{
+		//for (StatusEffect e:status){
+		//	if (e.tick(this))
+		//		deleteEffect(e.getId());
+		//}
+		tickAllEffects();
 		if(getHealth() == 0){
 			die();
 			return;

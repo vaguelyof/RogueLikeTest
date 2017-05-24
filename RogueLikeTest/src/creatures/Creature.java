@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import gameEntities.Entity;
 import items.Item;
 import level.Tile;
+import statusEffects.StatusEffect;
 /**
  * Represents a creature in the game.
  * @author Nikolai Trintchouk, Ben Burdette
@@ -13,6 +14,7 @@ import level.Tile;
 public class Creature implements Entity{
 	
 	private ArrayList<Item> items = new ArrayList<Item>();
+	protected ArrayList<StatusEffect> status = new ArrayList<StatusEffect>();
 	private String name;
 	private String des;
 	private int currentHealth;
@@ -70,6 +72,54 @@ public class Creature implements Entity{
 	
 	public ArrayList<Item> getItems(){
 		return items;
+	}
+	
+	public void addEffect(StatusEffect e){
+		if (getIndexOfEffect(e.getId())==-1)
+			status.add(e);
+		else
+			setDuration(e.getId(),e.getDuration());
+	}
+	
+	public void deleteEffect(int i){
+		while (getIndexOfEffect(i)!=-1){
+			status.remove(getIndexOfEffect(i));
+		}
+	}
+	
+	public void deleteAllEffects(){
+		status = new ArrayList<StatusEffect>();
+	}
+	
+	public boolean hasEffect(int id){
+		return getIndexOfEffect(id)!=-1;
+	}
+	
+	public void tickAllEffects(){
+		for (StatusEffect e:status){
+			if (e.tick(this))
+				deleteEffect(e.getId());
+			if (currentHealth<=0)
+				return;
+		}
+	}
+	
+	/**
+	 * Gets the index of the given effect
+	 * @param id the ID of the effect
+	 * @return the index of the effect
+	 */
+	protected int getIndexOfEffect(int id){
+		for (int i=0;i<status.size();i++){
+			if (status.get(i).getId()==id){
+				return i;
+			}
+		}
+		return -1;
+	}
+	
+	public void setDuration(int id, int dur) {
+		status.get(getIndexOfEffect(id)).setDuration(dur);
 	}
 	
 	/**

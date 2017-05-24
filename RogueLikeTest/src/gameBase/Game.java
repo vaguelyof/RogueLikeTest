@@ -10,6 +10,7 @@ import gameEntities.Searcher;
 import level.DungeonLevel;
 import level.Tile;
 import squidpony.squidgrid.Radius;
+import statusEffects.StatusEffect;
 import squidpony.squidgrid.FOV;
 
 public class Game {
@@ -303,7 +304,7 @@ public class Game {
 	}
 
 	public void endTurn() {
-
+		player.tickAllEffects();
 		for (Monster m : getLevel(currentLevel).getAllMonsters()) {
 			m.act();
 		}
@@ -361,9 +362,9 @@ public class Game {
 		}
 		
 		insertEntity((Entity) player, levels.get(0).getEntrance());
+		player.deleteAllEffects();
 		player.heal(player.getMaxHealth());
 		endTurn();
-		player.heal(player.getMaxHealth());
 	}
 
 	public void end() {
