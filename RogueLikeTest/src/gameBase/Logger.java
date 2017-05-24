@@ -1,9 +1,10 @@
 package gameBase;
 
+import java.awt.Color;
 import java.util.LinkedList;
 
 public class Logger {
-	private LinkedList<String> loggedMessages;
+	private LinkedList<Message> loggedMessages;
 	private int messageWidth;
 	private final int maxLogMessages;
 	
@@ -13,7 +14,7 @@ public class Logger {
 	 * @param maxMessages maximum number of messages
 	 */
 	public Logger(int width, int maxMessages){
-		loggedMessages = new LinkedList<String>();
+		loggedMessages = new LinkedList<Message>();
 		messageWidth = width;
 		maxLogMessages = maxMessages;
 	}
@@ -23,8 +24,11 @@ public class Logger {
 	 * @param msg message to be added
 	 */
 	public void logMessage(String msg){
+		logMessage(msg, Color.WHITE);
+	}
+	public void logMessage(String msg, Color color){
 		for(String m : splitMessage(msg)){
-			loggedMessages.add(m);
+			loggedMessages.add(new Message(m, color));
 		}
 		while(loggedMessages.size() > maxLogMessages){
 			loggedMessages.removeFirst();
@@ -59,7 +63,7 @@ public class Logger {
 	 * returns all messages logged in a Linked List
 	 * @return all messages
 	 */
-	public LinkedList<String> getMessages(){
+	public LinkedList<Message> getMessages(){
 		return loggedMessages;
 	}
 }
