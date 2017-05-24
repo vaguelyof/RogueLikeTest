@@ -19,7 +19,7 @@ public class FrameBuilder {
 		frame.add(panel1);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		frame.setSize(frame.getPreferredSize());
+		frame.setSize((int)frame.getPreferredSize().getWidth() + 6, (int)frame.getPreferredSize().getHeight() + 29);
 		frame.setResizable(false);
 		frame.setVisible(true);
 		return frame;
