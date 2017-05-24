@@ -10,6 +10,7 @@ import gameEntities.Searcher;
 import level.DungeonLevel;
 import level.Tile;
 import squidpony.squidgrid.Radius;
+import statusEffects.StatusEffect;
 import squidpony.squidgrid.FOV;
 
 public class Game {
@@ -20,7 +21,9 @@ public class Game {
 	private ArrayList<String> helpItems;
 	private ArrayList<ArrayList<Tile>> seenTiles;
 	private Searcher search;
-
+	private int rightSideMenuWidth;
+	private Logger log;
+	
 	public static int NORTH = 0;
 	public static int NORTH_EAST = 1;
 	public static int EAST = 2;
@@ -48,6 +51,8 @@ public class Game {
 		fov = new FOV(FOV.SHADOW);
 		seenTiles = new ArrayList<ArrayList<Tile>>();
 		searching = false;
+		
+		rightSideMenuWidth = 20;
 	}
 
 	public void start() {
@@ -58,6 +63,7 @@ public class Game {
 		insertEntity((Entity) player, levels.get(0).getEntrance());
 		// addRegionToSeen(1,0);
 		displayMapAroundTile(player.getTile(), 0);
+		log = new Logger(rightSideMenuWidth - 1, panel.getHeightInCharacters() - 6 - helpItems.size());
 	}
 
 	public void addPanel(AsciiPanel p) {
@@ -160,28 +166,34 @@ public class Game {
 	}
 
 	public void createHelpMenu() {
-		int menuWidth = 20;
 		for (int i = 4; i < panel.getHeightInCharacters(); i++) {
-			for (int j = panel.getWidthInCharacters() - menuWidth; j < panel.getWidthInCharacters(); j++) {
+			for (int j = panel.getWidthInCharacters() - rightSideMenuWidth; j < panel.getWidthInCharacters(); j++) {
 				panel.setCursorPosition(j, i);
 				panel.write(' ');
 			}
-			panel.setCursorPosition(panel.getWidthInCharacters() - menuWidth - 1, i);
+			panel.setCursorPosition(panel.getWidthInCharacters() - rightSideMenuWidth - 1, i);
 			panel.write('|');
 		}
 		for (int i = 4; i < panel.getHeightInCharacters() && i - 4 < helpItems.size(); i++) {
-			panel.setCursorPosition(panel.getWidthInCharacters() - menuWidth, i);
+			panel.setCursorPosition(panel.getWidthInCharacters() - rightSideMenuWidth, i);
 			panel.write(helpItems.get(i - 4));
 		}
 
 	}
 	
 	public void displayLog(){
-		int menuWidth = 20;
 		int startY = 4 + helpItems.size();
-		for(int i = panel.getWidthInCharacters() - menuWidth; i < panel.getWidthInCharacters(); i ++){
+		for(int i = panel.getWidthInCharacters() - rightSideMenuWidth; i < panel.getWidthInCharacters(); i ++){
 			panel.setCursorPosition(i, startY);
 			panel.write('=');
+		}
+		int i = startY + 1;
+		if(log == null)
+			return;
+		for(Message msg : log.getMessages()){
+			panel.setCursorPosition(panel.getWidthInCharacters() - rightSideMenuWidth, i);
+			panel.write(msg.toString(), msg.getColor());
+			i++;
 		}
 	}
 
@@ -292,7 +304,7 @@ public class Game {
 	}
 
 	public void endTurn() {
-
+		player.tickAllEffects();
 		for (Monster m : getLevel(currentLevel).getAllMonsters()) {
 			m.act();
 		}
@@ -323,10 +335,10 @@ public class Game {
 					searching = true;
 				} else {
 					if(calcFOV(player, 14).contains(search.getTile())){
-						System.out.println(search.getPropertiesOfTile());
+						logMessage(search.getPropertiesOfTile());
 					}
 					else{
-						System.out.println("You can't see what is there");
+						logMessage("You can't see what is there");
 					}
 					searching = false;
 				}
@@ -350,13 +362,18 @@ public class Game {
 		//}
 		
 		insertEntity((Entity) player, levels.get(0).getEntrance());
+		player.deleteAllEffects();
 		player.heal(player.getMaxHealth());
 		endTurn();
-		player.heal(player.getMaxHealth());
 	}
 
 	public void end() {
 		// String
 		// panel.setCursorPosition(panel.getWidthInCharacters()/2, y);
 	}
+	
+	public void logMessage(String msg){
+		log.logMessage(msg);
+	}
+	
 }
