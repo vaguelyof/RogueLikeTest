@@ -87,6 +87,10 @@ public class Creature implements Entity{
 		}
 	}
 	
+	public void deleteAllEffects(){
+		status = new ArrayList<StatusEffect>();
+	}
+	
 	public boolean hasEffect(int id){
 		return getIndexOfEffect(id)!=-1;
 	}

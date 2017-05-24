@@ -362,9 +362,9 @@ public class Game {
 		}
 		
 		insertEntity((Entity) player, levels.get(0).getEntrance());
+		player.deleteAllEffects();
 		player.heal(player.getMaxHealth());
 		endTurn();
-		player.heal(player.getMaxHealth());
 	}
 
 	public void end() {
