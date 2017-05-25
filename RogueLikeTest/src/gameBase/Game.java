@@ -230,11 +230,20 @@ public class Game {
 				}
 			}
 		}
+<<<<<<< HEAD
+		for(Tile t : c.getTile().getAdjacentTiles()){
+			if(t.getTopEntity() instanceof Door){
+				//player can see one tile beyond the door
+				for(Tile j : t.getAdjacentTiles())
+					for(int i = 0; i < 8; i += 2){
+						if(j.getTileInDirection(i) == t){
+=======
 		for (Tile t : c.getTile().getAdjacentTiles()) {
 			if (t.getTopEntity() instanceof Door) {
 				for (Tile j : t.getAdjacentTiles())
 					for (int i = 0; i < 8; i += 2) {
 						if (j.getTileInDirection(i) == t) {
+>>>>>>> branch 'master' of https://github.com/SovietTesla/RogueLikeTest.git
 							seen.add(j);
 						}
 					}

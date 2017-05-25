@@ -2,6 +2,11 @@ package statusEffects;
 
 import creatures.Creature;
 
+/**
+ * Basically PoisonStatusEffect, but does extra damage and is affected by resistances
+ * @author 1839208
+ *
+ */
 public class BurnStatusEffect extends StatusEffect {
 	
 	int damage;
@@ -27,7 +32,7 @@ public class BurnStatusEffect extends StatusEffect {
 	
 	@Override
 	public void start(Creature target) {
-		if (target.hasEffect(3))
+		if (target.hasEffect(4))
 			setDuration(0);
 	}
 	

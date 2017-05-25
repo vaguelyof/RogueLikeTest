@@ -4,7 +4,7 @@ import java.awt.Color;
 public class HealthPotion extends Potion {
 	
 	public HealthPotion(){
-		super(20);
+		super(5);
 	}
 	
 	@Override

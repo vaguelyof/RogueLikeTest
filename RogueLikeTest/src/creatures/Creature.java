@@ -170,7 +170,7 @@ public class Creature implements Entity{
      */
     public void takeDamage(int h)
     {
-    	if (hasEffect(3)) return;
+    	if (hasEffect(4)||hasEffect(3)) return;
     	if(h <= 0){
     		//attacks that would do <1 damage have a chance of missing
     		if (-1*(h-2)*Math.random()<1)
@@ -189,6 +189,7 @@ public class Creature implements Entity{
      * @param h the target's new health value
      */ 
     public void setHealth(int h){
+    	if (hasEffect(3)&&h<currentHealth) return;
     	if (h<0)
     		h = 0;
     	currentHealth = h;
@@ -231,6 +232,11 @@ public class Creature implements Entity{
      */
     public void die()
     {
+    	if (hasEffect(3)){
+    		if (currentHealth<=0)
+    			currentHealth = 1;
+    		return;
+    	}
     	deleteAllEffects();
     	myT.removeEntity(this);
     }
