@@ -5,14 +5,13 @@ import java.awt.Color;
 import gameBase.Game;
 import items.Inventory;
 import items.Item;
-import items.RevivePotion;
 import items.RevivalItem;
 import level.Tile;
 
 public class Player extends Creature {
 	Inventory myInv;
 	Game game;
-	
+
 	public Player(String aName, String description, int health, int dmg, Game g) {
 		super(aName, description, health, dmg);
 		setColor(Color.BLUE);
@@ -22,11 +21,10 @@ public class Player extends Creature {
 	}
 
 	public void takeDamage(int d) {
-
+		int tempHealth = getHealth();
 		if (myInv.getMyArmor() == null) {
 			game.logMessage("You were hit!", Color.RED);
 			super.takeDamage(d);
-			
 		} else {
 			game.logMessage("You were hit!", Color.RED);
 			super.takeDamage(d - myInv.getMyArmor().getValue()); // Creature
@@ -34,7 +32,7 @@ public class Player extends Creature {
 																	// catch if
 																	// value is
 																	// negative
-			
+
 		}
 	}
 	
@@ -119,25 +117,11 @@ public class Player extends Creature {
 		dropItem(myInv.getMyArmor());
 		dropItem(myInv.getMyWeapon());
 		dropItem(myInv.getMyPotion());
-		myInv.clear();
-		super.die();
 		game.revertToBeginning();
 		game.logMessage("YOU DIED", Color.RED);
 	}
 	
 	public String items(){
 		return myInv.toString();
-	}
-	
-	public void usePotion(){
-		if(myInv.getMyPotion() != null && !(myInv.getMyPotion() instanceof RevivePotion)){
-			myInv.getMyPotion().use(this);
-			game.logMessage("You drank " + myInv.getMyPotion().getName() + ".", Color.GREEN);
-			myInv.setMyPotion(null);
-		}
-		else{
-			game.logMessage("You cannot drink a potion.");
-		}
-		
 	}
 }
