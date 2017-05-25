@@ -1,4 +1,5 @@
 package gameBase;
+
 import java.awt.Color;
 import java.util.ArrayList;
 
@@ -24,7 +25,7 @@ public class Game {
 	private Searcher search;
 	private int rightSideMenuWidth;
 	private Logger log;
-	
+
 	public static int NORTH = 0;
 	public static int NORTH_EAST = 1;
 	public static int EAST = 2;
@@ -48,11 +49,13 @@ public class Game {
 		helpItems.add("S - Move South");
 		helpItems.add("D - Move East");
 		helpItems.add("F - Inspect");
+		helpItems.add("P - Pick up item");
+		helpItems.add("O - Wait 1 turn");
 
 		fov = new FOV(FOV.SHADOW);
 		seenTiles = new ArrayList<ArrayList<Tile>>();
 		searching = false;
-		
+
 		rightSideMenuWidth = 20;
 	}
 
@@ -62,6 +65,7 @@ public class Game {
 		currentLevel = 0;
 		createPlayer();
 		insertEntity((Entity) player, levels.get(0).getEntrance());
+		// player.addEffect(new PoisonStatusEffect(10));
 		// addRegionToSeen(1,0);
 		displayMapAroundTile(player.getTile(), 0);
 		log = new Logger(rightSideMenuWidth - 1, panel.getHeightInCharacters() - 6 - helpItems.size());
@@ -108,7 +112,7 @@ public class Game {
 
 				if (d.getTile(posX, posY) != null && seenTiles.get(level).contains(d.getTile(posX, posY))) {
 					Color c;
-					if(searching && search.getTile() == d.getTile(posX, posY))
+					if (searching && search.getTile() == d.getTile(posX, posY))
 						c = Color.YELLOW;
 					else if (!currentlySeenTiles.contains(d.getTile(posX, posY))) {
 						c = Color.DARK_GRAY;
@@ -122,8 +126,7 @@ public class Game {
 					} else {
 						panel.setCursorPosition(j, i);
 						Entity e = d.getTile(posX, posY).getTopEntity();
-						
-						
+
 						if (e == null)
 							panel.write(' ', Color.WHITE, c);
 						else if (!(e instanceof Creature))
@@ -131,12 +134,11 @@ public class Game {
 
 						else if (currentlySeenTiles.contains(e.getTile()))
 							panel.write(e.getChar(), e.getColor(), c);
-						
+
 						else {
 							panel.setCursorPosition(j, i);
 							panel.write(' ', Color.WHITE, Color.DARK_GRAY);
 						}
-						
 
 					}
 
@@ -163,7 +165,16 @@ public class Game {
 			panel.setCursorPosition(i, borderHeight);
 			panel.write('=');
 		}
-
+		
+		panel.setCursorPosition(0, 1);
+		panel.write("Health: ", Color.WHITE);
+		if(player.getHealth() < player.getMaxHealth()){
+			panel.write(player.getHealth() + "/"+player.getMaxHealth(), Color.RED);
+		}
+		else{
+			panel.write(player.getHealth() + "/"+player.getMaxHealth(), Color.GREEN);
+		}
+		panel.write(" Gold: " +player.getGold(), Color.WHITE);
 	}
 
 	public void createHelpMenu() {
@@ -181,17 +192,17 @@ public class Game {
 		}
 
 	}
-	
-	public void displayLog(){
+
+	public void displayLog() {
 		int startY = 4 + helpItems.size();
-		for(int i = panel.getWidthInCharacters() - rightSideMenuWidth; i < panel.getWidthInCharacters(); i ++){
+		for (int i = panel.getWidthInCharacters() - rightSideMenuWidth; i < panel.getWidthInCharacters(); i++) {
 			panel.setCursorPosition(i, startY);
 			panel.write('=');
 		}
 		int i = startY + 1;
-		if(log == null)
+		if (log == null)
 			return;
-		for(Message msg : log.getMessages()){
+		for (Message msg : log.getMessages()) {
 			panel.setCursorPosition(panel.getWidthInCharacters() - rightSideMenuWidth, i);
 			panel.write(msg.toString(), msg.getColor());
 			i++;
@@ -217,12 +228,20 @@ public class Game {
 				}
 			}
 		}
+<<<<<<< HEAD
 		for(Tile t : c.getTile().getAdjacentTiles()){
 			if(t.getTopEntity() instanceof Door){
 				//player can see one tile beyond the door
 				for(Tile j : t.getAdjacentTiles())
 					for(int i = 0; i < 8; i += 2){
 						if(j.getTileInDirection(i) == t){
+=======
+		for (Tile t : c.getTile().getAdjacentTiles()) {
+			if (t.getTopEntity() instanceof Door) {
+				for (Tile j : t.getAdjacentTiles())
+					for (int i = 0; i < 8; i += 2) {
+						if (j.getTileInDirection(i) == t) {
+>>>>>>> branch 'master' of https://github.com/SovietTesla/RogueLikeTest.git
 							seen.add(j);
 						}
 					}
@@ -257,10 +276,10 @@ public class Game {
 	public static boolean creatureCanMoveInDirection(Creature c, int direction) {
 		if (c == null)
 			return false;
-		
+
 		if (!c.getTile().getTileInDirection(direction).getIsRock()
 				&& (c.getTile().getTileInDirection(direction).getTopEntity() == null
-				|| !(c.getTile().getTileInDirection(direction).getTopEntity() instanceof Creature))) {
+						|| !(c.getTile().getTileInDirection(direction).getTopEntity() instanceof Creature))) {
 			return true;
 		}
 		return false;
@@ -290,6 +309,10 @@ public class Game {
 		if (creatureCanMoveInDirection(player, direction)) {
 			player.getTile().getTileInDirection(direction).addEntity(player);
 			endTurn();
+		} else if (player.getTile().getTileInDirection(direction).getTopEntity() != null
+				&& player.getTile().getTileInDirection(direction).getTopEntity() instanceof Monster) {
+			player.attack((Creature) player.getTile().getTileInDirection(direction).getTopEntity());
+			endTurn();
 		}
 
 	}
@@ -307,6 +330,7 @@ public class Game {
 
 	public void endTurn() {
 		player.tickAllEffects();
+		System.out.println(player.getHealth());
 		for (Monster m : getLevel(currentLevel).getAllMonsters()) {
 			m.act();
 		}
@@ -336,33 +360,40 @@ public class Game {
 					search = new Searcher(player.getTile());
 					searching = true;
 				} else {
-					if(calcFOV(player, 14).contains(search.getTile())){
+					if (calcFOV(player, 14).contains(search.getTile())) {
 						logMessage(search.getPropertiesOfTile());
-					}
-					else{
+					} else {
 						logMessage("You can't see what is there");
 					}
 					searching = false;
 				}
 				displayMapAroundTile(player.getTile(), currentLevel);
 				break;
+			case 'P':
+				if (!searching) {
+					player.pickUp();
+					endTurn();
+				}
+			case 'O':
+				endTurn();
 			}
 			return;
 		}
 
 	}
-	
-	//after the player dies, he must go back to the beginning of the level
-	//he keeps his level, but loses all items and gold in his inventory(handled in Player's die method)
-	//the player keeps his seenTiles
-	public void revertToBeginning(){
-		//removes any blockages of the entrance or the tiles around it
-		//for(Tile t : levels.get(0).getEntrance().getAdjacentTiles()){
-			//for(Tile o : t.getAdjacentTiles()){
-				//o.removeEntity(o.getTopEntity());
-			//}
-		//}
-		
+
+	// after the player dies, he must go back to the beginning of the level
+	// he keeps his level, but loses all items and gold in his inventory(handled
+	// in Player's die method)
+	// the player keeps his seenTiles
+	public void revertToBeginning() {
+		// removes any blockages of the entrance or the tiles around it
+		// for(Tile t : levels.get(0).getEntrance().getAdjacentTiles()){
+		// for(Tile o : t.getAdjacentTiles()){
+		// o.removeEntity(o.getTopEntity());
+		// }
+		// }
+
 		insertEntity((Entity) player, levels.get(0).getEntrance());
 		player.deleteAllEffects();
 		player.heal(player.getMaxHealth());
@@ -373,9 +404,13 @@ public class Game {
 		// String
 		// panel.setCursorPosition(panel.getWidthInCharacters()/2, y);
 	}
-	
-	public void logMessage(String msg){
-		log.logMessage(msg);
+
+	public void logMessage(String msg) {
+		logMessage(msg, Color.WHITE);
 	}
-	
+
+	public void logMessage(String msg, Color c) {
+		log.logMessage(msg, c);
+	}
+
 }
