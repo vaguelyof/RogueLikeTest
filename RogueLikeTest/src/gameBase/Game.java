@@ -62,7 +62,8 @@ public class Game {
 		currentLevel = 0;
 		createPlayer();
 		insertEntity((Entity) player, levels.get(0).getEntrance());
-		// addRegionToSeen(1,0);
+		//player.addEffect(new PoisonStatusEffect(10));
+		//addRegionToSeen(1,0);
 		displayMapAroundTile(player.getTile(), 0);
 		log = new Logger(rightSideMenuWidth - 1, panel.getHeightInCharacters() - 6 - helpItems.size());
 	}

@@ -102,12 +102,20 @@ public class Creature implements Entity{
 	}
 	
 	public void tickAllEffects(){
-		for (StatusEffect e:status){
+		for (int i=0;i<status.size();i++){
+			if (status.get(i).tick(this)){
+				deleteEffect(status.get(i).getId());
+				i--;
+			}
+			if (currentHealth<=0)
+				return;
+		}
+		/*for (StatusEffect e:status){
 			if (e.tick(this))
 				deleteEffect(e.getId());
 			if (currentHealth<=0)
 				return;
-		}
+		}*/
 	}
 	
 	/**
