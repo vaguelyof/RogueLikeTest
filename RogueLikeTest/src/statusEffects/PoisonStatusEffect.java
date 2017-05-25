@@ -25,7 +25,8 @@ public class PoisonStatusEffect extends StatusEffect {
 		return 0;
 	}
 	
-	private void act(Creature target) {
+	@Override
+	protected void act(Creature target) {
 		target.takeDamage(damage);
 	}
 }

@@ -56,7 +56,6 @@ public class StatusEffect {
 		if (duration>0){
 			duration--;
 			if (duration==0){
-				end(target);
 				return true;
 			}
 		}
@@ -69,7 +68,6 @@ public class StatusEffect {
 	 * @param target the creature that is affected
 	 */
 	public void start(Creature target) {
-		
 	}
 	
 	/**
@@ -77,7 +75,7 @@ public class StatusEffect {
 	 * Should be overwritten by subclasses
 	 * @param target the creature that is affected
 	 */
-	private void act(Creature target) {
+	protected void act(Creature target) {
 	}
 	
 	/**
@@ -86,6 +84,5 @@ public class StatusEffect {
 	 * @param target the creature that is affected
 	 */
 	public void end(Creature target) {
-		
 	}
 }

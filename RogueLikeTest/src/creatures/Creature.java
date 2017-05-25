@@ -83,13 +83,17 @@ public class Creature implements Entity{
 			setDuration(e.getId(),e.getDuration());
 	}
 	
-	public void deleteEffect(int i){
-		while (getIndexOfEffect(i)!=-1){
-			status.remove(getIndexOfEffect(i));
+	public void deleteEffect(int id){
+		while (getIndexOfEffect(id)!=-1){
+			status.get(getIndexOfEffect(id)).end(this);
+			status.remove(getIndexOfEffect(id));
 		}
 	}
 	
 	public void deleteAllEffects(){
+		for (StatusEffect e:status){
+			e.end(this);
+		}
 		status = new ArrayList<StatusEffect>();
 	}
 	
