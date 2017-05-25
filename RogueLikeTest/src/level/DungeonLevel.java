@@ -85,7 +85,7 @@ public class DungeonLevel
     	int choice;
     	Entity e;
     	for(int i = 0; i < times; i++){
-    		choice = (int)(Math.random() * 3);
+    		choice = (int)(Math.random() * 4);
     		switch(choice){
     		case 0:
     			e = Game.createLevel1Monster();
@@ -98,6 +98,9 @@ public class DungeonLevel
     				e = new RevivePotion();
     			else
     				e = new HealthPotion();
+    			break;
+    		case 3:
+    			e = new Gold((int)(Math.random() * 50 * (level+1))+1);
     			break;
     		default:
     			e = Game.createLevel1Monster();
