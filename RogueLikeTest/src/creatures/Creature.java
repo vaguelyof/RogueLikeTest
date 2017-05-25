@@ -104,18 +104,12 @@ public class Creature implements Entity{
 	public void tickAllEffects(){
 		for (int i=0;i<status.size();i++){
 			if (status.get(i).tick(this)){
+				if (status.size()==0) return;
 				deleteEffect(status.get(i).getId());
 				i--;
 			}
-			if (currentHealth<=0)
-				return;
+			if (currentHealth<=0) return;
 		}
-		/*for (StatusEffect e:status){
-			if (e.tick(this))
-				deleteEffect(e.getId());
-			if (currentHealth<=0)
-				return;
-		}*/
 	}
 	
 	/**
@@ -184,6 +178,18 @@ public class Creature implements Entity{
     			return;
     	}
     	
+    	currentHealth -= h;
+    	if(currentHealth <= 0)
+    		die();
+    }
+     
+    /**
+     * Like takeDamage, but ignores resistances
+     * @param h the amount of damage to be taken by the creature
+     */ 
+    public void lowerHealth(int h){
+    	if (h<=0)
+    		return;
     	currentHealth -= h;
     	if(currentHealth <= 0)
     		die();
