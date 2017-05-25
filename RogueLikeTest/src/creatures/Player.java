@@ -6,6 +6,7 @@ import gameBase.Game;
 import items.Inventory;
 import items.Item;
 import items.RevivePotion;
+import items.RevivalItem;
 import level.Tile;
 
 public class Player extends Creature {
@@ -93,6 +94,25 @@ public class Player extends Creature {
 	
 
 	public void die() {
+		//checks various sources to see if the target dies
+    	if (hasEffect(3)){
+    		if (getHealth()<=0)
+    			setHealth(1);
+    		return;
+    	}
+		if (myInv.getMySpecial()!=null&&myInv.getMySpecial() instanceof RevivalItem) {
+			((RevivalItem) myInv.getMySpecial()).revive(this);
+			game.logMessage("You were revived by your "+ myInv.getMySpecial().getName()+"!",Color.YELLOW);
+			myInv.setMySpecial(null);
+			return;
+		}
+		if (myInv.getMyPotion()!=null&&myInv.getMyPotion() instanceof RevivalItem) {
+			((RevivalItem) myInv.getMyPotion()).revive(this);
+			game.logMessage("You were revived by your "+ myInv.getMyPotion().getName()+"!",Color.YELLOW);
+			myInv.setMyPotion(null);
+			return;
+		}
+		super.die();
 		// drop all items
 		// gold is lost
 		dropItem(myInv.getMySpecial());
