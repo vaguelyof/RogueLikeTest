@@ -21,10 +21,14 @@ public class Player extends Creature {
 	
 	public void takeDamage(int d){
 		
-		if(myInv.getMyArmor() == null)
+		if(myInv.getMyArmor() == null){
 			super.takeDamage(d);
-		else
+			game.logMessage("You were hit!", Color.RED);
+		}
+		else{
 			super.takeDamage(d - myInv.getMyArmor().getValue()); //Creature will catch if value is negative
+			game.logMessage("You were hit!", Color.RED);
+		}
 	}
 	
 	public int getDamage(){
@@ -33,6 +37,16 @@ public class Player extends Creature {
 			return super.getDamage() + myInv.getMyWeapon().getValue();
 		
 		return super.getDamage();
+	}
+	
+	public void attack(Creature c){
+		c.takeDamage(getDamage());
+		if(myInv.getMyWeapon() != null){
+			game.logMessage("You struck " + c.getName() + " with " + myInv.getMyWeapon().getName() + ".", Color.WHITE);
+		}
+		else{
+			game.logMessage("You punched " + c.getName() + ".");
+		}
 	}
 	
 	public void pickUp(){

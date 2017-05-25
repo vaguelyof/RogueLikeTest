@@ -290,6 +290,9 @@ public class Game {
 			player.getTile().getTileInDirection(direction).addEntity(player);
 			endTurn();
 		}
+		else if(player.getTile().getTileInDirection(direction).getTopEntity() != null && player.getTile().getTileInDirection(direction).getTopEntity() instanceof Monster){
+			player.attack((Creature)player.getTile().getTileInDirection(direction).getTopEntity());
+		}
 
 	}
 
