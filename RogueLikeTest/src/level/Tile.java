@@ -40,6 +40,8 @@ public class Tile
      */
     public void setType(boolean type){
         isRock = type;
+        if (true)
+        	setRegion(0);
     }
     
     public boolean getIsRock(){
