@@ -5,6 +5,7 @@ import java.awt.Color;
 import gameBase.Game;
 import items.Inventory;
 import items.Item;
+import items.RevivalItem;
 import level.Tile;
 
 public class Player extends Creature {
@@ -89,14 +90,34 @@ public class Player extends Creature {
 	}
 	
 
-	public void die() {
+	public boolean die() {
+		//checks various sources to see if the target dies
+    	if (hasEffect(3)){
+    		if (getHealth()<=0)
+    			setHealth(1);
+    		return false;
+    	}
+		if (myInv.getMySpecial()!=null&&myInv.getMySpecial() instanceof RevivalItem) {
+			((RevivalItem) myInv.getMySpecial()).revive(this);
+			game.logMessage("You were revived by your "+ myInv.getMySpecial().getName()+"!",Color.YELLOW);
+			myInv.setMySpecial(null);
+			return false;
+		}
+		if (myInv.getMyPotion()!=null&&myInv.getMyPotion() instanceof RevivalItem) {
+			((RevivalItem) myInv.getMyPotion()).revive(this);
+			game.logMessage("You were revived by your "+ myInv.getMyPotion().getName()+"!",Color.YELLOW);
+			myInv.setMyPotion(null);
+			return false;
+		}
+		if (!super.die()) 
+			return false;
 		// drop all items
 		// gold is lost
 		dropItem(myInv.getMySpecial());
 		dropItem(myInv.getMyArmor());
 		dropItem(myInv.getMyWeapon());
 		dropItem(myInv.getMyPotion());
-		super.die();
 		game.revertToBeginning();
+		return true;
 	}
 }

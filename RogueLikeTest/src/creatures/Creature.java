@@ -230,15 +230,16 @@ public class Creature implements Entity{
     /**
      * Removes the creature from the game.
      */
-    public void die()
+    public boolean die()
     {
     	if (hasEffect(3)){
     		if (currentHealth<=0)
     			currentHealth = 1;
-    		return;
+    		return false;
     	}
     	deleteAllEffects();
     	myT.removeEntity(this);
+    	return true;
     }
     
     

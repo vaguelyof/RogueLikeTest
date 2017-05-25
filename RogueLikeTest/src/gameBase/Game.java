@@ -321,7 +321,6 @@ public class Game {
 
 	public void endTurn() {
 		player.tickAllEffects();
-		System.out.println(player.getHealth());
 		for (Monster m : getLevel(currentLevel).getAllMonsters()) {
 			m.act();
 		}
