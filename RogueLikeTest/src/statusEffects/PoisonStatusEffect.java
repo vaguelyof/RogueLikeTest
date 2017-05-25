@@ -2,6 +2,10 @@ package statusEffects;
 
 import creatures.Creature;
 
+/**
+ * Deals damage and ignores resistances
+ * @author Jonathan Knowles
+ */
 public class PoisonStatusEffect extends StatusEffect {
 	
 	int damage;

@@ -2,6 +2,10 @@ package statusEffects;
 
 import creatures.Creature;
 
+/**
+ * Renders the target invincible to all damage, but does not remove conditions
+ * @author JonathanKnowles
+ */
 public class InvulnStatusEffect extends StatusEffect{
 	
 	public InvulnStatusEffect() {
@@ -14,10 +18,5 @@ public class InvulnStatusEffect extends StatusEffect{
 	
 	public int getId() {
 		return 3;
-	}
-	
-	@Override
-	public void start(Creature target) {
-		target.deleteEffect(2);
 	}
 }
