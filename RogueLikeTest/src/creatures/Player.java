@@ -10,7 +10,7 @@ import level.Tile;
 public class Player extends Creature {
 	Inventory myInv;
 	Game game;
-
+	
 	public Player(String aName, String description, int health, int dmg, Game g) {
 		super(aName, description, health, dmg);
 		setColor(Color.BLUE);
@@ -22,15 +22,17 @@ public class Player extends Creature {
 	public void takeDamage(int d) {
 
 		if (myInv.getMyArmor() == null) {
-			super.takeDamage(d);
 			game.logMessage("You were hit!", Color.RED);
+			super.takeDamage(d);
+			
 		} else {
+			game.logMessage("You were hit!", Color.RED);
 			super.takeDamage(d - myInv.getMyArmor().getValue()); // Creature
 																	// will
 																	// catch if
 																	// value is
 																	// negative
-			game.logMessage("You were hit!", Color.RED);
+			
 		}
 	}
 	
@@ -96,7 +98,13 @@ public class Player extends Creature {
 		dropItem(myInv.getMyArmor());
 		dropItem(myInv.getMyWeapon());
 		dropItem(myInv.getMyPotion());
+		myInv.clear();
 		super.die();
 		game.revertToBeginning();
+		game.logMessage("YOU DIED", Color.RED);
+	}
+	
+	public String items(){
+		return myInv.toString();
 	}
 }
