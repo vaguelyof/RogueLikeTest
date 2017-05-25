@@ -49,8 +49,9 @@ public class Game {
 		helpItems.add("S - Move South");
 		helpItems.add("D - Move East");
 		helpItems.add("F - Inspect");
-		helpItems.add("P - Pick up item");
+		helpItems.add("I - Pick up item");
 		helpItems.add("O - Wait 1 turn");
+		helpItems.add("P - Drink Potion");
 
 		fov = new FOV(FOV.SHADOW);
 		seenTiles = new ArrayList<ArrayList<Tile>>();
@@ -165,16 +166,15 @@ public class Game {
 			panel.setCursorPosition(i, borderHeight);
 			panel.write('=');
 		}
-		
+
 		panel.setCursorPosition(0, 1);
 		panel.write("Health: ", Color.WHITE);
-		if(player.getHealth() < player.getMaxHealth()){
-			panel.write(player.getHealth() + "/"+player.getMaxHealth(), Color.RED);
+		if (player.getHealth() < player.getMaxHealth()) {
+			panel.write(player.getHealth() + "/" + player.getMaxHealth(), Color.RED);
+		} else {
+			panel.write(player.getHealth() + "/" + player.getMaxHealth(), Color.GREEN);
 		}
-		else{
-			panel.write(player.getHealth() + "/"+player.getMaxHealth(), Color.GREEN);
-		}
-		panel.write(" Gold: " +player.getGold(), Color.WHITE);
+		panel.write(" Gold: " + player.getGold(), Color.WHITE);
 		panel.setCursorPosition(0, 2);
 		panel.write(player.items(), Color.WHITE);
 	}
@@ -230,12 +230,12 @@ public class Game {
 				}
 			}
 		}
-		for(Tile t : c.getTile().getAdjacentTiles()){
-			if(t.getTopEntity() instanceof Door){
-				//player can see one tile beyond the door
-				for(Tile j : t.getAdjacentTiles())
-					for(int i = 0; i < 8; i += 2){
-						if(j.getTileInDirection(i) == t){
+		for (Tile t : c.getTile().getAdjacentTiles()) {
+			if (t.getTopEntity() instanceof Door) {
+				// player can see one tile beyond the door
+				for (Tile j : t.getAdjacentTiles())
+					for (int i = 0; i < 8; i += 2) {
+						if (j.getTileInDirection(i) == t) {
 							seen.add(j);
 						}
 					}
@@ -362,14 +362,25 @@ public class Game {
 				}
 				displayMapAroundTile(player.getTile(), currentLevel);
 				break;
-			case 'P':
+			case 'I':
 				if (!searching) {
 					player.pickUp();
 					endTurn();
 				}
+				break;
 			case 'O':
-				endTurn();
+				if (!searching) {
+					endTurn();
+				}
+				break;
+			case 'P':
+				if (!searching) {
+					player.usePotion();
+					endTurn();
+				}
+				break;
 			}
+
 			return;
 		}
 

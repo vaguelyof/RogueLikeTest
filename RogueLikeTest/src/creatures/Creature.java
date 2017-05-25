@@ -2,6 +2,7 @@ package creatures;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import gameBase.Game;
 import gameEntities.Entity;
 import items.Item;
 import level.Tile;
@@ -13,6 +14,7 @@ import statusEffects.StatusEffect;
  */
 public class Creature implements Entity{
 	
+	Game game;
 	private ArrayList<Item> items = new ArrayList<Item>();
 	protected ArrayList<StatusEffect> status = new ArrayList<StatusEffect>();
 	private String name;
@@ -239,6 +241,7 @@ public class Creature implements Entity{
     	}
     	deleteAllEffects();
     	myT.removeEntity(this);
+    	game.logMessage(getName() + " has been vanquished!", Color.RED);
     }
     
     

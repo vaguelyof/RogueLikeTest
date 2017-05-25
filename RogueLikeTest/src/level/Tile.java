@@ -169,4 +169,9 @@ public class Tile
         compassAngle%=8;
         return compassAngle;
     }
+    
+    public boolean isInRoom()
+    {
+    	return containedDungeon.isRegionRoom(myRegion);
+    }
 }
