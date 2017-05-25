@@ -75,8 +75,10 @@ public class Creature implements Entity{
 	}
 	
 	public void addEffect(StatusEffect e){
-		if (getIndexOfEffect(e.getId())==-1)
+		if (getIndexOfEffect(e.getId())==-1){
 			status.add(e);
+			e.start(this);
+		}
 		else
 			setDuration(e.getId(),e.getDuration());
 	}
