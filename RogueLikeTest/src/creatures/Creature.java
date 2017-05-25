@@ -232,6 +232,11 @@ public class Creature implements Entity{
      */
     public void die()
     {
+    	if (hasEffect(3)){
+    		if (currentHealth<=0)
+    			currentHealth = 1;
+    		return;
+    	}
     	deleteAllEffects();
     	myT.removeEntity(this);
     }
