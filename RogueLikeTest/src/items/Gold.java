@@ -73,9 +73,6 @@ public class Gold implements Item {
 		
 	}
 
-	@Override
-	public boolean canRevive() {
-		return false;
-	}
+
 
 }

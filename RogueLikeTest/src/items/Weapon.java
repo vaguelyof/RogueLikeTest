@@ -70,12 +70,6 @@ public class Weapon implements Item{
 		
 	}
 
-	@Override
-	public boolean canRevive() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 	public boolean isTwoHanded(){
 		return twoHanded;
 	}

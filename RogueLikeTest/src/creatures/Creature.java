@@ -104,18 +104,12 @@ public class Creature implements Entity{
 	public void tickAllEffects(){
 		for (int i=0;i<status.size();i++){
 			if (status.get(i).tick(this)){
+				if (status.size()==0) return;
 				deleteEffect(status.get(i).getId());
 				i--;
 			}
-			if (currentHealth<=0)
-				return;
+			if (currentHealth<=0) return;
 		}
-		/*for (StatusEffect e:status){
-			if (e.tick(this))
-				deleteEffect(e.getId());
-			if (currentHealth<=0)
-				return;
-		}*/
 	}
 	
 	/**
@@ -176,6 +170,7 @@ public class Creature implements Entity{
      */
     public void takeDamage(int h)
     {
+    	if (hasEffect(3)) return;
     	if(h <= 0){
     		//attacks that would do <1 damage have a chance of missing
     		if (-1*(h-2)*Math.random()<1)
@@ -187,6 +182,20 @@ public class Creature implements Entity{
     	currentHealth -= h;
     	if(currentHealth <= 0)
     		die();
+    }
+     
+    /**
+     * Sets the target's health
+     * @param h the target's new health value
+     */ 
+    public void setHealth(int h){
+    	if (h<0)
+    		h = 0;
+    	currentHealth = h;
+    	if (currentHealth<=0)
+    		die();
+    	else if(currentHealth > maxHealth)
+    		currentHealth = maxHealth;
     }
     
     /**
@@ -222,6 +231,7 @@ public class Creature implements Entity{
      */
     public void die()
     {
+    	deleteAllEffects();
     	myT.removeEntity(this);
     }
     
