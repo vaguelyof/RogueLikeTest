@@ -62,7 +62,7 @@ public class Monster extends Creature{
 		//if the monster is next to the player, it attacks
 		for(Tile t : getTile().getAdjacentTiles())
 		{
-			if(TileHasPlayer(t))
+			if(tileHasPlayer(t))
 			{
 				attack((Creature)t.getTopEntity());
 				return;
@@ -79,25 +79,34 @@ public class Monster extends Creature{
 		{
 			for(Tile t: seeable)
 			{
-				if(TileHasPlayer(t) && hasDirectPathToTile(getTile(), t))
+				//moves freely if in a room
+				if(t.isInRoom())
 				{
-					move((int)(getTile().getDirectionToTile(t)));
-					lastSeen = t;
-					return;
-				}					
+					if(tileHasPlayer(t))
+					{
+						move((getTile().getDirectionToTile(t)));
+						return;
+					}
+				}
 		
-				//otherwise moves to last known location if it has one
-				else if(lastSeen != null)
+				else if(tileHasPlayer(t) && hasDirectPathToTile(getTile(), t))
 				{
-					moveToLastKnownLocation();
-					return;
+					move(getTile().getDirectionToTile(t));
+					lastSeen = t;
+				}
+				
+				//otherwise moves to last known location if it has one
+				if(lastSeen != null)
+					{
+						moveToLastKnownLocation();
+						return;
+					}
 				}
 			}
 		}
-	}
 
 	
-	private boolean TileHasPlayer(Tile t){
+	private boolean tileHasPlayer(Tile t){
 		return (t.getTopEntity() instanceof Player);
 	}
 	
