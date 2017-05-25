@@ -7,6 +7,7 @@ public class RevivePotion extends Potion {
 	
 	public RevivePotion(){
 		super(30);
+		
 	}
 	
 	@Override
@@ -30,5 +31,9 @@ public class RevivePotion extends Potion {
 			user.heal(user.getMaxHealth()/2);
 		else
 			super.use(user);
+	}
+	
+	public String getName(){
+		return "Revive Potion";
 	}
 }
