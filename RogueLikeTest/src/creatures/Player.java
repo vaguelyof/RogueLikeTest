@@ -5,6 +5,7 @@ import java.awt.Color;
 import gameBase.Game;
 import items.Inventory;
 import items.Item;
+import items.RevivePotion;
 import level.Tile;
 
 public class Player extends Creature {
@@ -106,5 +107,17 @@ public class Player extends Creature {
 	
 	public String items(){
 		return myInv.toString();
+	}
+	
+	public void usePotion(){
+		if(myInv.getMyPotion() != null && !(myInv.getMyPotion() instanceof RevivePotion)){
+			myInv.getMyPotion().use(this);
+			game.logMessage("You drank " + myInv.getMyPotion().getName() + ".", Color.GREEN);
+			myInv.setMyPotion(null);
+		}
+		else{
+			game.logMessage("You cannot drink a potion.");
+		}
+		
 	}
 }
