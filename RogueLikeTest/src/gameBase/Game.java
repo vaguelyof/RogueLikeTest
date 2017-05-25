@@ -49,7 +49,8 @@ public class Game {
 		helpItems.add("S - Move South");
 		helpItems.add("D - Move East");
 		helpItems.add("F - Inspect");
-		helpItems.add("P - Pick up Item");
+		helpItems.add("P - Pick up item");
+		helpItems.add("O - Wait 1 turn");
 
 		fov = new FOV(FOV.SHADOW);
 		seenTiles = new ArrayList<ArrayList<Tile>>();
@@ -173,6 +174,7 @@ public class Game {
 		else{
 			panel.write(player.getHealth() + "/"+player.getMaxHealth(), Color.GREEN);
 		}
+		panel.write(" Gold: " +player.getGold(), Color.WHITE);
 	}
 
 	public void createHelpMenu() {
@@ -301,7 +303,7 @@ public class Game {
 		} else if (player.getTile().getTileInDirection(direction).getTopEntity() != null
 				&& player.getTile().getTileInDirection(direction).getTopEntity() instanceof Monster) {
 			player.attack((Creature) player.getTile().getTileInDirection(direction).getTopEntity());
-			displayMapAroundTile(player.getTile(), currentLevel);
+			endTurn();
 		}
 
 	}
@@ -361,8 +363,10 @@ public class Game {
 			case 'P':
 				if (!searching) {
 					player.pickUp();
-					displayMapAroundTile(player.getTile(), currentLevel);
+					endTurn();
 				}
+			case 'O':
+				endTurn();
 			}
 			return;
 		}

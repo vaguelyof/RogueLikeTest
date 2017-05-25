@@ -33,7 +33,11 @@ public class Player extends Creature {
 			game.logMessage("You were hit!", Color.RED);
 		}
 	}
-
+	
+	public int getGold(){
+		return myInv.getGold();
+	}
+	
 	public int getDamage() {
 
 		if (myInv.getMyWeapon() != null)
@@ -76,16 +80,18 @@ public class Player extends Creature {
 	public void dropItem(Item e) {
 		if (e == null)
 			return;
+		
 		Tile t = getTile();
 		t.removeEntity(this);
 		t.addEntity(e);
 		t.addEntity(this);
 		game.logMessage("You dropped " + e.getName() + ".", Color.RED);
 	}
+	
 
 	public void die() {
 		// drop all items
-		// drop all gold
+		// gold is lost
 		dropItem(myInv.getMySpecial());
 		dropItem(myInv.getMyArmor());
 		dropItem(myInv.getMyWeapon());
