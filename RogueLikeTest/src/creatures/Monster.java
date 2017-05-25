@@ -11,6 +11,7 @@ public class Monster extends Creature{
 	private int speed;	//how many blocks the creature moves per turn
 	private boolean isSlow;
 	private boolean canMove;
+	private Tile lastSeen;
 
 	public Monster(String aName, String description, int health, int dmg)
 	{
@@ -20,6 +21,7 @@ public class Monster extends Creature{
 		speed = 1;
 		isSlow = false;
 		canMove = true;
+		lastSeen = null;
 	}
 	
 	public Monster(String aName, String description, int health, int dmg, int moveSpeed, boolean slow)
@@ -30,8 +32,17 @@ public class Monster extends Creature{
 		speed = moveSpeed;
 		isSlow = slow;
 		canMove = true;
+		lastSeen = null;
 	}
 	
+	/*
+	 * monster acts in a step by step process
+	 * 1. applies any current status effects
+	 * 2. dies if its health is <= 0
+	 * 3. checks if it can attack a player, and attacks if it can
+	 * 4. checks if it can see the player, and moves toward it if it can
+	 * 5. moves toward last known location if it has seen the player
+	 */
 	public void act()
 	{
 		//for (StatusEffect e:status){
@@ -39,7 +50,7 @@ public class Monster extends Creature{
 		//		deleteEffect(e.getId());
 		//}
 		tickAllEffects();
-		if(getHealth() == 0){
+		if(getHealth() <= 0){
 			die();
 			return;
 		}
@@ -51,7 +62,7 @@ public class Monster extends Creature{
 		//if the monster is next to the player, it attacks
 		for(Tile t : getTile().getAdjacentTiles())
 		{
-			if(t.getTopEntity() instanceof Player)
+			if(TileHasPlayer(t))
 			{
 				attack((Creature)t.getTopEntity());
 				return;
@@ -62,21 +73,31 @@ public class Monster extends Creature{
 		if(isSlow = true)
 			slow();
 
+		//if the monster can see the player and has a direct path to the player
+		//monster moves towards player
 		if(canMove)
 		{
-			//if the monster can see the player, it moves towards it
 			for(Tile t: seeable)
 			{
-				if(canAttackPlayer(t))
+				if(TileHasPlayer(t) && hasDirectPathToTile(getTile(), t))
 				{
 					move((int)(getTile().getDirectionToTile(t)));
+					lastSeen = t;
+					return;
+				}					
+		
+				//otherwise moves to last known location if it has one
+				else if(lastSeen != null)
+				{
+					moveToLastKnownLocation();
 					return;
 				}
 			}
 		}
 	}
+
 	
-	private boolean canAttackPlayer(Tile t){
+	private boolean TileHasPlayer(Tile t){
 		return (t.getTopEntity() instanceof Player);
 	}
 	
@@ -94,5 +115,52 @@ public class Monster extends Creature{
 	
 	private void slow(){
 		canMove = !canMove;
+	}
+	
+	/*
+	 * checks if place can reach end by calling itself until place reaches end
+	 * if place hits a rock, returns false
+	 * 
+	 * returns true if monster has uninterrupted path to end
+	 * returns false if monster cannot reach end by moving directly toward it
+	 */
+	private boolean hasDirectPathToTile(Tile place, Tile end)
+	{
+		//if place has reached end, place has direct path to end
+		if(end == place)
+		{
+			return true;
+		}
+		
+		//if the next tile is not a rock
+		if(!place.getTileInDirection(place.getDirectionToTile(end)).getIsRock())
+		{
+			//keep going toward end
+			return hasDirectPathToTile(place.getTileInDirection(place.getDirectionToTile(end)), end);
+		}
+		
+			else
+			{
+				//otherwise place has no direct path to end
+				return false;
+			}
+		
+	}
+	
+	/*
+	 * monster moves toward tile lastSeen
+	 * if it reaches lastSeen, sets it to null
+	 * 
+	 * precondition: lastSeen must not be null
+	 */
+	private void moveToLastKnownLocation()
+	{
+		if(getTile() == lastSeen)
+		{
+			lastSeen = null;
+			return;
+		}
+		
+		move(getTile().getDirectionToTile(lastSeen));
 	}
 }

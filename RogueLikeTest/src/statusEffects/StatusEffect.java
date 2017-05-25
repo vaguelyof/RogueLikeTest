@@ -49,6 +49,9 @@ public class StatusEffect {
 	 * @return true if the effect runs out; false otherwise
 	 */
 	public boolean tick(Creature target) {
+		if (duration==0){
+			return true;
+		}
 		act(target);
 		if (duration>0){
 			duration--;
@@ -60,10 +63,26 @@ public class StatusEffect {
 	}
 	
 	/**
+	 * What the effect does when it is first added
+	 * Should be overwritten by subclasses
+	 * @param target the creature that is affected
+	 */
+	public void start(Creature target) {
+	}
+	
+	/**
 	 * What the effect does
 	 * Should be overwritten by subclasses
 	 * @param target the creature that is affected
 	 */
-	private void act(Creature target) {
+	protected void act(Creature target) {
+	}
+	
+	/**
+	 * What the effect does when it ends
+	 * Should be overwritten by subclasses
+	 * @param target the creature that is affected
+	 */
+	public void end(Creature target) {
 	}
 }

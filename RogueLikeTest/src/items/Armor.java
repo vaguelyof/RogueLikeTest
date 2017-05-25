@@ -70,10 +70,4 @@ public class Armor implements Item{
 		
 	}
 
-	@Override
-	public boolean canRevive() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 }

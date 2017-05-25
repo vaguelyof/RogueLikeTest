@@ -9,6 +9,7 @@ public class Inventory {
 	private Armor myArmor;
 	private Potion myPotion;
 	private Item mySpecial;
+	private int myGold;
 	
 	public Inventory(){
 	}
@@ -20,10 +21,17 @@ public class Inventory {
 			return setMyArmor((Armor)i);
 		if(i instanceof Potion)
 			return setMyPotion((Potion)i);
+		if(i instanceof Gold)
+			return addGold((Gold)i);
 		if(i != null)
 			return setMySpecial(i);
 		return null;
 	}
+	private Item addGold(Gold i) {
+		myGold += i.getStack();
+		return null;
+	}
+
 	public Weapon getMyWeapon() {
 		return myWeapon;
 	}
@@ -62,6 +70,18 @@ public class Inventory {
 		Item i = this.mySpecial;
 		this.mySpecial = mySpecial;
 		return i;
+	}
+	public void clear(){
+		myWeapon = null;
+		myArmor = null;
+		myPotion = null;
+		mySpecial = null;
+		myGold = 0;
+	}
+
+	public int getGold() {
+		// TODO Auto-generated method stub
+		return myGold;
 	}
 	
 }

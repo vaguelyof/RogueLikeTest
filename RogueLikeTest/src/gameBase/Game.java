@@ -10,6 +10,7 @@ import gameEntities.Searcher;
 import level.DungeonLevel;
 import level.Tile;
 import squidpony.squidgrid.Radius;
+import statusEffects.PoisonStatusEffect;
 import statusEffects.StatusEffect;
 import squidpony.squidgrid.FOV;
 
@@ -206,7 +207,7 @@ public class Game {
 		int starty = c.getTile().getY();
 
 		double[][] fovmap = fov.calculateFOV(g.generateResistances(c.getTile().getDungeon()), startx, starty, diameter,
-				Radius.DIAMOND);
+				Radius.OCTAHEDRON);
 
 		seen.clear();
 		for (int i = 0; i < fovmap.length; i++) {
@@ -218,6 +219,7 @@ public class Game {
 		}
 		for(Tile t : c.getTile().getAdjacentTiles()){
 			if(t.getTopEntity() instanceof Door){
+				//player can see one tile beyond the door
 				for(Tile j : t.getAdjacentTiles())
 					for(int i = 0; i < 8; i += 2){
 						if(j.getTileInDirection(i) == t){

@@ -2,6 +2,10 @@ package statusEffects;
 
 import creatures.Creature;
 
+/**
+ * Deals damage and ignores resistances
+ * @author Jonathan Knowles
+ */
 public class PoisonStatusEffect extends StatusEffect {
 	
 	int damage;
@@ -25,7 +29,8 @@ public class PoisonStatusEffect extends StatusEffect {
 		return 0;
 	}
 	
-	private void act(Creature target) {
-		target.takeDamage(damage);
+	@Override
+	protected void act(Creature target) {
+		target.setHealth(target.getHealth()-damage);
 	}
 }

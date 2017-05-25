@@ -75,19 +75,25 @@ public class Creature implements Entity{
 	}
 	
 	public void addEffect(StatusEffect e){
-		if (getIndexOfEffect(e.getId())==-1)
+		if (getIndexOfEffect(e.getId())==-1){
 			status.add(e);
+			e.start(this);
+		}
 		else
 			setDuration(e.getId(),e.getDuration());
 	}
 	
-	public void deleteEffect(int i){
-		while (getIndexOfEffect(i)!=-1){
-			status.remove(getIndexOfEffect(i));
+	public void deleteEffect(int id){
+		while (getIndexOfEffect(id)!=-1){
+			status.get(getIndexOfEffect(id)).end(this);
+			status.remove(getIndexOfEffect(id));
 		}
 	}
 	
 	public void deleteAllEffects(){
+		for (StatusEffect e:status){
+			e.end(this);
+		}
 		status = new ArrayList<StatusEffect>();
 	}
 	
@@ -96,11 +102,13 @@ public class Creature implements Entity{
 	}
 	
 	public void tickAllEffects(){
-		for (StatusEffect e:status){
-			if (e.tick(this))
-				deleteEffect(e.getId());
-			if (currentHealth<=0)
-				return;
+		for (int i=0;i<status.size();i++){
+			if (status.get(i).tick(this)){
+				if (status.size()==0) return;
+				deleteEffect(status.get(i).getId());
+				i--;
+			}
+			if (currentHealth<=0) return;
 		}
 	}
 	
@@ -162,6 +170,7 @@ public class Creature implements Entity{
      */
     public void takeDamage(int h)
     {
+    	if (hasEffect(4)||hasEffect(3)) return;
     	if(h <= 0){
     		//attacks that would do <1 damage have a chance of missing
     		if (-1*(h-2)*Math.random()<1)
@@ -173,6 +182,21 @@ public class Creature implements Entity{
     	currentHealth -= h;
     	if(currentHealth <= 0)
     		die();
+    }
+     
+    /**
+     * Sets the target's health
+     * @param h the target's new health value
+     */ 
+    public void setHealth(int h){
+    	if (hasEffect(3)&&h<currentHealth) return;
+    	if (h<0)
+    		h = 0;
+    	currentHealth = h;
+    	if (currentHealth<=0)
+    		die();
+    	else if(currentHealth > maxHealth)
+    		currentHealth = maxHealth;
     }
     
     /**
@@ -208,6 +232,12 @@ public class Creature implements Entity{
      */
     public void die()
     {
+    	if (hasEffect(3)){
+    		if (currentHealth<=0)
+    			currentHealth = 1;
+    		return;
+    	}
+    	deleteAllEffects();
     	myT.removeEntity(this);
     }
     

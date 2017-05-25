@@ -40,6 +40,8 @@ public class Tile
      */
     public void setType(boolean type){
         isRock = type;
+        if (true)
+        	setRegion(0);
     }
     
     public boolean getIsRock(){
@@ -84,6 +86,10 @@ public class Tile
     	if(thingsInTile.size() == 0)
     		return null;
     	return thingsInTile.get(thingsInTile.size() - 1);
+    }
+    
+    public ArrayList<Entity> getEntities(){
+    	return thingsInTile;
     }
     
     public Tile getTileInDirection(int direction){
