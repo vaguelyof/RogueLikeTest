@@ -21,17 +21,19 @@ public class Player extends Creature {
 	}
 
 	public void takeDamage(int d) {
-
+		int tempHealth = getHealth();
 		if (myInv.getMyArmor() == null) {
 			super.takeDamage(d);
-			game.logMessage("You were hit!", Color.RED);
+			if (getHealth()<tempHealth)
+				game.logMessage("You were hit!", Color.RED);
 		} else {
 			super.takeDamage(d - myInv.getMyArmor().getValue()); // Creature
 																	// will
 																	// catch if
 																	// value is
 																	// negative
-			game.logMessage("You were hit!", Color.RED);
+			if (getHealth()<tempHealth)
+				game.logMessage("You were hit!", Color.RED);
 		}
 	}
 	
