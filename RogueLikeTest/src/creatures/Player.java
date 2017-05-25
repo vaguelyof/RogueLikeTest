@@ -90,27 +90,26 @@ public class Player extends Creature {
 	}
 	
 
-	public boolean die() {
+	public void die() {
 		//checks various sources to see if the target dies
     	if (hasEffect(3)){
     		if (getHealth()<=0)
     			setHealth(1);
-    		return false;
+    		return;
     	}
 		if (myInv.getMySpecial()!=null&&myInv.getMySpecial() instanceof RevivalItem) {
 			((RevivalItem) myInv.getMySpecial()).revive(this);
 			game.logMessage("You were revived by your "+ myInv.getMySpecial().getName()+"!",Color.YELLOW);
 			myInv.setMySpecial(null);
-			return false;
+			return;
 		}
 		if (myInv.getMyPotion()!=null&&myInv.getMyPotion() instanceof RevivalItem) {
 			((RevivalItem) myInv.getMyPotion()).revive(this);
 			game.logMessage("You were revived by your "+ myInv.getMyPotion().getName()+"!",Color.YELLOW);
 			myInv.setMyPotion(null);
-			return false;
+			return;
 		}
-		if (!super.die()) 
-			return false;
+		super.die();
 		// drop all items
 		// gold is lost
 		dropItem(myInv.getMySpecial());
@@ -118,6 +117,10 @@ public class Player extends Creature {
 		dropItem(myInv.getMyWeapon());
 		dropItem(myInv.getMyPotion());
 		game.revertToBeginning();
-		return true;
+		game.logMessage("YOU DIED", Color.RED);
+	}
+	
+	public String items(){
+		return myInv.toString();
 	}
 }

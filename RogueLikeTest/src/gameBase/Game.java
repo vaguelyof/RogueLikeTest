@@ -175,6 +175,8 @@ public class Game {
 			panel.write(player.getHealth() + "/"+player.getMaxHealth(), Color.GREEN);
 		}
 		panel.write(" Gold: " +player.getGold(), Color.WHITE);
+		panel.setCursorPosition(0, 2);
+		panel.write(player.items(), Color.WHITE);
 	}
 
 	public void createHelpMenu() {
@@ -228,11 +230,12 @@ public class Game {
 				}
 			}
 		}
-		for (Tile t : c.getTile().getAdjacentTiles()) {
-			if (t.getTopEntity() instanceof Door) {
-				for (Tile j : t.getAdjacentTiles())
-					for (int i = 0; i < 8; i += 2) {
-						if (j.getTileInDirection(i) == t) {
+		for(Tile t : c.getTile().getAdjacentTiles()){
+			if(t.getTopEntity() instanceof Door){
+				//player can see one tile beyond the door
+				for(Tile j : t.getAdjacentTiles())
+					for(int i = 0; i < 8; i += 2){
+						if(j.getTileInDirection(i) == t){
 							seen.add(j);
 						}
 					}

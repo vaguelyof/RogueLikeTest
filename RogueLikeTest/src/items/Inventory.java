@@ -84,4 +84,16 @@ public class Inventory {
 		return myGold;
 	}
 	
+	public String toString(){
+		String result = "";
+		if(myWeapon != null)
+			result += "Weapon: " + myWeapon.getName() + " | ";
+		if(myArmor != null)
+			result += "Armor: " + myArmor.getName() + " | ";
+		if(myPotion != null)
+			result += "Potion: " + myPotion.getName() + " | ";
+		if(mySpecial != null)
+			result += "Spec. " + mySpecial.getName() + " | ";
+		return result;
+	}
 }
