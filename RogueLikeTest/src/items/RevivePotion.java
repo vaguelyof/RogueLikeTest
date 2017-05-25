@@ -2,6 +2,7 @@ package items;
 import java.awt.Color;
 
 import creatures.Creature;
+import statusEffects.*;
 
 public class RevivePotion extends Potion implements RevivalItem {
 	
@@ -22,7 +23,9 @@ public class RevivePotion extends Potion implements RevivalItem {
 	
 	@Override
 	public void revive(Creature user){
-		user.heal(user.getMaxHealth()/2);
+		user.setHealth(user.getMaxHealth()/2);
+		user.addEffect(new InvulnStatusEffect(3));
+		user.addEffect(new LevitationStatusEffect(3));
 	}
 	
 	public String getName(){

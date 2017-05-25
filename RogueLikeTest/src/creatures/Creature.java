@@ -170,6 +170,7 @@ public class Creature implements Entity{
      */
     public void takeDamage(int h)
     {
+    	if (hasEffect(3)) return;
     	if(h <= 0){
     		//attacks that would do <1 damage have a chance of missing
     		if (-1*(h-2)*Math.random()<1)
@@ -184,15 +185,17 @@ public class Creature implements Entity{
     }
      
     /**
-     * Like takeDamage, but ignores resistances
-     * @param h the amount of damage to be taken by the creature
+     * Sets the target's health
+     * @param h the target's new health value
      */ 
-    public void lowerHealth(int h){
-    	if (h<=0)
-    		return;
-    	currentHealth -= h;
-    	if(currentHealth <= 0)
+    public void setHealth(int h){
+    	if (h<0)
+    		h = 0;
+    	currentHealth = h;
+    	if (currentHealth<=0)
     		die();
+    	else if(currentHealth > maxHealth)
+    		currentHealth = maxHealth;
     }
     
     /**
@@ -228,6 +231,7 @@ public class Creature implements Entity{
      */
     public void die()
     {
+    	deleteAllEffects();
     	myT.removeEntity(this);
     }
     
