@@ -47,6 +47,7 @@ public class Game {
 		helpItems.add("S - Move South");
 		helpItems.add("D - Move East");
 		helpItems.add("F - Inspect");
+		helpItems.add("P - Pick up Item");
 
 		fov = new FOV(FOV.SHADOW);
 		seenTiles = new ArrayList<ArrayList<Tile>>();
@@ -344,6 +345,11 @@ public class Game {
 				}
 				displayMapAroundTile(player.getTile(), currentLevel);
 				break;
+			case 'P':
+				if(!searching){
+					player.pickUp();
+					displayMapAroundTile(player.getTile(), currentLevel);
+				}
 			}
 			return;
 		}
@@ -373,7 +379,10 @@ public class Game {
 	}
 	
 	public void logMessage(String msg){
-		log.logMessage(msg);
+		logMessage(msg, Color.WHITE);
+	}
+	public void logMessage(String msg, Color c){
+		log.logMessage(msg, c);
 	}
 	
 }

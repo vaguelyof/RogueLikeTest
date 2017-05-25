@@ -86,6 +86,10 @@ public class Tile
     	return thingsInTile.get(thingsInTile.size() - 1);
     }
     
+    public ArrayList<Entity> getEntities(){
+    	return thingsInTile;
+    }
+    
     public Tile getTileInDirection(int direction){
     	direction += 2;
     	direction %= 8;

@@ -4,6 +4,7 @@ import java.awt.Color;
 import gameBase.Game;
 import items.Inventory;
 import items.Item;
+import level.Tile;
 
 public class Player extends Creature {
 	Inventory myInv;
@@ -40,11 +41,32 @@ public class Player extends Creature {
 		 * 		then call equipArmor or equipWeapon
 		 * 		and delete item being picked up
 		 */
+		Item item = null;
 		
+		for(int i = getTile().getEntities().size() - 1; i >= 0; i --){
+			if(getTile().getEntities().get(i) instanceof Item){
+				item = (Item) getTile().getEntities().get(i);
+				getTile().removeEntity(item);
+				break;
+			}
+		}
+		if(item != null){
+			dropItem(myInv.pickUpItem(item));
+			game.logMessage("You picked up " + item.getName() + ".", Color.GREEN);
+		}
+		else{
+			game.logMessage("There is nothing here.", Color.RED);
+		}
 	}
 	
 	public void dropItem(Item e){
-		
+		if(e == null)
+			return;
+		Tile t = getTile();
+		t.removeEntity(this);
+		t.addEntity(e);
+		t.addEntity(this);
+		game.logMessage("You dropped " + e.getName() + ".", Color.RED);
 	}
 	
 	public void die(){
