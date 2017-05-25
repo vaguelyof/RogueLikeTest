@@ -3,10 +3,10 @@ import java.awt.Color;
 
 import creatures.Creature;
 
-public class RevivePotion extends Potion {
+public class RevivePotion extends Potion implements RevivalItem {
 	
 	public RevivePotion(){
-		super(30);
+		super(0);
 		
 	}
 	
@@ -16,21 +16,13 @@ public class RevivePotion extends Potion {
 	}
 	
 	@Override
-	public boolean canRevive(){
-		return true;
-	}
-	
-	@Override
 	public int getValue(){
 		return 10;
 	}
 	
 	@Override
-	public void use(Creature user){
-		if (user.getHealth() == 0)
-			user.heal(user.getMaxHealth()/2);
-		else
-			super.use(user);
+	public void revive(Creature user){
+		user.heal(user.getMaxHealth()/2);
 	}
 	
 	public String getName(){
