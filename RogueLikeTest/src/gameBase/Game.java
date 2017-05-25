@@ -44,12 +44,12 @@ public class Game {
 		levels = new ArrayList<DungeonLevel>();
 		helpItems = new ArrayList<String>();
 
-		helpItems.add("W - Move North");
-		helpItems.add("A - Move West");
-		helpItems.add("S - Move South");
-		helpItems.add("D - Move East");
+		helpItems.add("W - North");
+		helpItems.add("A - West");
+		helpItems.add("S - South");
+		helpItems.add("D - East");
 		helpItems.add("F - Inspect");
-		helpItems.add("I - Pick up item");
+		helpItems.add("I - Interact");
 		helpItems.add("O - Wait 1 turn");
 		helpItems.add("P - Drink Potion");
 
