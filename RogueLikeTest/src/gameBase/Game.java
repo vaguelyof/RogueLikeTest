@@ -300,7 +300,12 @@ public class Game {
 	}
 
 	public void movePlayer(int direction) {
-		if (creatureCanMoveInDirection(player, direction)) {
+		if (player.isStunned()&&!searching){
+			logMessage("You can't move!",Color.RED);
+			displayLog();
+			panel.updateUI();
+		}
+		else if (creatureCanMoveInDirection(player, direction)) {
 			player.getTile().getTileInDirection(direction).addEntity(player);
 			endTurn();
 		} else if (player.getTile().getTileInDirection(direction).getTopEntity() != null
@@ -364,8 +369,15 @@ public class Game {
 				break;
 			case 'I':
 				if (!searching) {
-					player.interact();
-					endTurn();
+					if (player.isStunned()){
+						logMessage("You can't move!",Color.RED);
+						displayLog();
+						panel.updateUI();
+					}
+					else {
+						player.interact();
+						endTurn();
+					}
 				}
 				break;
 			case 'O':
@@ -375,8 +387,15 @@ public class Game {
 				break;
 			case 'P':
 				if (!searching) {
-					player.usePotion();
-					endTurn();
+					if (player.isStunned()) {
+						logMessage("You can't move!",Color.RED);
+						displayLog();
+						panel.updateUI();
+					}
+					else {
+						player.usePotion();
+						endTurn();
+					}
 				}
 				break;
 			}

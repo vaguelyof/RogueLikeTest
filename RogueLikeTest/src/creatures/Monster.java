@@ -57,7 +57,8 @@ public class Monster extends Creature{
 			die();
 			return;
 		}
-	
+		if (isStunned())
+			return;
 		ArrayList<Tile> seeable = new ArrayList<Tile>();
 		
 		seeable = Game.calcFOV(this,14);

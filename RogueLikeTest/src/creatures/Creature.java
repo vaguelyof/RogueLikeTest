@@ -25,6 +25,7 @@ public class Creature implements Entity{
 	protected Tile myT;
 	private Color myColor;
 	private char myChar;
+	private int stuns;
 	
 	/**
 	 * Creates a creature with a name, description, health and damage.
@@ -42,6 +43,7 @@ public class Creature implements Entity{
 		dmg = damage;
 		myColor = Color.BLACK;
 		myChar = '@';
+		stuns = 0;
 	}
 	
 	/**
@@ -62,6 +64,7 @@ public class Creature implements Entity{
 		dmg = damage;
 		myColor = c;
 		myChar = letter;
+		stuns = 0;
 	}
 	
 	public void addItem(Item i){
@@ -147,6 +150,27 @@ public class Creature implements Entity{
     {
     	return des;
     }
+	
+    /**
+     * Stuns the creature
+     */
+	public void addStun() {
+		stuns++;
+	}
+	
+    /**
+     * Removes the stun
+     */
+	public void removeStun() {
+		stuns--;
+	}
+	
+    /**
+     * Removes the stun
+     */
+	public boolean isStunned() {
+		return stuns>0;
+	}
     
     /**
      * returns Health of creature

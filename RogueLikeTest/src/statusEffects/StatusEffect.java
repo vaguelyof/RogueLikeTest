@@ -8,7 +8,7 @@ import creatures.Creature;
  *
  */
 
-public class StatusEffect {
+public abstract class StatusEffect {
 	
 	private int duration;
 	
@@ -36,12 +36,11 @@ public class StatusEffect {
 	
 	/**
 	 * Returns the ID number used for identifying effects
-	 * Should be overwritten by subclasses
 	 * @return the ID number
 	 */
-	public int getId() {
+	public abstract int getId();/* {
 		return -1;
-	}
+	}*/
 	
 	/**
 	 * Makes the effect run for 1 turn
@@ -64,7 +63,6 @@ public class StatusEffect {
 	
 	/**
 	 * What the effect does when it is first added
-	 * Should be overwritten by subclasses
 	 * @param target the creature that is affected
 	 */
 	public void start(Creature target) {
@@ -72,7 +70,6 @@ public class StatusEffect {
 	
 	/**
 	 * What the effect does
-	 * Should be overwritten by subclasses
 	 * @param target the creature that is affected
 	 */
 	protected void act(Creature target) {
@@ -80,7 +77,6 @@ public class StatusEffect {
 	
 	/**
 	 * What the effect does when it ends
-	 * Should be overwritten by subclasses
 	 * @param target the creature that is affected
 	 */
 	public void end(Creature target) {
