@@ -1,7 +1,12 @@
 package level;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
+import creatures.Creature;
+import creatures.Player;
 import gameBase.Game;
+import gameEntities.Door;
 import gameEntities.Entity;
 /**
  * A Tile in a dungeon. Has a coordinate position and a list of Entities in it.
@@ -169,9 +174,102 @@ public class Tile
         compassAngle%=8;
         return compassAngle;
     }
+    /*
+     * https://en.wikipedia.org/wiki/Pathfinding
+     * 
+     */
+    public ArrayList<StepTile> getRouteToTile(Tile t)
+    {
+    	int currentStep = 1;
+    	
+    	ArrayList<StepTile> route = new ArrayList<StepTile>();
+    	ArrayList<StepTile> temp = new ArrayList<StepTile>();
+    	while(routeHasTarget(route, t))
+    	{
+	    	temp = getAdjacentStepTiles(currentStep);
+    		route = removeDuplicates(route, temp);
+    	}
+    	
+    	return route;
+    }
+    
+    /*
+     * merges arrays and removes duplicates
+     */
+    private ArrayList<StepTile> removeDuplicates(ArrayList<StepTile> a1, ArrayList<StepTile> a2)
+    {
+    	// add everything to a HashSet
+    	Set<StepTile> hs = new HashSet<StepTile>();	//set does not allow duplicates
+    	hs.addAll(a1);
+    	hs.addAll(a2);
+    	a2.clear();		//reset array
+    	a2.addAll(hs);	//add the set onto the array
+    					//array now has the entire route  
+    	return a2;
+    }
+    
+    private boolean routeHasTarget(ArrayList<StepTile> route, Tile t)
+    {
+    	for(Tile k : route)
+    	{
+    		if(k == t)
+    			return true;
+    	}
+    	return false;
+    }
+    
+    /*
+     * currentStep must be between 0 and route.size() - 1, inclusive
+     */
+    public Tile getNextTile(Tile t)
+    {
+    	for(StepTile k : getRouteToTile(t))
+    	{
+    		if (k.getStep() == 1)
+    			return k;
+    	}
+    	//should only execute if already at target tile
+    	return t;
+    }
+    
+    private ArrayList<StepTile> getAdjacentStepTiles(int step)
+    {
+    	Tile t = null;
+    	ArrayList<StepTile> Tiles = new ArrayList<StepTile>();
+    	
+    	for(int i = Game.NORTH; i <= Game.NORTH_WEST; i++)
+    	{
+    		t = getTileInDirection(i);
+    		
+    		if(!isRock && !(t.getTopEntity() instanceof Creature))
+    			Tiles.add(new StepTile(t.getIsRock(), t.getDungeon(), t.getX(), t.getY(), step));
+    	}
+    	
+    	return Tiles;
+    }
     
     public boolean isInRoom()
     {
     	return containedDungeon.isRegionRoom(myRegion);
     }
+    
+    /*
+	 * returns true if a tile with a door
+	 */
+	public boolean hasOpenDoor()
+	{
+		boolean hasDoor = false;
+		boolean hasPlayer = false;
+		
+		for(Entity e : getEntities())
+		{
+			if(e instanceof Door)
+				hasDoor = true;
+			
+			if(e instanceof Player)
+				hasPlayer = true;
+				
+		}
+		return hasDoor && hasPlayer;
+	}
 }
