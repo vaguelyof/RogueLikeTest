@@ -7,8 +7,6 @@ import statusEffects.*;
 public class RevivePotion extends Potion implements RevivalItem {
 	
 	public RevivePotion(){
-		super(0);
-		
 	}
 	
 	@Override
@@ -27,8 +25,17 @@ public class RevivePotion extends Potion implements RevivalItem {
 		user.addEffect(new InvulnStatusEffect(3));
 		user.addEffect(new LevitationStatusEffect(3));
 	}
+
+	@Override
+	public void use(Creature user){
+	}
 	
 	public String getName(){
 		return "Revive Potion";
+	}
+
+	@Override
+	public String getDescription() {
+		return "Revives the user";
 	}
 }
