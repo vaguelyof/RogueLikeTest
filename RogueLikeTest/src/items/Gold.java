@@ -5,7 +5,7 @@ import java.awt.Color;
 import creatures.Creature;
 import level.Tile;
 
-public class Gold implements Item {
+public class Gold extends Item {
 
 	private Tile myTile;
 	private int myStack;

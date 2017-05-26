@@ -7,7 +7,7 @@ import level.Tile;
 /* Weapon is an Item with a value that adds to a Creature's damage
  * Weapon must have a positive value 
  */
-public class Weapon implements Item{
+public class Weapon extends Item{
 
 	boolean twoHanded;	//if true, takes up both of the Player's inventory spots
 	@Override

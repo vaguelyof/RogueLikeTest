@@ -8,7 +8,7 @@ import level.Tile;
  * Armor is an Item that reduces incoming damage
  * Armor must have a positive value
  */
-public class Armor implements Item{
+public class Armor extends Item{
 	private Tile myTile;
 	private String name;
 	private int blockStrength;

@@ -4,7 +4,7 @@ import java.awt.Color;
 import creatures.Creature;
 import level.Tile;
 
-public abstract class Potion implements Item {
+public abstract class Potion extends Item {
 	private Tile myTile;
 	private int myStack;
 	private int healAmount;
@@ -36,7 +36,6 @@ public abstract class Potion implements Item {
 	@Override
 	public void setTile(Tile t) {
 		myTile = t;
-
 	}
 
 	@Override
@@ -55,7 +54,7 @@ public abstract class Potion implements Item {
 	}
 	
 	public boolean isDrinkable(){
-		return isThrowable();
+		return !isThrowable();
 	}
 	
 	public boolean isThrowable(){

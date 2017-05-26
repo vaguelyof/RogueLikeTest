@@ -5,7 +5,7 @@ import java.awt.Color;
 import creatures.Creature;
 import level.Tile;
 
-public class Key implements Item{
+public class Key extends Item{
 
 	int myStack;
 	int myValue;	//what is this for?

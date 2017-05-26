@@ -3,14 +3,30 @@ import java.awt.Color;
 
 import creatures.Creature;
 import gameEntities.Entity;
+import level.Tile;
 
-public interface Item extends Entity
+public abstract class Item implements Entity
 {
-	int getStack();
+	private Tile myTile;
+	private int myStack;
 	
-	int getValue();
+	public Tile getTile() {
+		return myTile;
+	}
+
+	public void setTile(Tile t) {
+		myTile = t;
+	}
+
+	public int getStack() {
+		return myStack;
+	}
 	
-	void setStack(int stack);
+	public void setStack(int stack) {
+		myStack = stack;
+	}
 	
-	void use(Creature user);
+	public abstract void use(Creature user);
+	
+	public abstract int getValue();
 }

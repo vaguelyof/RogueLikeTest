@@ -2,7 +2,7 @@ package items;
 
 import level.Tile;
 
-public abstract class SpecialItem implements Item  {
+public abstract class SpecialItem extends Item  {
 	private Tile myTile;
 	private int myStack;
 
