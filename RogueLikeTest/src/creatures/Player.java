@@ -126,5 +126,10 @@ public class Player extends Creature {
 	public String items(){
 		return myInv.toString();
 	}
+	
+	public void usePotion()
+	{
+		
+	}
 
 }
