@@ -55,10 +55,10 @@ public abstract class Potion implements Item {
 	}
 	
 	public boolean isDrinkable(){
-		return true;
+		return isThrowable();
 	}
 	
-	public boolean isThrowableable(){
+	public boolean isThrowable(){
 		return false;
 	}
 }
