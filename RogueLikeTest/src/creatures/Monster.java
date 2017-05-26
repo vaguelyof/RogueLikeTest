@@ -14,6 +14,7 @@ public class Monster extends Creature{
 	private int speed;	//how many blocks the creature moves per turn
 	private boolean isSlow;
 	private boolean canMove;
+	private int stuns;
 	private Tile lastSeen;
 
 	public Monster(String aName, String description, int health, int dmg)
@@ -23,6 +24,7 @@ public class Monster extends Creature{
 		setColor(Color.RED);
 		speed = 1;
 		isSlow = false;
+		stuns = 0;
 		canMove = true;
 		lastSeen = null;
 	}
@@ -34,6 +36,7 @@ public class Monster extends Creature{
 		setColor(Color.RED);
 		speed = moveSpeed;
 		isSlow = slow;
+		stuns = 0;
 		canMove = true;
 		lastSeen = null;
 	}
@@ -57,7 +60,8 @@ public class Monster extends Creature{
 			die();
 			return;
 		}
-	
+		if (stuns>0)
+			return;
 		ArrayList<Tile> seeable = new ArrayList<Tile>();
 		
 		seeable = Game.calcFOV(this,14);
@@ -189,6 +193,14 @@ public class Monster extends Creature{
 	
 	private void slow(){
 		canMove = !canMove;
+	}
+	
+	public void addStun() {
+		stuns++;
+	}
+	
+	public void removeStun() {
+		stuns--;
 	}
 	
 	/*

@@ -34,6 +34,8 @@ public class BurnStatusEffect extends StatusEffect {
 	public void start(Creature target) {
 		if (target.hasEffect(4))
 			setDuration(0);
+		else
+			target.deleteEffect(5);
 	}
 	
 	@Override
