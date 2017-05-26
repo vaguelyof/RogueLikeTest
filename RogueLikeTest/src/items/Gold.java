@@ -6,36 +6,21 @@ import creatures.Creature;
 import level.Tile;
 
 public class Gold extends Item {
-
-	private Tile myTile;
-	private int myStack;
 	
 	public Gold(int amount){
-		myStack = amount;
+		setStack(amount);
 	}
 	
 	@Override
 	public String getName() {
 		// TODO Auto-generated method stub
-		return myStack + " gold";
+		return getStack() + " gold";
 	}
 
 	@Override
 	public String getDescription() {
 		// TODO Auto-generated method stub
 		return "";
-	}
-
-	@Override
-	public Tile getTile() {
-		// TODO Auto-generated method stub
-		return myTile;
-	}
-
-	@Override
-	public void setTile(Tile t) {
-		// TODO Auto-generated method stub
-		myTile = t;
 	}
 
 	@Override
@@ -51,21 +36,9 @@ public class Gold extends Item {
 	}
 
 	@Override
-	public int getStack() {
-		// TODO Auto-generated method stub
-		return myStack;
-	}
-
-	@Override
 	public int getValue() {
 		// TODO Auto-generated method stub
 		return 0;
-	}
-
-	@Override
-	public void setStack(int stack) {
-		myStack = stack;
-
 	}
 
 	@Override
