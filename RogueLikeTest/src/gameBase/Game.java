@@ -11,8 +11,7 @@ import gameEntities.Searcher;
 import level.DungeonLevel;
 import level.Tile;
 import squidpony.squidgrid.Radius;
-import statusEffects.PoisonStatusEffect;
-import statusEffects.StatusEffect;
+import statusEffects.*;
 import squidpony.squidgrid.FOV;
 
 public class Game {
