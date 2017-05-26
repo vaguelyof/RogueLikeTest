@@ -9,41 +9,47 @@ import level.Tile;
  * Armor must have a positive value
  */
 public class Armor implements Item{
-
+	private Tile myTile;
+	private String name;
+	private int blockStrength;
+	
+	public Armor(int str, String aName){
+		blockStrength = str;
+		name = aName;
+	}
+	
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
+		return name;
+	}
+	
 	@Override
 	public String getDescription() {
-		// TODO Auto-generated method stub
-		return null;
+
+		return "Blocks " + blockStrength + " damage.";
 	}
 
 	@Override
 	public Tile getTile() {
-		// TODO Auto-generated method stub
-		return null;
+		return myTile;
 	}
 
 	@Override
 	public void setTile(Tile t) {
-		// TODO Auto-generated method stub
-		
+		myTile = t;
 	}
 
 	@Override
 	public char getChar() {
 		// TODO Auto-generated method stub
-		return 0;
+		return 'A';
 	}
 
 	@Override
 	public Color getColor() {
 		// TODO Auto-generated method stub
-		return null;
+		return Color.LIGHT_GRAY;
 	}
 
 	@Override
@@ -55,7 +61,7 @@ public class Armor implements Item{
 	@Override
 	public int getValue() {
 		// TODO Auto-generated method stub
-		return 0;
+		return blockStrength;
 	}
 
 	@Override
@@ -66,7 +72,6 @@ public class Armor implements Item{
 
 	@Override
 	public void use(Creature user) {
-		// TODO Auto-generated method stub
 		
 	}
 

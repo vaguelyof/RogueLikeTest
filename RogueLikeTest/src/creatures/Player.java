@@ -150,7 +150,7 @@ public class Player extends Creature {
 			}
 		}
 		silentDrop(chest.getItem());
-		game.logMessage("There was a " + chest.getItem().getName() + " in the chest.", Color.WHITE);
+		game.logMessage("The chest contained " + chest.getItem().getName() + ".", Color.WHITE);
 		}
 		else{
 			game.logMessage("You don't have a key.", Color.RED);
