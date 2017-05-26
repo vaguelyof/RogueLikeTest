@@ -8,6 +8,7 @@ import gameBase.Game;
 import items.Inventory;
 import items.Item;
 import items.RevivalItem;
+import items.RevivePotion;
 import level.Tile;
 
 public class Player extends Creature {
@@ -37,11 +38,11 @@ public class Player extends Creature {
 
 		}
 	}
-	
-	public int getGold(){
+
+	public int getGold() {
 		return myInv.getGold();
 	}
-	
+
 	public int getDamage() {
 
 		if (myInv.getMyWeapon() != null)
@@ -84,31 +85,30 @@ public class Player extends Creature {
 	public void dropItem(Item e) {
 		if (e == null)
 			return;
-		
+
 		Tile t = getTile();
 		t.removeEntity(this);
 		t.addEntity(e);
 		t.addEntity(this);
 		game.logMessage("You dropped " + e.getName() + ".", Color.RED);
 	}
-	
 
 	public void die() {
-		//checks various sources to see if the target dies
-    	if (hasEffect(3)){
-    		if (getHealth()<=0)
-    			setHealth(1);
-    		return;
-    	}
-		if (myInv.getMySpecial()!=null&&myInv.getMySpecial() instanceof RevivalItem) {
+		// checks various sources to see if the target dies
+		if (hasEffect(3)) {
+			if (getHealth() <= 0)
+				setHealth(1);
+			return;
+		}
+		if (myInv.getMySpecial() != null && myInv.getMySpecial() instanceof RevivalItem) {
 			((RevivalItem) myInv.getMySpecial()).revive(this);
-			game.logMessage("You were revived by your "+ myInv.getMySpecial().getName()+"!",Color.YELLOW);
+			game.logMessage("You were revived by your " + myInv.getMySpecial().getName() + "!", Color.YELLOW);
 			myInv.setMySpecial(null);
 			return;
 		}
-		if (myInv.getMyPotion()!=null&&myInv.getMyPotion() instanceof RevivalItem) {
+		if (myInv.getMyPotion() != null && myInv.getMyPotion() instanceof RevivalItem) {
 			((RevivalItem) myInv.getMyPotion()).revive(this);
-			game.logMessage("You were revived by your "+ myInv.getMyPotion().getName()+"!",Color.YELLOW);
+			game.logMessage("You were revived by your " + myInv.getMyPotion().getName() + "!", Color.YELLOW);
 			myInv.setMyPotion(null);
 			return;
 		}
@@ -122,14 +122,20 @@ public class Player extends Creature {
 		game.revertToBeginning();
 		game.logMessage("YOU DIED", Color.RED);
 	}
-	
-	public String items(){
+
+	public String items() {
 		return myInv.toString();
 	}
-	
-	public void usePotion()
-	{
-		
+
+	public void usePotion() {
+		if (myInv.getMyPotion() != null && !(myInv.getMyPotion() instanceof RevivePotion)) {
+			myInv.getMyPotion().use(this);
+			game.logMessage("You drank " + myInv.getMyPotion().getName() + ".", Color.GREEN);
+			myInv.setMyPotion(null);
+		} else {
+			game.logMessage("You cannot drink a potion.");
+		}
+
 	}
 
 }
