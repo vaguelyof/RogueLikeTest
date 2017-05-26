@@ -9,13 +9,13 @@ public abstract class Potion implements Item {
 	private int myStack;
 	private int healAmount;
 	
-	public Potion(){
+	/*public Potion(){
 		healAmount = 0;
 	}
 	
 	public Potion(int health){
 		healAmount = health;
-	}
+	}*/
 	
 	@Override
 	public String getName() {
