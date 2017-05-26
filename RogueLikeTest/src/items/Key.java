@@ -15,12 +15,12 @@ public class Key implements Item{
 	char myChar;
 	Color myColor;
 	
-	public Key(Tile t) {
+	public Key() {
 		myStack = 1;
 		myValue = 0;
 		name = "Key";
-		des = "A magic key that can open one chest to unlock the treasures within";	//is this too long?
-		myT = t;
+		des = "A magic key that can open one chest to unlock the treasures within";	//is this too long? Technically no, but it will take up sever lines
+
 		myChar = 'K';
 		myColor = Color.ORANGE;
 	}

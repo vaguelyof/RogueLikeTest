@@ -175,6 +175,7 @@ public class Game {
 			panel.write(player.getHealth() + "/" + player.getMaxHealth(), Color.GREEN);
 		}
 		panel.write(" Gold: " + player.getGold(), Color.WHITE);
+		panel.write(" Keys: " + player.getKeys(), Color.WHITE);
 		panel.setCursorPosition(0, 2);
 		panel.write(player.items(), Color.WHITE);
 	}
@@ -363,7 +364,7 @@ public class Game {
 				break;
 			case 'I':
 				if (!searching) {
-					player.pickUp();
+					player.interact();
 					endTurn();
 				}
 				break;

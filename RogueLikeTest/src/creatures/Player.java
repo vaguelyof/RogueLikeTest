@@ -2,6 +2,7 @@ package creatures;
 
 import java.awt.Color;
 
+import gameEntities.Chest;
 import gameEntities.Door;
 import gameEntities.Entity;
 import gameBase.Game;
@@ -43,6 +44,9 @@ public class Player extends Creature {
 	public int getGold() {
 		return myInv.getGold();
 	}
+	public int getKeys() {
+		return myInv.getKeys();
+	}
 
 	public int getDamage() {
 
@@ -63,7 +67,7 @@ public class Player extends Creature {
 
 	public void pickUp() {
 		/*
-		 * TODO: find out whether the item being picked up is an Armor or Weapon
+		 * find out whether the item being picked up is an Armor or Weapon
 		 * then call equipArmor or equipWeapon and delete item being picked up
 		 */
 		Item item = null;
@@ -92,6 +96,16 @@ public class Player extends Creature {
 		t.addEntity(e);
 		t.addEntity(this);
 		game.logMessage("You dropped " + e.getName() + ".", Color.RED);
+	}
+	
+	public void silentDrop(Item e) {
+		if (e == null)
+			return;
+
+		Tile t = getTile();
+		t.removeEntity(this);
+		t.addEntity(e);
+		t.addEntity(this);
 	}
 
 	public void die() {
@@ -123,7 +137,26 @@ public class Player extends Creature {
 		game.revertToBeginning();
 		game.logMessage("YOU DIED", Color.RED);
 	}
+	
+	public void unlock(){
+		if(myInv.useKey()){
+		Chest chest = null;
 
+		for (int i = getTile().getEntities().size() - 1; i >= 0; i--) {
+			if (getTile().getEntities().get(i) instanceof Chest) {
+				chest = (Chest) getTile().getEntities().get(i);
+				getTile().removeEntity(chest);
+				break;
+			}
+		}
+		silentDrop(chest.getItem());
+		game.logMessage("There was a " + chest.getItem().getName() + " in the chest.", Color.WHITE);
+		}
+		else{
+			game.logMessage("You don't have a key.", Color.RED);
+		}
+	}
+	
 	public String items() {
 		return myInv.toString();
 	}
@@ -138,5 +171,21 @@ public class Player extends Creature {
 		}
 
 	}
-
+	
+	public void interact(){
+		if(getTile().getEntities().size()<2){
+			game.logMessage("There is nothing here.", Color.RED);
+			return;
+		}
+		Entity e = getTile().getEntities().get(getTile().getEntities().size() - 2);
+		if(e instanceof Item){
+			pickUp();
+			return;
+		}
+		if(e instanceof Chest){
+			unlock();
+			return;
+		}
+		game.logMessage("You cannot interact with this.");
+	}
 }
