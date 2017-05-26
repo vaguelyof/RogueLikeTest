@@ -4,18 +4,18 @@ import java.awt.Color;
 import creatures.Creature;
 import level.Tile;
 
-public class Potion implements Item {
+public abstract class Potion implements Item {
 	private Tile myTile;
 	private int myStack;
 	private int healAmount;
 	
-	public Potion(){
+	/*public Potion(){
 		healAmount = 0;
 	}
 	
 	public Potion(int health){
 		healAmount = health;
-	}
+	}*/
 	
 	@Override
 	public String getName() {
@@ -24,7 +24,7 @@ public class Potion implements Item {
 
 	@Override
 	public String getDescription() {
-		return "Drink to heal";
+		return "";
 	}
 
 	@Override
@@ -43,16 +43,6 @@ public class Potion implements Item {
 	public char getChar() {
 		return '+';
 	}
-
-	@Override
-	public Color getColor() {
-		return new Color(255,255,255);
-	}
-
-	@Override
-	public void use(Creature user){
-		user.heal(healAmount);
-	}
 	
 	@Override
 	public int getStack() {
@@ -64,8 +54,11 @@ public class Potion implements Item {
 		myStack = stack;
 	}
 	
-	@Override
-	public int getValue(){
-		return 0;
+	public boolean isDrinkable(){
+		return isThrowable();
+	}
+	
+	public boolean isThrowable(){
+		return false;
 	}
 }

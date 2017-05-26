@@ -162,7 +162,7 @@ public class Player extends Creature {
 	}
 
 	public void usePotion() {
-		if (myInv.getMyPotion() != null && !(myInv.getMyPotion() instanceof RevivePotion)) {
+		if (myInv.getMyPotion() != null && myInv.getMyPotion().isDrinkable()) {
 			myInv.getMyPotion().use(this);
 			game.logMessage("You drank " + myInv.getMyPotion().getName() + ".", Color.GREEN);
 			myInv.setMyPotion(null);
