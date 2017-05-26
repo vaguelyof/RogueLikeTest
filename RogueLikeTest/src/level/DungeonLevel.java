@@ -95,13 +95,13 @@ public class DungeonLevel
     			
     			switch((int)(Math.random()*3)){
     			case 0:
-    				e = new Armor(2, "Leather Armor");
+    				e = new Chest(new Armor(2, "Leather Armor"));
     				break;
     			case 1:
-    				e = new Armor(6, "Scale Armor");
+    				e = new Chest(new Armor(6, "Scale Armor"));
     				break;
     			default:
-    				e = new HealthPotion();
+    				e = new Chest(new HealthPotion());
     			}
     			
     			chests++;
