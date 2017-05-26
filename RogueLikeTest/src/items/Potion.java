@@ -43,16 +43,6 @@ public abstract class Potion implements Item {
 	public char getChar() {
 		return '+';
 	}
-
-	/*@Override
-	public Color getColor() {
-		return new Color(255,255,255);
-	}*/
-
-	/*@Override
-	public void use(Creature user){
-		user.heal(healAmount);
-	}*/
 	
 	@Override
 	public int getStack() {
@@ -64,8 +54,11 @@ public abstract class Potion implements Item {
 		myStack = stack;
 	}
 	
-	/*@Override
-	public int getValue(){
-		return 0;
-	}*/
+	public boolean isDrinkable(){
+		return true;
+	}
+	
+	public boolean isThrowableable(){
+		return false;
+	}
 }

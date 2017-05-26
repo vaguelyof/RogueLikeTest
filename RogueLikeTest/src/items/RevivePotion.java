@@ -38,4 +38,8 @@ public class RevivePotion extends Potion implements RevivalItem {
 	public String getDescription() {
 		return "Revives the user";
 	}
+	
+	public boolean isDrinkable(){
+		return false;
+	}
 }
