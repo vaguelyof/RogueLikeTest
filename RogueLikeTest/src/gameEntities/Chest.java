@@ -1,6 +1,7 @@
 package gameEntities;
 import java.awt.Color;
 
+import items.Armor;
 import items.HealthPotion;
 import items.Item;
 import level.Tile;
