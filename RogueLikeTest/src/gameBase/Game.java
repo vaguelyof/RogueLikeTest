@@ -11,8 +11,7 @@ import gameEntities.Searcher;
 import level.DungeonLevel;
 import level.Tile;
 import squidpony.squidgrid.Radius;
-import statusEffects.PoisonStatusEffect;
-import statusEffects.StatusEffect;
+import statusEffects.*;
 import squidpony.squidgrid.FOV;
 
 public class Game {
@@ -66,8 +65,8 @@ public class Game {
 		currentLevel = 0;
 		createPlayer();
 		insertEntity((Entity) player, levels.get(0).getEntrance());
-		// player.addEffect(new PoisonStatusEffect(10));
-		// addRegionToSeen(1,0);
+		//player.addEffect(new FrozenStatusEffect(10));
+		//addRegionToSeen(1,0);
 		displayMapAroundTile(player.getTile(), 0);
 		log = new Logger(rightSideMenuWidth - 1, panel.getHeightInCharacters() - 6 - helpItems.size());
 	}
@@ -270,7 +269,6 @@ public class Game {
 	public static boolean creatureCanMoveInDirection(Creature c, int direction) {
 		if (c == null)
 			return false;
-
 		if (!c.getTile().getTileInDirection(direction).getIsRock()
 				&& !(c.getTile().getTileInDirection(direction).getTopEntity() instanceof Creature)) {
 			return true;
@@ -299,7 +297,12 @@ public class Game {
 	}
 
 	public void movePlayer(int direction) {
-		if (creatureCanMoveInDirection(player, direction)) {
+		if (player.isStunned()&&!searching){
+			logMessage("You can't move!",Color.RED);
+			displayLog();
+			panel.updateUI();
+		}
+		else if (creatureCanMoveInDirection(player, direction)) {
 			player.getTile().getTileInDirection(direction).addEntity(player);
 			endTurn();
 		} else if (player.getTile().getTileInDirection(direction).getTopEntity() != null
@@ -363,8 +366,15 @@ public class Game {
 				break;
 			case 'I':
 				if (!searching) {
-					player.pickUp();
-					endTurn();
+					if (player.isStunned()){
+						logMessage("You can't move!",Color.RED);
+						displayLog();
+						panel.updateUI();
+					}
+					else {
+						player.pickUp();
+						endTurn();
+					}
 				}
 				break;
 			case 'O':
@@ -374,8 +384,15 @@ public class Game {
 				break;
 			case 'P':
 				if (!searching) {
-					player.usePotion();
-					endTurn();
+					if (player.isStunned()) {
+						logMessage("You can't move!",Color.RED);
+						displayLog();
+						panel.updateUI();
+					}
+					else {
+						player.usePotion();
+						endTurn();
+					}
 				}
 				break;
 			}
