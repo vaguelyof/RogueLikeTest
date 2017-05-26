@@ -2,6 +2,8 @@ package creatures;
 
 import java.awt.Color;
 
+import gameEntities.Door;
+import gameEntities.Entity;
 import gameBase.Game;
 import items.Inventory;
 import items.Item;
@@ -124,4 +126,10 @@ public class Player extends Creature {
 	public String items(){
 		return myInv.toString();
 	}
+	
+	public void usePotion()
+	{
+		
+	}
+
 }

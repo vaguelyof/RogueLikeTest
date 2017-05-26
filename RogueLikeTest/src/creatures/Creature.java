@@ -241,7 +241,6 @@ public class Creature implements Entity{
     	}
     	deleteAllEffects();
     	myT.removeEntity(this);
-    	game.logMessage(getName() + " has been vanquished!", Color.RED);
     }
     
     
