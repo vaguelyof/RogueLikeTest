@@ -82,6 +82,7 @@ public class DungeonLevel
     }
     
     private void populateLevel(int times){
+    	int chests = 0;
     	int choice;
     	Entity e;
     	for(int i = 0; i < times; i++){
@@ -92,6 +93,7 @@ public class DungeonLevel
     			break;
     		case 1:
     			e = new Chest();
+    			chests++;
     			break;
     		case 2:
     			if (Math.random() * 4 < 1)
@@ -106,6 +108,9 @@ public class DungeonLevel
     			e = Game.createLevel1Monster();
     		}
     		getRandomEmptyTileInARoomExcludingSpawnRegion().addEntity(e);
+    	}
+    	for(int i = 0; i< chests; i++){
+    		getRandomEmptyTileInARoomExcludingSpawnRegion().addEntity(new Key());
     	}
     }
     private Tile getRandomEmptyTileInARoom(){

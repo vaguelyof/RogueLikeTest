@@ -10,6 +10,7 @@ public class Inventory {
 	private Potion myPotion;
 	private Item mySpecial;
 	private int myGold;
+	private int myKeys;
 	
 	public Inventory(){
 	}
@@ -23,6 +24,8 @@ public class Inventory {
 			return setMyPotion((Potion)i);
 		if(i instanceof Gold)
 			return addGold((Gold)i);
+		if(i instanceof Key)
+			return addKey();
 		if(i != null)
 			return setMySpecial(i);
 		return null;
@@ -80,19 +83,38 @@ public class Inventory {
 	}
 
 	public int getGold() {
-		// TODO Auto-generated method stub
+		
 		return myGold;
 	}
 	
-	public String toString(){
+	
+	
+	public int getKeys(){
+		return myKeys;
+	}
+	
+	public boolean useKey(){
+		if(myKeys>0){
+			myKeys--;
+			return true;
+		}
+		return false;
+	}
+
+	public Item addKey() {
+		myKeys++;
+		return null;
+	}
+
+	public String toString() {
 		String result = "";
-		if(myWeapon != null)
+		if (myWeapon != null)
 			result += "Weapon: " + myWeapon.getName() + " | ";
-		if(myArmor != null)
+		if (myArmor != null)
 			result += "Armor: " + myArmor.getName() + " | ";
-		if(myPotion != null)
+		if (myPotion != null)
 			result += "Potion: " + myPotion.getName() + " | ";
-		if(mySpecial != null)
+		if (mySpecial != null)
 			result += "Spec. " + mySpecial.getName() + " | ";
 		return result;
 	}

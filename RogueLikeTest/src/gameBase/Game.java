@@ -11,7 +11,8 @@ import gameEntities.Searcher;
 import level.DungeonLevel;
 import level.Tile;
 import squidpony.squidgrid.Radius;
-import statusEffects.*;
+import statusEffects.PoisonStatusEffect;
+import statusEffects.StatusEffect;
 import squidpony.squidgrid.FOV;
 
 public class Game {
@@ -65,8 +66,8 @@ public class Game {
 		currentLevel = 0;
 		createPlayer();
 		insertEntity((Entity) player, levels.get(0).getEntrance());
-		//player.addEffect(new FrozenStatusEffect(10));
-		//addRegionToSeen(1,0);
+		// player.addEffect(new PoisonStatusEffect(10));
+		// addRegionToSeen(1,0);
 		displayMapAroundTile(player.getTile(), 0);
 		log = new Logger(rightSideMenuWidth - 1, panel.getHeightInCharacters() - 6 - helpItems.size());
 	}
@@ -174,6 +175,7 @@ public class Game {
 			panel.write(player.getHealth() + "/" + player.getMaxHealth(), Color.GREEN);
 		}
 		panel.write(" Gold: " + player.getGold(), Color.WHITE);
+		panel.write(" Keys: " + player.getKeys(), Color.WHITE);
 		panel.setCursorPosition(0, 2);
 		panel.write(player.items(), Color.WHITE);
 	}
@@ -269,6 +271,7 @@ public class Game {
 	public static boolean creatureCanMoveInDirection(Creature c, int direction) {
 		if (c == null)
 			return false;
+
 		if (!c.getTile().getTileInDirection(direction).getIsRock()
 				&& !(c.getTile().getTileInDirection(direction).getTopEntity() instanceof Creature)) {
 			return true;
@@ -372,7 +375,7 @@ public class Game {
 						panel.updateUI();
 					}
 					else {
-						player.pickUp();
+						player.interact();
 						endTurn();
 					}
 				}
