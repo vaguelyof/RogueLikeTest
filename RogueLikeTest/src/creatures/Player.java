@@ -134,7 +134,7 @@ public class Player extends Creature {
 			game.logMessage("You drank " + myInv.getMyPotion().getName() + ".", Color.GREEN);
 			myInv.setMyPotion(null);
 		} else if (myInv.getMyPotion() != null) {
-			game.logMessage("You cannot drink this potion.");
+			game.logMessage("You cannot drink this potion.",Color.RED);
 		} else {
 			game.logMessage("You cannot drink a potion.");
 		}
