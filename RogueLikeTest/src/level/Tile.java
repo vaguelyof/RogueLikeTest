@@ -122,6 +122,25 @@ public class Tile
     	return null;
     }
     
+    /*
+     * returns a tile that can be moved to 
+     * that is to the left, diagonal left, front, diagonal right, or right of the direction entered
+     */
+    public Tile getEmptyTileInDirection(int direction)
+    {
+    	//return equivalent of getTileInDirection if tile in direction is not a rock and has no creature
+    	if(!getTileInDirection(direction).getIsRock() && !(getTileInDirection(direction).getTopEntity() instanceof Creature))
+    	{
+    		return getTileInDirection(direction);
+    	}
+    	for(int i = -2; i <= 2; i++)//getTileInDirection compensates for directions > 7
+    	{
+    		if (!getTileInDirection(direction + i).getIsRock() && !(getTileInDirection(direction + i).getTopEntity() instanceof Creature))
+    			return getTileInDirection(direction + i);
+    	}
+    	return null;
+    }
+    
     /**
      * finds tiles to the North, North-East, East, South-East, South, South-West, West, and North-West
      * of a given Tile t
@@ -180,77 +199,43 @@ public class Tile
      */
     public ArrayList<StepTile> getRouteToTile(Tile t)
     {
-    	int currentStep = 1;
-    	
+    	int i = 0;
+    	StepTile st = new StepTile(getIsRock(), getDungeon(), getX(), getY(), 0);
     	ArrayList<StepTile> route = new ArrayList<StepTile>();
-    	ArrayList<StepTile> temp = new ArrayList<StepTile>();
-    	while(routeHasTarget(route, t))
+    	Tile nextTile = st.getEmptyTileInDirection(st.getDirectionToTile(t));
+    	
+    	//ArrayList<StepTile> temp = new ArrayList<StepTile>();
+    	while(!st.isNextTo(t) && i < 100)	//I can't get the monster to know when his path is complete, but telling it to find less than 100 steps works
     	{
-	    	temp = getAdjacentStepTiles(currentStep);
-    		route = removeDuplicates(route, temp);
+    		/*
+	    	temp.addAll(st.getAdjacentStepTiles());
+    		route.addAll(st.removeDuplicates(route, temp));
+    		*/
+	    	route.add(new StepTile(nextTile.getIsRock(), nextTile.getDungeon(), nextTile.getX(), nextTile.getY(), st.getStep() + 1));
+    		st = route.get(route.size() - 1);
+    		i++;
     	}
     	
     	return route;
     }
     
-    /*
-     * merges arrays and removes duplicates
-     */
-    private ArrayList<StepTile> removeDuplicates(ArrayList<StepTile> a1, ArrayList<StepTile> a2)
-    {
-    	// add everything to a HashSet
-    	Set<StepTile> hs = new HashSet<StepTile>();	//set does not allow duplicates
-    	hs.addAll(a1);
-    	hs.addAll(a2);
-    	a2.clear();		//reset array
-    	a2.addAll(hs);	//add the set onto the array
-    					//array now has the entire route  
-    	return a2;
-    }
-    
-    private boolean routeHasTarget(ArrayList<StepTile> route, Tile t)
-    {
-    	for(Tile k : route)
-    	{
-    		if(k == t)
-    			return true;
-    	}
-    	return false;
-    }
-    
-    /*
-     * currentStep must be between 0 and route.size() - 1, inclusive
-     */
-    public Tile getNextTile(Tile t)
-    {
-    	for(StepTile k : getRouteToTile(t))
-    	{
-    		if (k.getStep() == 1)
-    			return k;
-    	}
-    	//should only execute if already at target tile
-    	return t;
-    }
-    
-    private ArrayList<StepTile> getAdjacentStepTiles(int step)
-    {
-    	Tile t = null;
-    	ArrayList<StepTile> Tiles = new ArrayList<StepTile>();
-    	
-    	for(int i = Game.NORTH; i <= Game.NORTH_WEST; i++)
-    	{
-    		t = getTileInDirection(i);
-    		
-    		if(!isRock && !(t.getTopEntity() instanceof Creature))
-    			Tiles.add(new StepTile(t.getIsRock(), t.getDungeon(), t.getX(), t.getY(), step));
-    	}
-    	
-    	return Tiles;
-    }
-    
     public boolean isInRoom()
     {
     	return containedDungeon.isRegionRoom(myRegion);
+    }
+    
+    /*
+     * returns true if this tile is adjacent to the target tile
+     * false is otherwise
+     */
+    public boolean isNextTo(Tile target)
+    {
+    	for(Tile t : target.getAdjacentTiles())
+    	{
+    		if(this.equals(t))
+    			return true;
+    	}
+    	return false;
     }
     
     /*

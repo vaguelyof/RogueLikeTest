@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import gameBase.Game;
 import gameEntities.Door;
+import level.StepTile;
 import level.Tile;
 import statusEffects.StatusEffect;
 
@@ -12,9 +13,11 @@ public class Monster extends Creature{
 	Player player;
 	Game game;
 	private int speed;	//how many blocks the creature moves per turn
+	private int currentStep;
 	private boolean isSlow;
 	private boolean canMove;
 	private Tile lastSeen;
+	private ArrayList<StepTile> route;
 
 	public Monster(String aName, String description, int health, int dmg)
 	{
@@ -25,6 +28,8 @@ public class Monster extends Creature{
 		isSlow = false;
 		canMove = true;
 		lastSeen = null;
+		route = new ArrayList<StepTile>();
+		currentStep = 0;
 	}
 	
 	public Monster(String aName, String description, int health, int dmg, int moveSpeed, boolean slow)
@@ -36,6 +41,8 @@ public class Monster extends Creature{
 		isSlow = slow;
 		canMove = true;
 		lastSeen = null;
+		route = new ArrayList<StepTile>();
+		currentStep = 0;
 	}
 	
 	/*
@@ -87,10 +94,21 @@ public class Monster extends Creature{
 				{
 					if(tileHasPlayer(t))
 					{
-						move(getTile().getDirectionToTile(getTile().getNextTile(t)));
-						return;//butter my buns and call me a biscuit if this is all I needed
+						route = getTile().getRouteToTile(t);
+						if(!route.isEmpty()){
+							move(getTile().getDirectionToTile((Tile)(route.get(0).getNextTile(route))));
+						}
+						currentStep = 1;
+						return;
 					}
 				}
+			}
+			else if(canMove && !route.isEmpty())
+			{
+				StepTile st = new StepTile(getTile().getIsRock(), getTile().getDungeon(), getTile().getX(), getTile().getY(), currentStep);
+				move(getTile().getDirectionToTile((Tile)(st.getNextTile(route))));
+				currentStep++;
+				return;
 			}
 		}
 				/*for(Tile t: seeable)
