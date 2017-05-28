@@ -23,18 +23,6 @@ public class Weapon extends Item{
 	}
 
 	@Override
-	public Tile getTile() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setTile(Tile t) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public char getChar() {
 		// TODO Auto-generated method stub
 		return 0;
@@ -47,21 +35,9 @@ public class Weapon extends Item{
 	}
 
 	@Override
-	public int getStack() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
 	public int getValue() {
 		// TODO Auto-generated method stub
 		return 0;
-	}
-
-	@Override
-	public void setStack(int stack) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
