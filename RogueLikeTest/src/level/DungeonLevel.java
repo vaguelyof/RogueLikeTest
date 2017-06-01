@@ -7,6 +7,7 @@ import gameEntities.Chest;
 import gameEntities.Door;
 import gameEntities.DownStairs;
 import gameEntities.Entity;
+import gameEntities.SpikeTrap;
 import gameEntities.Trap;
 import gameEntities.UpStairs;
 import items.*;
@@ -87,12 +88,30 @@ public class DungeonLevel
     	int chests = 0;
     	int choice;
     	Entity e;
-    	for (int i=1;i<map.length-1;i++){
-    		for (int j=1;j<map.length-1;j++){
-        		if (map[i][j].getRegion()==-1&&Math.random()<0.2){
-        			addTrap(map[i][j]);
-        		}
-        	}
+    	if (level==1){
+	    	for (int i=1;i<map.length-1;i++){
+	    		for (int j=1;j<map.length-1;j++){
+	        		if (map[i][j].getRegion()==-1){
+	        			for (int[] loc:getValidSpots(i,j)){
+	        				if (map[loc[0]][loc[1]].getRegion()==1){
+	        					map[loc[0]][loc[1]].addEntity(new SpikeTrap(true));
+	        					i = map.length-1;
+	        					j = map.length-1;
+	        					break;
+	        				}
+	        			}
+	        		}
+	        	}
+	    	}
+    	}
+    	if (level>0){
+	    	for (int i=1;i<map.length-1;i++){
+	    		for (int j=1;j<map.length-1;j++){
+	        		if (map[i][j].getRegion()==-1&&Math.random()<0.2){
+	        			addTrap(map[i][j]);
+	        		}
+	        	}
+	    	}
     	}
     	for(int i = 0; i < times; i++){
     		choice = (int)(Math.random() * 4);
@@ -591,9 +610,14 @@ public class DungeonLevel
     private void addTrap(Tile tile){
     	for (int[] t:getValidSpots(tile.getX(),tile.getY())){
     		if (map[t[0]][t[1]].getRegion()<=rooms.size()
+    				&& map[t[0]][t[1]].getTopEntity() == null
     				&& map[t[0]][t[1]].getRegion()>0
     				&& !areRegionsConnected(map[t[0]][t[1]].getRegion(),0)
     				&& regionConnections(map[t[0]][t[1]].getRegion())>1){
+    			if (level==1){
+    				map[t[0]][t[1]].addEntity(new Trap());
+    				return;
+    			}
     			Trap trap;
     			switch((int)(Math.random()*3)){
     			case 1:

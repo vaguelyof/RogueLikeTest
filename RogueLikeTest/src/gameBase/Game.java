@@ -291,9 +291,9 @@ public class Game {
 		if (c == null)
 			return false;
 
-		if (!c.getTile().getTileInDirection(direction).getIsRock()
-				&& (c.getTile().getTileInDirection(direction).getTopEntity() == null
-				|| !(c.getTile().getTileInDirection(direction).getTopEntity() instanceof Creature))) {
+		if (c.getTile().getTileInDirection(direction) != null
+				&& !c.getTile().getTileInDirection(direction).getIsRock()
+				&& !(c.getTile().getTileInDirection(direction).getTopEntity() instanceof Creature)) {
 			return true;
 		}
 		return false;

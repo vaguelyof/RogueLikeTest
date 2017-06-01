@@ -18,7 +18,7 @@ import statusEffects.StatusEffect;
 
 public class Player extends Creature {
 	Inventory myInv;
-	Game game;
+	public Game game;
 	private int experience;
 	private int level;
 	private int xpNeeded;
