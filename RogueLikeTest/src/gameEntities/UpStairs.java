@@ -3,7 +3,7 @@ import java.awt.Color;
 
 import level.Tile;
 
-public class UpStairs implements Entity {
+public class UpStairs extends Entity {
 	private Tile myTile;
 	
 	public UpStairs(){

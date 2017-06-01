@@ -3,7 +3,7 @@ import java.awt.Color;
 
 import level.Tile;
 
-public class Searcher implements Entity{
+public class Searcher extends Entity{
 	private Tile myTile;
 	
 	public Searcher(Tile t){

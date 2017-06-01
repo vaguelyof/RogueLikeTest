@@ -7,7 +7,6 @@ import level.Tile;
 
 public class Key extends Item{
 
-	int myValue;	//what is this for?
 	String name;
 	String des;
 	char myChar;

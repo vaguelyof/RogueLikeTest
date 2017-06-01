@@ -6,7 +6,7 @@ import items.HealthPotion;
 import items.Item;
 import level.Tile;
 
-public class Chest implements Entity {
+public class Chest extends Entity {
 	
 	//needs to have an inventory of treasure and gold
 	private Tile myT;

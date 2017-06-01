@@ -1,5 +1,7 @@
 package statusEffects;
 
+import java.awt.Color;
+
 import creatures.Creature;
 
 /**
@@ -41,5 +43,25 @@ public class BurnStatusEffect extends StatusEffect {
 	@Override
 	protected void act(Creature target) {
 		target.takeDamage(damage);
+	}
+	
+	public Color getColor(){
+		return Color.ORANGE;
+	}
+	
+	public String getName() {
+		return "burn";
+	}
+	
+	public String getAdjective() {
+		return "Fire";
+	}
+	
+	public String getTriggerMessage(){
+		return "You burst into flame!";
+	}
+	
+	public boolean isHazardous(){
+		return true;
 	}
 }

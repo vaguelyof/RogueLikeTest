@@ -10,6 +10,22 @@ import level.Tile;
 public class Weapon extends Item{
 
 	boolean twoHanded;	//if true, takes up both of the Player's inventory spots
+	private String name;
+	private int damage;
+	
+	public Weapon(int dam, String aName){
+		damage = dam;
+		name = aName;
+	}
+	
+	public int getDamage() {
+		return damage;
+	}
+
+	public boolean isTwoHanded(){
+		return twoHanded;
+	}
+
 	@Override
 	public String getName() {
 		// TODO Auto-generated method stub

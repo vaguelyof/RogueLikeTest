@@ -1,5 +1,7 @@
 package statusEffects;
 
+import java.awt.Color;
+
 import creatures.Creature;
 
 /**
@@ -32,5 +34,17 @@ public class PoisonStatusEffect extends StatusEffect {
 	@Override
 	protected void act(Creature target) {
 		target.setHealth(target.getHealth()-damage);
+	}
+	
+	public Color getColor(){
+		return new Color(0,180,0);
+	}
+	
+	public String getName() {
+		return "poison";
+	}
+	
+	public boolean isHazardous(){
+		return true;
 	}
 }

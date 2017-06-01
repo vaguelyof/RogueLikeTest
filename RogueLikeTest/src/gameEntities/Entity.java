@@ -8,7 +8,7 @@ import level.Tile;
  * @author Nikolai Trintchouk
  * @version 5/6/2017
  */
-public interface Entity
+public abstract class Entity
 {
     public String getName();
     

@@ -6,7 +6,7 @@ import level.Tile;
 
 public abstract class Potion extends Item {
 
-	@Override
+	/*@Override
 	public String getName() {
 		return "Potion";
 	}
@@ -14,7 +14,7 @@ public abstract class Potion extends Item {
 	@Override
 	public String getDescription() {
 		return "";
-	}
+	}*/
 
 	@Override
 	public char getChar() {

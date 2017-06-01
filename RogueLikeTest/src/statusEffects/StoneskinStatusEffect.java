@@ -1,5 +1,7 @@
 package statusEffects;
 
+import java.awt.Color;
+
 import creatures.Creature;
 
 /**
@@ -23,5 +25,17 @@ public class StoneskinStatusEffect extends StatusEffect {
 	@Override
 	public void start(Creature target) {
 		target.deleteEffect(2);
+	}
+	
+	public Color getColor(){
+		return Color.GRAY;
+	}
+	
+	public String getName() {
+		return "stoneskin";
+	}
+	
+	public String getTriggerMessage(){
+		return "Your skin hardens!";
 	}
 }

@@ -1,5 +1,7 @@
 package statusEffects;
 
+import java.awt.Color;
+
 import creatures.Creature;
 
 /**
@@ -80,5 +82,25 @@ public abstract class StatusEffect {
 	 * @param target the creature that is affected
 	 */
 	public void end(Creature target) {
+	}
+	
+	public abstract Color getColor();
+	
+	public abstract String getName();
+	
+	public String getAdjective(){
+		return getName().substring(0, 1).toUpperCase() + getName().substring(1); 
+	}
+	
+	public String getTriggerMessage(){
+		return "You were "+getName()+"ed!";
+	}
+	
+	public String getEndMessage(){
+		return "Your "+getName()+" wore off";
+	}
+	
+	public boolean isHazardous(){
+		return false;
 	}
 }

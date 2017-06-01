@@ -1,5 +1,7 @@
 package statusEffects;
 
+import java.awt.Color;
+
 import creatures.Creature;
 
 public class FrozenStatusEffect extends StatusEffect {
@@ -25,5 +27,29 @@ public class FrozenStatusEffect extends StatusEffect {
 	@Override
 	public void end(Creature target) {
 		target.removeStun();
+	}
+	
+	public Color getColor(){
+		return Color.WHITE;
+	}
+	
+	public String getName() {
+		return "freeze";
+	}
+	
+	public String getAdjective() {
+		return "Frost";
+	}
+	
+	public String getTriggerMessage(){
+		return "You were frozen!";
+	}
+	
+	public String getEndMessage(){
+		return "Your thawed out";
+	}
+	
+	public boolean isHazardous(){
+		return true;
 	}
 }

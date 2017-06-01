@@ -9,7 +9,7 @@ import level.Tile;
  * @author Nikolai Trintchouk
  * @version 5/6/2017
  */
-public class Door implements Entity
+public class Door extends Entity
 {
     private Tile myTile;
     

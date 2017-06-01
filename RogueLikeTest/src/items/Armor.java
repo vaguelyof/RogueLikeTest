@@ -9,7 +9,6 @@ import level.Tile;
  * Armor must have a positive value
  */
 public class Armor extends Item{
-	private Tile myTile;
 	private String name;
 	private int blockStrength;
 	

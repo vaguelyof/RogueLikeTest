@@ -5,7 +5,7 @@ import creatures.Creature;
 import gameEntities.Entity;
 import level.Tile;
 
-public abstract class Item implements Entity
+public abstract class Item extends Entity
 {
 	private Tile myTile;
 	private int myStack;
