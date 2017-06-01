@@ -384,6 +384,9 @@ public class Game {
 					endTurn();
 				}
 				break;
+			case 'C':
+				insertEntity(Game.createLevel1Monster(), player.getTile().getTileInDirection(0));
+				break;
 			case 'P':
 				if (!searching) {
 					if (player.isStunned()) {

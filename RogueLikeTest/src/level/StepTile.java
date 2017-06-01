@@ -16,36 +16,6 @@ public class StepTile extends Tile{
 		step = s;
 	}
 	
-	public ArrayList<StepTile> getAdjacentStepTiles()
-    {
-    	Tile t = null;
-    	ArrayList<StepTile> Tiles = new ArrayList<StepTile>();
-    	
-    	for(int i = Game.NORTH; i <= Game.NORTH_WEST; i++)
-    	{
-    		t = ((Tile)this).getTileInDirection(i);
-    		
-    		if(!t.getIsRock() && !(t.getTopEntity() instanceof Creature))
-    			Tiles.add(new StepTile(t.getIsRock(), t.getDungeon(), t.getX(), t.getY(), getStep() + 1));
-    	}
-    	
-    	return Tiles;
-    }
-    
-	public Tile getNextTile(ArrayList<StepTile> route)
-    {
-		return (Tile)route.get(getStep() + 1);
-		
-		/*for(StepTile k : route)
-    	{
-    		if (k.getStep() == getStep() + 1)
-    			return (Tile)k;
-    	}
-    	//should only execute if already at target tile
-    	return (Tile)this;
-    	*/
-    }
-	
 	/*
      * removes duplicates from a2 that already exist in a1
      */
@@ -92,6 +62,11 @@ public class StepTile extends Tile{
     	return false;
     }
     */
+    
+    public void setStep(int i)
+    {
+    	step = i;
+    }
 	
 	public int getStep()
 	{
@@ -101,7 +76,5 @@ public class StepTile extends Tile{
 	public String toString()
 	{
 		return super.toString() + "Step = " + step;
-	}
-	
-	
+	}	
 }

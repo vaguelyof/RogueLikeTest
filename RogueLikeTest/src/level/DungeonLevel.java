@@ -251,7 +251,7 @@ public class DungeonLevel
     }
     /**
      * begins flood fill
-     * @param x the starting horizontal ordinate
+     * @param x the starting horizontal abscissa
      * @param y the starting vertical ordinate
      */
     private void startMaze(int x, int y){

@@ -122,34 +122,13 @@ public class Tile
     	return null;
     }
     
-    /*
-     * returns a tile that can be moved to 
-     * that is to the left, diagonal left, front, diagonal right, or right of the direction entered
-     */
-    public Tile getEmptyTileInDirection(int direction)
-    {
-    	//return equivalent of getTileInDirection if tile in direction is not a rock and has no creature
-    	if(!getTileInDirection(direction).getIsRock() && !(getTileInDirection(direction).getTopEntity() instanceof Creature))
-    	{
-    		return getTileInDirection(direction);
-    	}
-    	for(int i = -2; i <= 2; i++)//getTileInDirection compensates for directions > 7
-    	{
-    		if (!getTileInDirection(direction + i).getIsRock() && !(getTileInDirection(direction + i).getTopEntity() instanceof Creature))
-    			return getTileInDirection(direction + i);
-    	}
-    	return null;
-    }
-    
     /**
      * finds tiles to the North, North-East, East, South-East, South, South-West, West, and North-West
-     * of a given Tile t
+     * of a given Tile
      * 
-     * precondition: Tile t must be a valid Tile object in containedDungeon
-     * 
-     *  @param t a Tile object within containedDungeon
-     *  
-     *  @return an ArrayList<Tile> with adjacent tiles listed clockwise from NORTH; any out of bound tiles are listed as null
+     * precondition: Tile must be a valid Tile object in containedDungeon
+     *   
+     *  @return an ArrayList<Tile> with adjacent tiles listed clockwise from NORTH
      */
     public ArrayList<Tile> getAdjacentTiles(){
     	
@@ -195,33 +174,120 @@ public class Tile
     }
     /*
      * https://en.wikipedia.org/wiki/Pathfinding
+     * this idea is garbage when in a room because it tries to fill all the spaces as if they're each a valid step to the goal
+     * which technically, they are
      * 
      */
-    public ArrayList<StepTile> getRouteToTile(Tile t)
-    {
-    	int i = 0;
-    	StepTile st = new StepTile(getIsRock(), getDungeon(), getX(), getY(), 0);
+    //public ArrayList<StepTile> getRouteToTile(Tile t)
+   // {
+    	/*StepTile st;
+    	int currentStep = 0;
     	ArrayList<StepTile> route = new ArrayList<StepTile>();
-    	Tile nextTile = st.getEmptyTileInDirection(st.getDirectionToTile(t));
-    	
-    	//ArrayList<StepTile> temp = new ArrayList<StepTile>();
-    	while(!st.isNextTo(t) && i < 100)	//I can't get the monster to know when his path is complete, but telling it to find less than 100 steps works
+    	do	
     	{
-    		/*
-	    	temp.addAll(st.getAdjacentStepTiles());
-    		route.addAll(st.removeDuplicates(route, temp));
-    		*/
-	    	route.add(new StepTile(nextTile.getIsRock(), nextTile.getDungeon(), nextTile.getX(), nextTile.getY(), st.getStep() + 1));
-    		st = route.get(route.size() - 1);
-    		i++;
+    		st = new StepTile(getIsRock(), getDungeon(), getX(), getY(), currentStep);
+    		route.add(st.getNextTileTowardsTarget());
+    		currentStep++;
+    	}
+    	while(!st.isNextTo(t));
+    	
+    	return route;*/
+  //  }
+    
+    public ArrayList<Tile> getEmptyAdjacentMazeTiles()
+    {
+    	Tile t;
+		ArrayList<Tile> Tiles = new ArrayList<Tile>();
+    	
+    	//looks all around this tile for empty spaces in a maze
+    	for(int i = Game.NORTH; i <= Game.NORTH_WEST; i++)
+    	{
+    		t = getTileInDirection(i);
+    		
+    		if(!t.getIsRock() && !(t.getTopEntity() instanceof Creature) && !t.isInRoom())
+    			Tiles.add(t);
     	}
     	
-    	return route;
+    	return Tiles;
     }
     
+    public ArrayList<Tile> getEmptyAdjacentRoomTiles()
+    {
+    	Tile t;
+		ArrayList<Tile> Tiles = new ArrayList<Tile>();
+    	
+    	//looks all around this tile for empty spaces in a maze
+    	for(int i = Game.NORTH; i <= Game.NORTH_WEST; i++)
+    	{
+    		t = getTileInDirection(i);
+    		
+    		if(!t.getIsRock() && !(t.getTopEntity() instanceof Creature) && t.isInRoom())
+    			Tiles.add(t);
+    	}
+    	
+    	return Tiles;
+    }
+    
+	public Tile getNextTileInMazeTowardTile(Tile t)
+    {		
+		for(Tile k : getEmptyAdjacentMazeTiles())
+    	{
+			//if Tile k can reach the target within 10 steps, it's good enough to be the next one to go to
+    		if (k.reachesTile(this, t))
+    			return k;
+    	}
+		System.out.println("getNextTileInMazeTowardTile is broken");
+		return getTileInDirection(getDirectionToTile(t));
+    }
+	
+	/*
+	 * checks if a route to a tile is possible within the next 10 steps
+	 * 
+	 * returns true if route to Tile t can be reached within 10 steps
+	 * returns false if route does not reach Tile t within 10 steps
+	 */
+	private boolean reachesTile(Tile previous, Tile target)
+	{
+		ArrayList<Tile> possibleTiles = new ArrayList<Tile>();
+		
+		//creates an array of 10 tiles ahead of current tile
+		for(int i = 0; i < 10; i++)
+		{
+			for(Tile t: getEmptyAdjacentMazeTiles())
+			{
+				//will not add tile to array if it is the same as the previous tile
+				if(!(t.getX() == previous.getX() && t.getY() == previous.getY()))
+				{
+					possibleTiles.add(t);
+					previous = new Tile(t.getIsRock(), t.getDungeon(), t.getX(), t.getY());	//updates previous to last tile added
+																							//this way no repeats are added
+				}
+			}
+		}
+		
+		//if the target Tile t is within the newly created possibleTiles array
+		//returns true
+		for(Tile k: possibleTiles)
+		{
+			if(k.getX() == target.getX() && k.getY() == target.getY())
+				return true;
+		}
+		return false;
+	}
+	
     public boolean isInRoom()
     {
     	return containedDungeon.isRegionRoom(myRegion);
+    }
+    
+    public Tile getAdjacentDoor()
+    {
+    	for(Tile t : getAdjacentTiles())
+    	{
+    		if(t.hasDoor())
+    			return t;
+    	}
+    	return this;
     }
     
     /*
@@ -232,7 +298,7 @@ public class Tile
     {
     	for(Tile t : target.getAdjacentTiles())
     	{
-    		if(this.equals(t))
+    		if(getX() == t.getX() && getY() == t.getX())
     			return true;
     	}
     	return false;
@@ -241,20 +307,16 @@ public class Tile
     /*
 	 * returns true if a tile with a door
 	 */
-	public boolean hasOpenDoor()
+	public boolean hasDoor()
 	{
 		boolean hasDoor = false;
-		boolean hasPlayer = false;
 		
 		for(Entity e : getEntities())
 		{
 			if(e instanceof Door)
 				hasDoor = true;
-			
-			if(e instanceof Player)
-				hasPlayer = true;
 				
 		}
-		return hasDoor && hasPlayer;
+		return hasDoor;
 	}
 }
