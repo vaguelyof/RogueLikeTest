@@ -442,7 +442,7 @@ public class Game {
 				if (!searching) {
 					if (player.isStunned()){
 						logMessage("You can't move!",Color.RED);
-						displayLog();
+						displayMapAroundTile(player.getTile(),currentLevel);
 						panel.updateUI();
 					}
 					else {
@@ -460,7 +460,7 @@ public class Game {
 				if (!searching) {
 					if (player.isStunned()) {
 						logMessage("You can't move!",Color.RED);
-						displayLog();
+						displayMapAroundTile(player.getTile(),currentLevel);
 						panel.updateUI();
 					}
 					else {
