@@ -13,8 +13,8 @@ public class Monster extends Creature{
 	Player player;
 	Game game;
 	private int speed;	//how many blocks the creature moves per turn
-	//private int currentStep;
-	//private boolean isSlow;
+	private int currentStep;
+	private boolean isSlow;
 	private boolean canMove;
 	private Tile lastSeen;
 	//private ArrayList<StepTile> route;

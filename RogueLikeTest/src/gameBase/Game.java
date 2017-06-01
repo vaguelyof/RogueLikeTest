@@ -189,8 +189,12 @@ public class Game {
 		} else {
 			panel.write(player.getHealth() + "/" + player.getMaxHealth(), Color.GREEN);
 		}
+		panel.write(" Level: " + player.getLevel(), Color.BLUE);
+		panel.write(" (" + player.getXp() + "/" +player.getNeededXp() + ")");
 		panel.write(" Gold: " + player.getGold(), Color.WHITE);
 		panel.write(" Keys: " + player.getKeys(), Color.WHITE);
+		
+		
 		panel.setCursorPosition(0, 2);
 		panel.write(player.items(), Color.WHITE);
 	}
