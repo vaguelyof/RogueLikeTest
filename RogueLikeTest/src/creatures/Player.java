@@ -25,7 +25,7 @@ public class Player extends Creature {
 	
 	public Player(String aName, String description, int health, int dmg, Game g) {
 		super(aName, description, health, dmg);
-		setColor(Color.BLUE);
+		setColor(new Color(150, 150, 255));
 		setChar((char) 1);
 		game = g;
 		myInv = new Inventory();
