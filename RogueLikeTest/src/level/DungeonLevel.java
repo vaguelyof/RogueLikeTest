@@ -80,13 +80,13 @@ public class DungeonLevel
         int choice = 1 + (int)((rooms.size() - 1) * Math.random());
         exit = map[rooms.get(choice)[0]][rooms.get(choice)[1]];
         exit.addEntity(new DownStairs());
-        populateLevel(30);
+        populateLevel();
     }
-    
-    private void populateLevel(int times){
-    	int chests = 0;
-    	int choice;
-    	Entity e;
+    /*
+     * fills each room with 1-5 random entities
+     */
+    private void populateLevel(){
+    	Entity e = null;
     	for (int i=1;i<map.length-1;i++){
     		for (int j=1;j<map.length-1;j++){
         		if (map[i][j].getRegion()==-1&&Math.random()<0.2){
@@ -94,49 +94,90 @@ public class DungeonLevel
         		}
         	}
     	}
-    	for(int i = 0; i < times; i++){
-    		choice = (int)(Math.random() * 4);
-    		switch(choice){
-    		case 0:
-    			e = Game.createMonsterOfLevel((int)(Math.random() * 4 - 2 + level));
-    			break;
-    		case 1:
-    			switch((int)(Math.random()*4)){
-    			case 0:
-    				e = new Chest(new Armor(2, "Leather Armor"));
-    				break;
-    			case 1:
-    				e = new Chest(new Armor(6, "Scale Armor"));
-    				break;
-    			case 2:
-    				e = new Chest(new RevivalCharm());
-    				break;
-    			default:
-    				if (Math.random() > 0.5)
-        				e = new Chest(new HealthPotion());
-        			else if(Math.random() > 0.5)
-        				e = new Chest(new RevivePotion());
-        			else
-        				e = new Chest(new LifePotion());
-    			}
-    			chests++;
-    			break;
-    		case 2:
-    			e = new HealthPotion();
-    			break;
-    		case 3:
-    			e = new Gold((int)(Math.random() * 50 * (level+1))+1);
-    			break;
-    		default:
-    			e = Game.createLevel1Monster();
-    		}
-    		getRandomEmptyTileInARoomExcludingSpawnRegion().addEntity(e);
-    	}
-    	for(int i = 0; i< chests; i++){
-    		getRandomEmptyTileInARoomExcludingSpawnRegion().addEntity(new Key());
+    	for(int currentRegion = 0; currentRegion < rooms.size(); currentRegion++)
+    	{
+	    	//fills each room with 1-5 entities
+	    	for(int i = 0; i < (int)(Math.random() * 6) + 1; i++){
+	    		e = getRandomEntity();
+	    		getRandomEmptyTileInRandomRoom().addEntity(e);
+	    	}
     	}
     }
-    private Tile getRandomEmptyTileInARoom(){
+    /*
+     * returns a random entity 
+     * 0. monster with strength based on level
+     * 1. chest with random treasure
+     * 2. health potion
+     * 3. random amount of gold
+     * default: a wispy spirit monster
+     */
+    private Entity getRandomEntity()
+    {
+    	Entity e;
+    	switch((int)(Math.random() * 4)){
+    	//a monster with strength based on level
+		case 0:
+			e = Game.createMonsterOfLevel((int)(Math.random() * 4 - 2 + level));
+			break;
+		// a chest with random treasure
+		case 1:
+			switch((int)(Math.random()*4)){
+			case 0:
+				e = new Chest(new Armor(2, "Leather Armor"));
+				break;
+			case 1:
+				e = new Chest(new Armor(6, "Scale Armor"));
+				break;
+			case 2:
+				e = new Chest(new RevivalCharm());
+				break;
+			default:
+				getRandomEmptyTileInARoomExcludingSpawnRegion().addEntity(new Key());
+				if (Math.random() > 0.5)
+    				e = new Chest(new HealthPotion());
+    			else if(Math.random() > 0.5)
+    				e = new Chest(new RevivePotion());
+    			else
+    				e = new Chest(new LifePotion());
+			}
+			break;
+		// a health potion
+		case 2:
+			e = new HealthPotion();
+			break;
+		//random amount of gold
+		case 3:
+			e = new Gold((int)(Math.random() * 50 * (level+1))+1);
+			break;
+		//a wispy spirit monster
+		default:
+			e = Game.createLevel1Monster();
+    	}
+    	return e;
+    }
+    /*
+     * goes through random tiles and checks if 
+     * 1.the tile is empty
+     * 2.the tile is in the same region as int region
+     * 3.the tile is in a room
+     * 
+     * and returns 
+     */
+    private Tile getRandomEmptyTileInARoom(int region){
+    	int x;
+    	int y;
+    	Tile t;
+    	while(true){
+    		x = (int)(Math.random() * map.length);
+    		y = (int)(Math.random() * map.length);
+    		t = map[x][y];
+    		if(!t.getIsRock() && t.getTopEntity() == null && t.getRegion() == region){
+    			return t;
+    		}
+    	}
+    }
+    
+    private Tile getRandomEmptyTileInRandomRoom(){
     	int x;
     	int y;
     	Tile t;

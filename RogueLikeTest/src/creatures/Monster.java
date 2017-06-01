@@ -10,14 +10,9 @@ import statusEffects.StatusEffect;
 
 public class Monster extends Creature{
 	
-	Player player;
-	Game game;
 	private int speed;	//how many blocks the creature moves per turn
-	private int currentStep;
-	private boolean isSlow;
-	private boolean canMove;
+	private boolean canAct;
 	private Tile lastSeen;
-	//private ArrayList<StepTile> route;
 
 	public Monster(String aName, String description, int health, int dmg)
 	{
@@ -25,11 +20,8 @@ public class Monster extends Creature{
 		setChar('!');
 		setColor(Color.RED);
 		speed = 1;
-		//isSlow = false;
-		canMove = true;
+		canAct = true;
 		lastSeen = null;
-		//route = new ArrayList<StepTile>();
-		//currentStep = 0;
 	}
 	
 	public Monster(String aName, String description, int health, int dmg, int moveSpeed, boolean slow)
@@ -38,11 +30,8 @@ public class Monster extends Creature{
 		setChar('!');
 		setColor(Color.RED);
 		speed = moveSpeed;
-		//isSlow = slow;
-		canMove = true;
+		canAct = true;
 		lastSeen = null;
-		//route = new ArrayList<StepTile>();
-		//currentStep = 0;
 	}
 	
 	/*
@@ -55,10 +44,6 @@ public class Monster extends Creature{
 	 */
 	public void act()
 	{		
-		//for (StatusEffect e:status){
-		//	if (e.tick(this))
-		//		deleteEffect(e.getId());
-		//}
 		tickAllEffects();
 		if(getHealth() <= 0){
 			die();
@@ -72,7 +57,9 @@ public class Monster extends Creature{
 		
 		seeable = Game.calcFOV(this,14);
 		
-		if(canSeePlayer()){
+		//remove the canAct check if you want the monster to be able to attack every turn
+		//but still wait to move
+		if(canSeePlayer() && canAct){
 			
 			//if the monster is next to the player, it attacks
 			for(Tile t : getTile().getAdjacentTiles())
@@ -80,14 +67,11 @@ public class Monster extends Creature{
 				if(tileHasPlayer(t))
 				{
 					attack((Creature)t.getTopEntity());
+					canAct = false;		//monster must wait one turn after attacking
 					return;
 				}
 			}
-			
-			/*//makes the monster skip a turn to move when it's slow
-			if(isSlow = true)
-				slow();
-				*/
+		}
 	
 			//if the monster can see the player and has a direct path to the player
 			//monster moves towards player
@@ -159,58 +143,7 @@ public class Monster extends Creature{
 				return;
 			}
 		}
-				/*for(Tile t: seeable)
-				{
-						if(tileHasPlayer(t))
-						{
-							move((getTile().getDirectionToTile(t)));
-							lastSeen = t;
-							return;
-						}
-						
-						//monster will chase players to the door if it's in a room
-						if (justSawPlayer)
-						{
-							if(t.getTopEntity() instanceof Door){
-								lastSeen = t;
-								justSawPlayer = false;
-								moveToLastKnownLocation();
-								return;
-							}
-						}
-				}
-			
-					//should only execute if monster is in a maze
-					else if(tileHasPlayer(t) && hasDirectPathToTile(getTile(), t, getTile().getDirectionToTile(t)))
-					{
-						move(getTile().getDirectionToTile(t));
-						lastSeen = t;
-						return;
-					}
-				}
-		
-			}
-		
-		//if monster can't see the player
-		//moves to last known location if it has one
-		if(lastSeen != null)
-		{
-			moveToLastKnownLocation();
-			return;
-		}
-		/*
-		//will only execute if the player is on a door
-		//the monster "Hears" the player opening the door
-		//TODO: create a findDistance method in Tile to prevent the monster from "Hearing" a Player across the dungeon
-		for(Tile t : seeable)
-		{
-			if (t.hasOpenDoor()){
-				game.logMessage("The Door creaks loudly");
-				lastSeen = t;
-			}
-		}
-		*/
-	}
+	
 
 	private boolean tileHasPlayer(Tile t){
 		return (t.getTopEntity() instanceof Player);
@@ -236,84 +169,35 @@ public class Monster extends Creature{
 	 * returns false otherwise
 	 */
 	private boolean move(int direction){
-		for (int i = 0; i < speed; i++){
-			if (Game.creatureCanMoveInDirection(this, direction)) {
-				getTile().getTileInDirection(direction).addEntity(this);
-				return true;
-			}
-			if (Game.creatureCanMoveInDirection(this, direction - 2)) {
-				getTile().getTileInDirection(direction - 2).addEntity(this);
-				return true;
-			}
-			if (Game.creatureCanMoveInDirection(this, direction + 2)) {
-				getTile().getTileInDirection(direction + 2).addEntity(this);
-				return true;
-			}
-			if (Game.creatureCanMoveInDirection(this, direction - 1)) {
-				getTile().getTileInDirection(direction - 1).addEntity(this);
-				return true;
-			}
-			if (Game.creatureCanMoveInDirection(this, direction + 1)) {
-				getTile().getTileInDirection(direction + 1).addEntity(this);
-				return true;
+		if(canAct){
+			for (int i = 0; i < speed; i++){
+				if (Game.creatureCanMoveInDirection(this, direction)) {
+					getTile().getTileInDirection(direction).addEntity(this);
+					return true;
+				}
+				if (Game.creatureCanMoveInDirection(this, direction - 2)) {
+					getTile().getTileInDirection(direction - 2).addEntity(this);
+					return true;
+				}
+				if (Game.creatureCanMoveInDirection(this, direction + 2)) {
+					getTile().getTileInDirection(direction + 2).addEntity(this);
+					return true;
+				}
+				if (Game.creatureCanMoveInDirection(this, direction - 1)) {
+					getTile().getTileInDirection(direction - 1).addEntity(this);
+					return true;
+				}
+				if (Game.creatureCanMoveInDirection(this, direction + 1)) {
+					getTile().getTileInDirection(direction + 1).addEntity(this);
+					return true;
+				}
 			}
 		}
+		canAct = true;	//monster will always be able to act after it tries to move
 		return false;
 	}	
 	
 	private void attack(Creature c){
 		c.takeDamage(getDamage());
 	}
-	
-	private void slow(){
-		canMove = !canMove;
-	}
-	
-	/*
-	 * checks if place can reach end by calling itself until place reaches end
-	 * if place hits a rock, returns false
-	 * 
-	 * returns true if monster has uninterrupted path to end
-	 * returns false if monster cannot reach end by moving directly toward it
-	 *
-	private boolean hasDirectPathToTile(Tile place, Tile end, int dir)
-	{
-		//if place has reached end, place has direct path to end
-		if(end == place)
-		{
-			return true;
-		}
-		
-		//if the next tile is not a rock
-		if(!place.getTileInDirection(dir).getIsRock())
-		{
-			//keep going toward end along the same direction
-			return hasDirectPathToTile(place.getTileInDirection(dir), end, dir);
-		}
-		
-			else
-			{
-				//otherwise place has no direct path to end
-				return false;
-			}
-		
-	}
-	
-	/*
-	 * monster moves toward tile lastSeen
-	 * if it reaches lastSeen, sets it to null
-	 * 
-	 * precondition: lastSeen must not be null
-	 *
-	private void moveToLastKnownLocation()
-	{
-		if(getTile() == lastSeen)
-		{
-			lastSeen = null;
-			return;
-		}
-		
-		move(getTile().getDirectionToTile(lastSeen));
-	}
-	*/
 }

@@ -260,7 +260,6 @@ public class Tile
     		if (k.reachesTile(this, t))
     			return k;
     	}
-		System.out.println("getNextTileInMazeTowardTile is broken");
 		return getTileInDirection(getDirectionToTile(t));
     }
 	
