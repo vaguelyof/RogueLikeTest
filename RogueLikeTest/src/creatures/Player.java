@@ -263,4 +263,12 @@ public class Player extends Creature {
 		// TODO Auto-generated method stub
 		return xpNeeded;
 	}
+	
+	public void tickAllEffects(){
+		super.tickAllEffects();
+		if(myInv.getGold() >= 1000){
+			myInv.upgradeItems();
+			game.logMessage("1000 Gold reached! Items upgraded!", Color.GREEN);
+		}
+	}
 }
