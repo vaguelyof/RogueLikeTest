@@ -131,12 +131,14 @@ public class DungeonLevel
     				e = new Chest(new RevivalCharm());
     				break;
     			default:
-    				if (Math.random() > 0.5)
+    				if (Math.random() > 0.75)
         				e = new Chest(new HealthPotion());
         			else if(Math.random() > 0.5)
-        				e = new Chest(new RevivePotion());
-        			else
+        				e = new Chest(new StatusPotion("Makes the user levitate", new LevitationStatusEffect(10)));
+        			else if(Math.random() > 0.2)
         				e = new Chest(new LifePotion());
+        			else
+        				e = new Chest(new RevivePotion());
     			}
     			chests++;
     			break;
@@ -619,12 +621,15 @@ public class DungeonLevel
     				return;
     			}
     			Trap trap;
-    			switch((int)(Math.random()*3)){
+    			switch((int)(Math.random()*4)){
     			case 1:
     				trap = new Trap(new FrozenStatusEffect(3));
     				break;
     			case 2:
     				trap = new Trap(new BurnStatusEffect(5));
+    				break;
+    			case 3:
+    				trap = new SpikeTrap(2);
     				break;
     			default:
     				trap = new Trap(new PoisonStatusEffect(5));
