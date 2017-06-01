@@ -1,27 +1,71 @@
 package creatures;
 
 import java.awt.Color;
+import java.util.ArrayList;
 
 import gameEntities.Chest;
 import gameEntities.Door;
+import gameEntities.DownStairs;
 import gameEntities.Entity;
+import gameEntities.UpStairs;
 import gameBase.Game;
 import items.Inventory;
 import items.Item;
 import items.RevivalItem;
 import items.RevivePotion;
 import level.Tile;
+import statusEffects.StatusEffect;
 
 public class Player extends Creature {
 	Inventory myInv;
 	Game game;
-
+	private int experience;
+	private int level;
+	private int xpNeeded;
+	
 	public Player(String aName, String description, int health, int dmg, Game g) {
 		super(aName, description, health, dmg);
 		setColor(Color.BLUE);
 		setChar((char) 1);
 		game = g;
 		myInv = new Inventory();
+		experience = 0;
+		level = 1;
+		xpNeeded = 10;
+	}
+	public void addEffect(StatusEffect e){
+		super.addEffect(e);
+		game.logMessage(e.getTriggerMessage(), e.getColor());
+	}
+	
+	public void deleteEffect(int id){
+		if (getIndexOfEffect(id)!=-1){
+			StatusEffect e = status.get(getIndexOfEffect(id));
+			game.logMessage(e.getEndMessage());
+		}
+		super.deleteEffect(id);
+	}
+	
+	public void deleteAllEffects(){
+		super.deleteAllEffects();
+		game.logMessage("You were cured of all ailments!", Color.YELLOW);
+	}
+	
+	public boolean hasEffect(int id){
+		return getIndexOfEffect(id)!=-1;
+	}
+	
+	public void addXp(int xp){
+		game.logMessage("Gained " + xp + " experience.");
+		experience += xp;
+		while(experience >= xpNeeded){
+			experience -= xpNeeded;
+			xpNeeded += 10;
+			level++;
+			game.logMessage("You are now level " + level + "! Maximum health increased!", Color.GREEN);
+			setMaxHealth(getMaxHealth() + 5 * level);
+			heal(getMaxHealth());
+		}
 	}
 
 	public void takeDamage(int d) {
@@ -31,7 +75,7 @@ public class Player extends Creature {
 			if (getHealth()<tempHealth)
 				game.logMessage("You were hit!", Color.RED);
 		} else {
-			super.takeDamage(d - myInv.getMyArmor().getValue()); // Creature
+			super.takeDamage(d - myInv.getMyArmor().getStrength()); // Creature
 																	// will
 																	// catch if
 																	// value is
@@ -51,7 +95,7 @@ public class Player extends Creature {
 	public int getDamage() {
 
 		if (myInv.getMyWeapon() != null)
-			return super.getDamage() + myInv.getMyWeapon().getValue();
+			return super.getDamage() + myInv.getMyWeapon().getDamage();
 
 		return super.getDamage();
 	}
@@ -62,6 +106,13 @@ public class Player extends Creature {
 			game.logMessage("You struck " + c.getName() + " with " + myInv.getMyWeapon().getName() + ".", Color.WHITE);
 		} else {
 			game.logMessage("You punched " + c.getName() + ".");
+		}
+		if(c.getTile() == null){
+			game.logMessage("You defeated "+ c.getName() +".", Color.GREEN);
+			addXp((c.getDamage() + c.getMaxHealth())/2);
+		}
+		else{
+			game.logMessage("("+c.getHealth()+"/"+c.getMaxHealth()+")");
 		}
 	}
 
@@ -188,6 +239,28 @@ public class Player extends Creature {
 			unlock();
 			return;
 		}
+		if(e instanceof DownStairs){
+			game.goDown();
+			return;
+		}
+		if(e instanceof UpStairs){
+			game.goUp();
+			return;
+		}
 		game.logMessage("You cannot interact with this.");
+	}
+
+	public int getLevel() {
+		return level;
+	}
+
+	public int getXp() {
+		// TODO Auto-generated method stub
+		return experience;
+	}
+
+	public int getNeededXp() {
+		// TODO Auto-generated method stub
+		return xpNeeded;
 	}
 }

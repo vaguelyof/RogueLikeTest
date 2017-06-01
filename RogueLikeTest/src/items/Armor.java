@@ -30,16 +30,6 @@ public class Armor extends Item{
 	}
 
 	@Override
-	public Tile getTile() {
-		return myTile;
-	}
-
-	@Override
-	public void setTile(Tile t) {
-		myTile = t;
-	}
-
-	@Override
 	public char getChar() {
 		// TODO Auto-generated method stub
 		return 'A';
@@ -51,27 +41,20 @@ public class Armor extends Item{
 		return Color.LIGHT_GRAY;
 	}
 
-	@Override
-	public int getStack() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int getValue() {
+	public int getStrength() {
 		// TODO Auto-generated method stub
 		return blockStrength;
 	}
 
 	@Override
-	public void setStack(int stack) {
-		// TODO Auto-generated method stub
+	public void use(Creature user) {
 		
 	}
 
 	@Override
-	public void use(Creature user) {
-		
+	public int getValue() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

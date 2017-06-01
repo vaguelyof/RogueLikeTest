@@ -39,4 +39,10 @@ public class RevivalCharm extends Item implements RevivalItem {
 	@Override
 	public void use(Creature user){
 	}
+
+	@Override
+	public int getValue() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

@@ -34,4 +34,10 @@ public class HealthPotion extends Potion {
 	public void use(Creature user){
 		user.heal(healAmount);
 	}
+
+	@Override
+	public int getValue() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

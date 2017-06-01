@@ -12,7 +12,7 @@ import statusEffects.StatusEffect;
  * @author Nikolai Trintchouk, Ben Burdette
  *
  */
-public class Creature implements Entity{
+public class Creature extends Entity{
 	
 	Game game;
 	private ArrayList<Item> items = new ArrayList<Item>();
@@ -190,6 +190,10 @@ public class Creature implements Entity{
     	return maxHealth;
     }
     
+    public void setMaxHealth(int h){
+    	maxHealth = h;
+    }
+    
     /**
      * Has creature take an amount of damage. If h is less than or equal to zero the value will default to 1, with a chance of missing
      * @param h the amount of damage to be taken by the creature.
@@ -264,7 +268,9 @@ public class Creature implements Entity{
     		return;
     	}
     	deleteAllEffects();
+    	
     	myT.removeEntity(this);
+    	
     }
     
     

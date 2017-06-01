@@ -28,41 +28,32 @@ public class Weapon extends Item{
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+		return name;
 	}
 
 	@Override
 	public String getDescription() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Deals "+damage+" damage";
 	}
 
 	@Override
 	public char getChar() {
-		// TODO Auto-generated method stub
-		return 0;
+		return 'W';
 	}
 
 	@Override
 	public Color getColor() {
-		// TODO Auto-generated method stub
-		return null;
+		return Color.LIGHT_GRAY;
+	}
+
+	@Override
+	public void use(Creature user) {
+		
 	}
 
 	@Override
 	public int getValue() {
 		// TODO Auto-generated method stub
 		return 0;
-	}
-
-	@Override
-	public void use(Creature user) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public boolean isTwoHanded(){
-		return twoHanded;
 	}
 }

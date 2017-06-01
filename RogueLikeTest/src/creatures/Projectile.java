@@ -10,7 +10,7 @@ import level.Tile;
  * moves up to two spaces per turn until it hits a player or a wall
  * then it deals damage and deletes itself
  */
-public class Projectile implements Entity{
+public class Projectile extends Entity{
 
 	private int dir;
 	private Tile myT;

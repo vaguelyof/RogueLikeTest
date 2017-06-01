@@ -10,16 +10,22 @@ import level.Tile;
  */
 public abstract class Entity
 {
-    public String getName();
+	private Tile myTile;
+	
+    public abstract String getName();
     
-    public String getDescription();
+    public abstract String getDescription();
     
-    public Tile getTile();
+    public abstract char getChar();
     
-    public void setTile(Tile t);
-    
-    public char getChar();
-    
-    public Color getColor();
+    public abstract Color getColor();
+	
+	public Tile getTile() {
+		return myTile;
+	}
+
+	public void setTile(Tile t) {
+		myTile = t;
+	}
     
 }

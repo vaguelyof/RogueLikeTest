@@ -14,7 +14,6 @@ public class Key extends Item{
 	
 	public Key() {
 		setStack(1);
-		myValue = 0;
 		name = "Key";
 		des = "A magic key that can open one chest to unlock the treasures within";	//is this too long? Technically no, but it will take up sever lines
 
@@ -38,14 +37,15 @@ public class Key extends Item{
 		return myColor;
 	}
 
-	//not sure what this is for
-	public int getValue() {
-		return myValue;
-	}
-
 	public void use(Creature user) {
 		//unlocks chests
 		//one - time use
+	}
+
+	@Override
+	public int getValue() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }
