@@ -35,6 +35,7 @@ public class Game {
 	public static int NORTH_WEST = 7;
 
 	private boolean searching;
+	private boolean helpOpen;
 
 	FOV fov;
 
@@ -42,7 +43,8 @@ public class Game {
 
 		levels = new ArrayList<DungeonLevel>();
 		helpItems = new ArrayList<String>();
-
+		
+		helpItems.add("H - Help");
 		helpItems.add("W - North");
 		helpItems.add("A - West");
 		helpItems.add("S - South");
@@ -55,7 +57,9 @@ public class Game {
 		fov = new FOV(FOV.SHADOW);
 		seenTiles = new ArrayList<ArrayList<Tile>>();
 		searching = false;
-
+		
+		
+		
 		rightSideMenuWidth = 20;
 	}
 
@@ -67,7 +71,8 @@ public class Game {
 		insertEntity((Entity) player, levels.get(0).getEntrance());
 		// player.addEffect(new PoisonStatusEffect(10));
 		// addRegionToSeen(1,0);
-		displayMapAroundTile(player.getTile(), 0);
+		helpOpen = true;
+		showHelp();
 		log = new Logger(rightSideMenuWidth - 1, panel.getHeightInCharacters() - 6 - helpItems.size());
 	}
 
@@ -214,6 +219,52 @@ public class Game {
 		}
 
 	}
+	
+	public void showHelp(){
+		panel.clear();
+		panel.setCursorPosition(0,1);
+		panel.write("Welcome to the dungeon! Your main objective is to get as deep as possible.");
+		panel.setCursorPosition(0,2);
+		panel.write("You will need to know some things to progress. Here are some basic controls.");
+		panel.setCursorPosition(0, 4);
+		panel.write("W, A, S, and D ", Color.GREEN); panel.write("will move you around the dungeon.");
+		panel.setCursorPosition(0, 5);
+		panel.write("F ", Color.GREEN); panel.write("will allow you to inspect an tile. Move the yellow cursor and press F again to inspect.");
+		panel.setCursorPosition(0,6);
+		panel.write("I ", Color.GREEN); panel.write("has you interact with the tile you are standing on. Use this to pick up items and unlock chests.");
+		panel.setCursorPosition(0,7);
+		panel.write("O ", Color.GREEN); panel.write("will have you stand still for one turn. You can wait out negative effects like this.");
+		panel.setCursorPosition(0,8);
+		panel.write("P ", Color.GREEN); panel.write("will drink the current potion you are holding. Some potions have different actions.");
+		panel.setCursorPosition(0, 9);
+		panel.write("H ", Color.PINK); panel.write("will open and close this menu.");
+		
+		panel.setCursorPosition(0, 11);
+		panel.write("Now you will learn about some basic things you will see in the dungeon.");
+		panel.setCursorPosition(0, 13);
+		panel.write("!", Color.RED); panel.write("   This is a monster. Walk directly towards them to attack.");
+		panel.setCursorPosition(1, 14);
+		panel.write("     Be careful; they will chase you and attack back.");
+		panel.setCursorPosition(0, 15);
+		panel.write("+", Color.GRAY); panel.write("   This is a door. You can't see through it from far away.");
+		panel.setCursorPosition(0, 16);
+		panel.write("X", Color.RED); panel.write("   This is a trap! The color indicates its effect. Reveal invisible traps by Inspecting them.");
+		panel.setCursorPosition(0, 17);
+		panel.write("K ", Color.ORANGE); panel.write("$",new Color(255,215,0)); panel.write(" Keys and chests. Pick up a key to unlock a chest.");
+		panel.setCursorPosition(0, 18);
+		panel.write("+ ", Color.GREEN); panel.write("  This is a potion. They come in different colors and do different things.");
+		panel.setCursorPosition(0,19);
+		panel.write("< >", Color.GRAY); panel.write(" These are stairs. Pointing left goes up, pointing right goes down. Go as deep as you can!");
+		
+		panel.setCursorPosition(0, 22);
+		panel.write("You will encounter other things in the dungeon; some things aren't in here.");
+		panel.setCursorPosition(0, 23);
+		panel.write("Remember to "); panel.write("Inspect ", Color.YELLOW); panel.write("to learn about things you don't know.");
+		panel.setCursorPosition(0,25);
+		panel.write("Press H to exit this menu. Remember to get as far as you can and conquer the dungeon!");
+		
+		panel.updateUI();
+		}
 
 	public void displayLog() {
 		int startY = 4 + helpItems.size();
@@ -358,7 +409,7 @@ public class Game {
 
 	public void getKeyPress(String keyText) {
 
-		if (keyText.length() == 1) {
+		if (keyText.length() == 1 && !helpOpen) {
 			switch (keyText.charAt(0)) {
 			case 'W':
 				moveAction(NORTH);
@@ -417,10 +468,26 @@ public class Game {
 					}
 				}
 				break;
-				
+			case 'H':
+				helpOpen = !helpOpen;
+				showHelp();
+				break;
 			}
 
 			return;
+		}
+		else{
+			if(helpOpen){
+				if (keyText.length() == 1 && keyText.charAt(0) == 'H'){
+					helpOpen = false;
+					if(!searching){
+						displayMapAroundTile(player.getTile(), currentLevel);
+					}
+					else{
+						displayMapAroundTile(search.getTile(), currentLevel);
+					}
+				}
+			}
 		}
 
 	}
