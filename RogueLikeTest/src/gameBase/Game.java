@@ -88,6 +88,24 @@ public class Game {
 	public static Monster createLevel1Monster() {
 		return new Monster("Wispy Spirit", "The weakest monster", 1, 1);
 	}
+	
+	public static Monster createMonsterOfLevel(int level){
+		if(level <= 1){
+			return new Monster("Wispy Spirit", "The weakest monster", 1, 1);
+		}
+		if(level <= 2){
+			return new Monster("Goblin", "Much stronger in numbers", 3, 4);
+		}
+		if(level <= 4){
+			return new Monster("Goblin Soldier", "Tougher than the scouting goblins", 6, 8);
+		}
+		if(level <= 6){
+			return new Monster("Shambling Brute", "The weakest undead", 10, 12);
+		}
+		else{
+			return new Monster("Hellish Shambler", "Gets stronger the deeper they are located", level * 2, level * 2 + 4);
+		}
+	}
 
 	public void insertEntity(Entity e, Tile t) {
 		t.addEntity(e);
@@ -383,9 +401,6 @@ public class Game {
 				if (!searching) {
 					endTurn();
 				}
-				break;
-			case 'C':
-				insertEntity(Game.createLevel1Monster(), player.getTile().getTileInDirection(0));
 				break;
 			case 'P':
 				if (!searching) {

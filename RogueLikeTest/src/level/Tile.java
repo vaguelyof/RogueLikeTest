@@ -8,6 +8,7 @@ import creatures.Player;
 import gameBase.Game;
 import gameEntities.Door;
 import gameEntities.Entity;
+import gameEntities.Trap;
 /**
  * A Tile in a dungeon. Has a coordinate position and a list of Entities in it.
  * 
@@ -60,6 +61,12 @@ public class Tile
 	    	}
 	        thingsInTile.add(e);
 	        e.setTile(this);
+    	}
+    	if (e instanceof Creature && hasTrap() && !((Creature) e).hasEffect(1)){
+	    	for (int i=0;i<thingsInTile.size();i++){
+	    		if (thingsInTile.get(i) instanceof Trap)
+	    			((Trap)thingsInTile.get(i)).trigger((Creature)e);
+	    	}
     	}
     }
     public void removeEntity(Entity e){
@@ -147,6 +154,14 @@ public class Tile
     	if(isRock){
     		return "There is an impassable wall here";
     	}
+    	if (hasTrap()){
+	    	for (int i=0;i<thingsInTile.size();i++){
+	    		if (thingsInTile.get(i) instanceof Trap &&!((Trap)thingsInTile.get(i)).isVisible()){
+	    			Trap.reveal();
+		    		return "Found a trap!"; //there should only be one trap per tile
+	    		}
+	    	}
+    	}
     	if(getTopEntity() != null){
     		des = new String(getTopEntity().getName());
     		if(getTopEntity().getDescription() != null && getTopEntity().getDescription().length() > 0){
@@ -156,6 +171,15 @@ public class Tile
     	}
     	
     	return "There is nothing here.";
+    }
+    
+    public boolean hasTrap(){
+    	for (int i=0;i<thingsInTile.size();i++){
+    		if (thingsInTile.get(i) instanceof Trap)
+    			if (((Trap) thingsInTile.get(i)).isArmed())
+    				return true;
+    	}
+    	return false;
     }
     
     public int getDirectionToTile(Tile t){

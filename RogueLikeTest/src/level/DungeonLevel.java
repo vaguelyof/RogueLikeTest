@@ -7,8 +7,10 @@ import gameEntities.Chest;
 import gameEntities.Door;
 import gameEntities.DownStairs;
 import gameEntities.Entity;
+import gameEntities.Trap;
 import gameEntities.UpStairs;
 import items.*;
+import statusEffects.*;
 /**
  * Stores all of the tiles in a single level of a dungeon. Also contains the methods for randomly generating a dungeon.
  * 
@@ -85,32 +87,42 @@ public class DungeonLevel
     	int chests = 0;
     	int choice;
     	Entity e;
+    	for (int i=1;i<map.length-1;i++){
+    		for (int j=1;j<map.length-1;j++){
+        		if (map[i][j].getRegion()==-1&&Math.random()<0.2){
+        			addTrap(map[i][j]);
+        		}
+        	}
+    	}
     	for(int i = 0; i < times; i++){
     		choice = (int)(Math.random() * 4);
     		switch(choice){
     		case 0:
-    			e = Game.createLevel1Monster();
+    			e = Game.createMonsterOfLevel((int)(Math.random() * 4 - 2 + level));
     			break;
     		case 1:
-    			
-    			switch((int)(Math.random()*3)){
+    			switch((int)(Math.random()*4)){
     			case 0:
     				e = new Chest(new Armor(2, "Leather Armor"));
     				break;
     			case 1:
     				e = new Chest(new Armor(6, "Scale Armor"));
     				break;
+    			case 2:
+    				e = new Chest(new RevivalCharm());
+    				break;
     			default:
-    				e = new Chest(new HealthPotion());
+    				if (Math.random() > 0.5)
+        				e = new Chest(new HealthPotion());
+        			else if(Math.random() > 0.5)
+        				e = new Chest(new RevivePotion());
+        			else
+        				e = new Chest(new LifePotion());
     			}
-    			
     			chests++;
     			break;
     		case 2:
-    			if (Math.random() * 4 < 1)
-    				e = new RevivePotion();
-    			else
-    				e = new HealthPotion();
+    			e = new HealthPotion();
     			break;
     		case 3:
     			e = new Gold((int)(Math.random() * 50 * (level+1))+1);
@@ -388,6 +400,8 @@ public class DungeonLevel
             	connectors.get(choice).setType(false);
             	connectors.get(choice).setRegion(-1);
             	connectors.get(choice).addEntity(new Door());
+            	//if (Math.random()<0.2)
+            	//	addTrap(connectors.get(choice));
                 regionConnections[region[0]][region[1]]++;
                 regionConnections[region[1]][region[0]]++;
             }
@@ -474,6 +488,8 @@ public class DungeonLevel
         tileToOpen.setType(false);
         tileToOpen.addEntity(new Door());
         tileToOpen.setRegion(-1);
+        //if (Math.random()<0.2)
+        //	addTrap(tileToOpen);
         int[] place0 = getValidSpots(tileToOpen.getX(), tileToOpen.getY()).get(0);
         int[] place1 = getValidSpots(tileToOpen.getX(), tileToOpen.getY()).get(1);
         regionConnections[map[place0[0]][place0[1]].getRegion()][map[place1[0]][place1[1]].getRegion()]++;
@@ -553,6 +569,14 @@ public class DungeonLevel
     	return false;
     }
     
+    private int regionConnections(int r){
+    	int r0 = 0;
+    	for (int i:regionConnections[r]){
+    		r0+=i;
+    	}
+    	return r0;
+    }
+    
     public boolean isRegionRoom(int region){
     	return region<=rooms.size()&&region>0;
     }
@@ -562,6 +586,29 @@ public class DungeonLevel
     }
     public Tile getExit(){
     	return exit;
+    }
+    
+    private void addTrap(Tile tile){
+    	for (int[] t:getValidSpots(tile.getX(),tile.getY())){
+    		if (map[t[0]][t[1]].getRegion()<=rooms.size()
+    				&& map[t[0]][t[1]].getRegion()>0
+    				&& !areRegionsConnected(map[t[0]][t[1]].getRegion(),0)
+    				&& regionConnections(map[t[0]][t[1]].getRegion())>1){
+    			Trap trap;
+    			switch((int)(Math.random()*3)){
+    			case 1:
+    				trap = new Trap(new FrozenStatusEffect(3));
+    				break;
+    			case 2:
+    				trap = new Trap(new BurnStatusEffect(5));
+    				break;
+    			default:
+    				trap = new Trap(new PoisonStatusEffect(5));
+    				break;
+    			}
+    			map[t[0]][t[1]].addEntity(trap);
+    		}
+    	}
     }
    
 }
