@@ -46,7 +46,7 @@ public class BurnStatusEffect extends StatusEffect {
 	}
 	
 	public Color getColor(){
-		return Color.ORANGE;
+		return new Color(255,150,0);
 	}
 	
 	public String getName() {
