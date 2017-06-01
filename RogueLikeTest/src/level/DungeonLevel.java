@@ -99,7 +99,7 @@ public class DungeonLevel
 	    	//fills each room with 1-5 entities
 	    	for(int i = 0; i < (int)(Math.random() * 6) + 1; i++){
 	    		e = getRandomEntity();
-	    		getRandomEmptyTileInRandomRoom().addEntity(e);
+	    		getRandomEmptyTileInARoomExcludingSpawnRegion().addEntity(e);
 	    	}
     	}
     }
