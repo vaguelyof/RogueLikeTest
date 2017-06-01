@@ -47,10 +47,10 @@ public class StatusPotion extends Potion {
 	public String getDescription() {
 		return myDesc;
 	}
-	
+
 	@Override
-	public void use(Creature user) {
-		
+	public void use(Creature user){
+		user.addEffect(myEffect);
 	}
 
 	@Override

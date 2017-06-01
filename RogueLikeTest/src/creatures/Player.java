@@ -18,14 +18,14 @@ import statusEffects.StatusEffect;
 
 public class Player extends Creature {
 	Inventory myInv;
-	Game game;
+	public Game game;
 	private int experience;
 	private int level;
 	private int xpNeeded;
 	
 	public Player(String aName, String description, int health, int dmg, Game g) {
 		super(aName, description, health, dmg);
-		setColor(Color.BLUE);
+		setColor(new Color(150, 150, 255));
 		setChar((char) 1);
 		game = g;
 		myInv = new Inventory();
@@ -262,5 +262,13 @@ public class Player extends Creature {
 	public int getNeededXp() {
 		// TODO Auto-generated method stub
 		return xpNeeded;
+	}
+	
+	public void tickAllEffects(){
+		super.tickAllEffects();
+		if(myInv.getGold() >= 1000){
+			myInv.upgradeItems();
+			game.logMessage("1000 Gold reached! Items upgraded!", Color.GREEN);
+		}
 	}
 }

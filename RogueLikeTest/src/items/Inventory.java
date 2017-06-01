@@ -118,4 +118,14 @@ public class Inventory {
 			result += "Spec. " + mySpecial.getName() + " | ";
 		return result;
 	}
+	
+	public void upgradeItems(){
+		myGold -= 1000;
+		if(myWeapon != null){
+			myWeapon.upgrade();
+		}
+		if(myArmor != null){
+			myArmor.upgrade();
+		}
+	}
 }
