@@ -149,10 +149,8 @@ public class Game {
 							panel.write(' ', Color.WHITE, c);
 						else if (!(e instanceof Creature))
 							panel.write(e.getChar(), e.getColor(), c);
-
 						else if (currentlySeenTiles.contains(e.getTile()))
 							panel.write(e.getChar(), e.getColor(), c);
-
 						else {
 							panel.setCursorPosition(j, i);
 							panel.write(' ', Color.WHITE, Color.DARK_GRAY);
@@ -415,6 +413,7 @@ public class Game {
 					}
 				}
 				break;
+				
 			}
 
 			return;
@@ -435,6 +434,7 @@ public class Game {
 		// }
 
 		insertEntity((Entity) player, levels.get(0).getEntrance());
+		currentLevel = 0;
 		player.deleteAllEffects();
 		player.heal(player.getMaxHealth());
 		endTurn();
@@ -453,4 +453,23 @@ public class Game {
 		log.logMessage(msg, c);
 	}
 
+	public void goDown() {
+		if(levels.size() <= currentLevel + 1){
+			generateNextLevel();
+		}
+		currentLevel++;
+		levels.get(currentLevel).getEntrance().addEntity(player);
+		logMessage("You are now at level " +(currentLevel+1)+ " of the dungeon.");
+	}
+	
+	public void goUp(){
+		if(currentLevel == 0){
+			logMessage("You cannot leave the dungeon!");
+		}
+		else{
+			currentLevel--;
+			levels.get(currentLevel).getExit().addEntity(player);
+			logMessage("You are now at level " +(currentLevel + 1)+ " of the dungeon.");
+		}
+	}
 }
