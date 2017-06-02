@@ -56,4 +56,8 @@ public class Weapon extends Item{
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	
+	public void upgrade(){
+		damage+=2;
+	}
 }

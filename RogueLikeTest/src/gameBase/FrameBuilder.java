@@ -10,7 +10,7 @@ public class FrameBuilder {
 	
 	public GameFrame buildFrame(int x, int y, Game g){
 		
-		AsciiFont font = AsciiFont.CP437_8x8;
+		AsciiFont font = AsciiFont.CP437_16x16;
 		
 		AsciiPanel panel1 = new AsciiPanel(x,y,font);
 		

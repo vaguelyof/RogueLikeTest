@@ -254,13 +254,15 @@ public class Game {
 		panel.setCursorPosition(0, 18);
 		panel.write("+ ", Color.GREEN); panel.write("  This is a potion. They come in different colors and do different things.");
 		panel.setCursorPosition(0,19);
+		panel.write(". ", new Color(255,215,0)); panel.write("  This is a pile of gold. Collect 1000 to upgrade your weapons and armor!");
+		panel.setCursorPosition(0, 20);
 		panel.write("< >", Color.GRAY); panel.write(" These are stairs. Pointing left goes up, pointing right goes down. Go as deep as you can!");
 		
-		panel.setCursorPosition(0, 22);
-		panel.write("You will encounter other things in the dungeon; some things aren't in here.");
 		panel.setCursorPosition(0, 23);
+		panel.write("You will encounter other things in the dungeon; some things aren't in here.");
+		panel.setCursorPosition(0, 24);
 		panel.write("Remember to "); panel.write("Inspect ", Color.YELLOW); panel.write("to learn about things you don't know.");
-		panel.setCursorPosition(0,25);
+		panel.setCursorPosition(0,26);
 		panel.write("Press H to exit this menu. Remember to get as far as you can and conquer the dungeon!");
 		
 		panel.updateUI();
@@ -373,8 +375,7 @@ public class Game {
 	public void movePlayer(int direction) {
 		if (player.isStunned()&&!searching){
 			logMessage("You can't move!",Color.RED);
-			displayLog();
-			panel.updateUI();
+			endTurn();
 		}
 		else if (creatureCanMoveInDirection(player, direction)) {
 			player.getTile().getTileInDirection(direction).addEntity(player);

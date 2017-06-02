@@ -56,5 +56,8 @@ public class Armor extends Item{
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
+	
+	public void upgrade(){
+		blockStrength += 2;
+	}
 }
