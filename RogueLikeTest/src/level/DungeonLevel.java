@@ -260,7 +260,10 @@ public class DungeonLevel
 				e = new Chest(new Armor(6, "Scale Armor"));
 				break;
 			case 2:
-				e = new Chest(new RevivalCharm());
+				if (Math.random() > 0.5)
+    				e = new Chest(new PotionPouch());
+    			else
+    				e = new Chest(new RevivalCharm());
 				break;
 			default:
 				getRandomEmptyTileInARoomExcludingSpawnRegion().addEntity(new Key());
