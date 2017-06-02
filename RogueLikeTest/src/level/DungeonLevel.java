@@ -89,12 +89,30 @@ public class DungeonLevel
      */
     private void populateLevel(){
     	Entity e = null;
-    	for (int i=1;i<map.length-1;i++){
-    		for (int j=1;j<map.length-1;j++){
-        		if (map[i][j].getRegion()==-1&&Math.random()<0.2){
-        			addTrap(map[i][j]);
-        		}
-        	}
+    	if (level==1){
+	    	for (int i=1;i<map.length-1;i++){
+	    		for (int j=1;j<map.length-1;j++){
+	        		if (map[i][j].getRegion()==-1){
+	        			for (int[] loc:getValidSpots(i,j)){
+	        				if (map[loc[0]][loc[1]].getRegion()==1){
+	        					map[loc[0]][loc[1]].addEntity(new SpikeTrap(true));
+	        					i = map.length-1;
+	        					j = map.length-1;
+	        					break;
+	        				}
+	        			}
+	        		}
+	        	}
+	    	}
+    	}
+    	if (level>0){
+	    	for (int i=1;i<map.length-1;i++){
+	    		for (int j=1;j<map.length-1;j++){
+	        		if (map[i][j].getRegion()==-1&&Math.random()<0.2){
+	        			addTrap(map[i][j]);
+	        		}
+	        	}
+	    	}
     	}
     	for(int currentRegion = 0; currentRegion < rooms.size(); currentRegion++)
     	{
