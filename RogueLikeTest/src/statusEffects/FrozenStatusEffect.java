@@ -46,7 +46,7 @@ public class FrozenStatusEffect extends StatusEffect {
 	}
 	
 	public String getEndMessage(){
-		return "Your thawed out";
+		return "You thawed out";
 	}
 	
 	public boolean isHazardous(){
