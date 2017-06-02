@@ -226,6 +226,19 @@ public class Player extends Creature {
 	}
 	
 	public void interact(){
+		int foundTraps = 0;
+		for (int i=0;i<8;i++){
+			if (getTile().getTileInDirection(i).disarmTrap())
+				foundTraps++;
+		}
+		if (foundTraps == 1){
+			game.logMessage("You disarmed the trap!", Color.YELLOW);
+			return;
+		}
+		if (foundTraps > 1){
+			game.logMessage("You disarmed nearby traps!", Color.YELLOW);
+			return;
+		}
 		if(getTile().getEntities().size()<2){
 			game.logMessage("There is nothing here.", Color.RED);
 			return;
