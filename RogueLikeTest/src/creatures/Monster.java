@@ -24,16 +24,6 @@ public class Monster extends Creature{
 		lastSeen = null;
 	}
 	
-	public Monster(String aName, String description, int health, int dmg, int moveSpeed, boolean slow)
-	{
-		super(aName, description, health, dmg);
-		setChar('!');
-		setColor(Color.RED);
-		speed = moveSpeed;
-		canAct = true;
-		lastSeen = null;
-	}
-	
 	/*
 	 * monster acts in a step by step process
 	 * 1. applies any current status effects
