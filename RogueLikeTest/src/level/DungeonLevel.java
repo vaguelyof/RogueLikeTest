@@ -264,17 +264,22 @@ public class DungeonLevel
 				break;
 			default:
 				getRandomEmptyTileInARoomExcludingSpawnRegion().addEntity(new Key());
-				if (Math.random() > 0.5)
+				if (Math.random() > 0.75)
     				e = new Chest(new HealthPotion());
     			else if(Math.random() > 0.5)
-    				e = new Chest(new RevivePotion());
-    			else
+    				e = new Chest(new StatusPotion("Makes the user levitate", new LevitationStatusEffect(10)));
+    			else if(Math.random() > 0.2)
     				e = new Chest(new LifePotion());
+    			else
+    				e = new Chest(new RevivePotion());
 			}
 			break;
 		// a health potion
 		case 2:
-			e = new HealthPotion();
+			if (Math.random()>0.5)
+				e = new HealthPotion();
+			else
+				e = null;
 			break;
 		//random amount of gold
 		case 3:
