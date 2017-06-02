@@ -40,13 +40,7 @@ public class RevivalCharm extends Item implements RevivalItem {
 	@Override
 	public void use(Creature user){
 		if (user instanceof Player){
-			((Player)user).game.logMessage("You cannot use this item.",Color.RED);
+			((Player)user).getGame().logMessage("You cannot use this item.",Color.RED);
 		}
-	}
-
-	@Override
-	public int getValue() {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 }

@@ -18,7 +18,7 @@ import statusEffects.StatusEffect;
 
 public class Player extends Creature {
 	Inventory myInv;
-	public Game game;
+	Game game;
 	private int experience;
 	private int level;
 	private int xpNeeded;
@@ -84,12 +84,19 @@ public class Player extends Creature {
 				game.logMessage("You were hit!", Color.RED);
 		}
 	}
+	public Inventory getInventory() {
+		return myInv;
+	}
 
 	public int getGold() {
 		return myInv.getGold();
 	}
 	public int getKeys() {
 		return myInv.getKeys();
+	}
+
+	public Game getGame() {
+		return game;
 	}
 
 	public int getDamage() {

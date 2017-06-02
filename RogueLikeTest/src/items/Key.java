@@ -42,10 +42,4 @@ public class Key extends Item{
 		//one - time use
 	}
 
-	@Override
-	public int getValue() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 }

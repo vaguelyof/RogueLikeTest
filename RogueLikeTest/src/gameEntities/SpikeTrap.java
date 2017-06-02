@@ -43,10 +43,10 @@ public class SpikeTrap extends Trap {
 			if (isTutorial&& user instanceof Player){
 				if (user.getHealth()>1){
 					user.setHealth(user.getHealth()-1);
-					((Player)user).game.logMessage("You were hit by the trap!",Color.RED);
+					((Player)user).getGame().logMessage("You were hit by the trap!",Color.RED);
 				}
 				else
-					((Player)user).game.logMessage("The trap broke...");
+					((Player)user).getGame().logMessage("The trap broke...");
 				isVisible = true;
 				isArmed = false;
 			}

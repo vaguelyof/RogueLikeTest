@@ -189,7 +189,7 @@ public class Tile
 	    	for (int i=0;i<thingsInTile.size();i++){
 	    		if (thingsInTile.get(i) instanceof Trap && ((Trap)thingsInTile.get(i)).isRevealable() && e instanceof Player){
 	    			((Trap)thingsInTile.get(i)).reveal();
-	    			((Player)e).game.logMessage("You noticed a trap!",Color.YELLOW);
+	    			((Player)e).getGame().logMessage("You noticed a trap!",Color.YELLOW);
 	    			return; //there shouldn't be more than one trap
 	    		}
 	    	}
@@ -198,7 +198,7 @@ public class Tile
 	    	for (int i=0;i<thingsInTile.size();i++){
 	    		if (thingsInTile.get(i) instanceof Trap){
 		    		if (e instanceof Player)
-	    				((Player)e).game.logMessage("You stepped on a "+thingsInTile.get(i).getName()+"!", Color.RED);
+	    				((Player)e).getGame().logMessage("You stepped on a "+thingsInTile.get(i).getName()+"!", Color.RED);
 	    			((Trap)thingsInTile.get(i)).trigger((Creature)e);
 	    			return; //there shouldn't be more than one trap
 	    		}
@@ -214,7 +214,7 @@ public class Tile
 		    	for (Entity ent: t.thingsInTile){
 		    		if (ent instanceof Trap && ((Trap)ent).isRevealable() && Math.random()<0.5){
 		    			((Trap)ent).reveal();
-		    			e.game.logMessage("You noticed a trap!",Color.YELLOW);
+		    			e.getGame().logMessage("You noticed a trap!",Color.YELLOW);
 		    		}
 		    	}
 			}
