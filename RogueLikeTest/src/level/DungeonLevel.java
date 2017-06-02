@@ -95,6 +95,9 @@ public class DungeonLevel
      */
     private void populateLevel(){
     	Entity e = null;
+    	/*
+    	 * Temporary removal
+    	 * Traps are you-know-what
     	for (int i=1;i<map.length-1;i++){
     		for (int j=1;j<map.length-1;j++){
         		if (map[i][j].getRegion()==-1&&Math.random()<0.2){
@@ -102,6 +105,7 @@ public class DungeonLevel
         		}
         	}
     	}
+    	*/
     	for(int currentRegion = 0; currentRegion < rooms.size(); currentRegion++)
     	{
 	    	//fills each room with 1-5 entities

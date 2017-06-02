@@ -290,6 +290,12 @@ public class Game {
 		panel.write("Remember to "); panel.write("Inspect ", Color.YELLOW); panel.write("to learn about things you don't know.");
 		panel.setCursorPosition(0,26);
 		panel.write("Press H to exit this menu. Remember to get as far as you can and conquer the dungeon!");
+		panel.setCursorPosition(0, 40);
+		panel.write("If you read it this far, you may as well be our secret agent.");
+		panel.setCursorPosition(0, 41);
+		panel.write("Your mission, should you choose to accept:");
+		panel.setCursorPosition(13, 43);
+		panel.write("Find a bug that breaks the game");
 		
 		panel.updateUI();
 		}
@@ -370,9 +376,10 @@ public class Game {
 		if (c == null)
 			return false;
 
-		if (c.getTile().getTileInDirection(direction) != null
+		if ((c.getTile().getTileInDirection(direction) != null
 				&& !c.getTile().getTileInDirection(direction).getIsRock()
-				&& !(c.getTile().getTileInDirection(direction).getTopEntity() instanceof Creature)) {
+				&& !(c.getTile().getTileInDirection(direction).getTopEntity() instanceof Creature))
+				|| c.getTile().getTileInDirection(direction).getTopEntity() instanceof Projectile) {
 			return true;
 		}
 		return false;

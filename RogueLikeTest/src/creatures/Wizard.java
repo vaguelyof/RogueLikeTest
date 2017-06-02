@@ -40,12 +40,20 @@ public class Wizard extends Monster{
 		//but still wait to move
 		if(canSeePlayer() && canAct){
 			
+			//wizards have a weak attack for 1 damage if the player is right next to them 
+			for(Tile k : getTile().getAdjacentTiles())
+			{
+				if(k.getTopEntity() instanceof Player){
+					attack((Creature)k.getTopEntity());
+					canAct = false;		//monster must wait one turn after attacking
+					return;
+				}
+			}
+			
 			//if the wizard has direct line of sight to the player, it shoots at it
 			for(Tile t : seeable)
-			{
-				//wizards have a weak 
-				
-				if(tileHasPlayer(t) && projectileHasDirectPathTo(getTile(), t))
+			{				
+				if(tileHasPlayer(t)/* && projectileHasDirectPathTo(getTile(), t)*/)
 				{
 					shoot(getTile().getDirectionToTile(t));
 					canAct = false;		//monster must wait one turn after attacking
@@ -179,4 +187,9 @@ public class Wizard extends Monster{
 			}
 		return false;
 	}	
+	
+	protected void attack(Creature c)
+	{
+		c.takeDamage(1);
+	}
 }

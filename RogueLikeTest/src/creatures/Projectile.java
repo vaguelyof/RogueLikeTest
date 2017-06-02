@@ -79,6 +79,7 @@ public class Projectile extends Creature{
 		//move for a maximum of two spaces per turn until it hits a wall or a player
 		for(int i = 1; i <= 2; i++)
 		{
+			nextEntity = getTile().getTileInDirection(dir).getTopEntity();
 			//projectile will move if it can
 			if(this.getTile().getTileInDirection(dir).getIsRock()){
 				this.die();
