@@ -178,14 +178,19 @@ public class Player extends Creature {
 			myInv.setMyPotion(null);
 			return;
 		}
+		Tile t = getTile();
 		super.die();
+		t.addEntity(this);
 		// drop all items
 		// gold is lost
 		dropItem(myInv.getMySpecial());
 		dropItem(myInv.getMyArmor());
 		dropItem(myInv.getMyWeapon());
 		dropItem(myInv.getMyPotion());
+		myInv.clear();
 		game.revertToBeginning();
+		game.logMessage(" ");
+		game.logMessage(" ");
 		game.logMessage("YOU DIED", Color.RED);
 	}
 	
