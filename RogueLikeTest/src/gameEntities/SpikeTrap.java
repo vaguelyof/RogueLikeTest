@@ -47,10 +47,12 @@ public class SpikeTrap extends Trap {
 				}
 				else
 					((Player)user).game.logMessage("The trap broke...");
+				isVisible = true;
 				isArmed = false;
 			}
 			else if (!isTutorial){
 				user.takeDamage(damage);
+				isVisible = true;
 				isArmed = false;
 			}
 		}

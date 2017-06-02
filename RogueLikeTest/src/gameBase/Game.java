@@ -53,6 +53,7 @@ public class Game {
 		helpItems.add("I - Interact");
 		helpItems.add("O - Wait 1 turn");
 		helpItems.add("P - Drink Potion");
+		helpItems.add("L - Use Item");
 
 		fov = new FOV(FOV.SHADOW);
 		seenTiles = new ArrayList<ArrayList<Tile>>();
@@ -448,8 +449,8 @@ public class Game {
 					}
 					else {
 						player.interact();
-						endTurn();
 					}
+					endTurn();
 				}
 				break;
 			case 'O':
@@ -466,16 +467,28 @@ public class Game {
 					}
 					else {
 						player.usePotion();
-						endTurn();
 					}
+					endTurn();
 				}
 				break;
 			case 'H':
 				helpOpen = !helpOpen;
 				showHelp();
 				break;
+			case 'L':
+				if (!searching) {
+					if (player.isStunned()) {
+						logMessage("You can't move!",Color.RED);
+						displayMapAroundTile(player.getTile(),currentLevel);
+						panel.updateUI();
+					}
+					else {
+						player.useSpecial();
+					}
+					endTurn();
+				}
+				break;
 			}
-
 			return;
 		}
 		else{
