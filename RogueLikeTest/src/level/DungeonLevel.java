@@ -150,7 +150,7 @@ public class DungeonLevel
     		choice = (int)(Math.random() * 4);
     		switch(choice){
     		case 0:
-    			e = Game.createMonsterOfLevel((int)(Math.random() * 4 - 2 + level));
+    			e = Game.createMonsterOfLevel((int)(Math.random() * 5 - 2 + level));
     			break;
     		case 1:
     			switch((int)(Math.random()*4)){
