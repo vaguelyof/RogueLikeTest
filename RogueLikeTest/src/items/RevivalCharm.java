@@ -3,6 +3,7 @@ package items;
 import java.awt.Color;
 
 import creatures.Creature;
+import creatures.Player;
 import statusEffects.InvulnStatusEffect;
 import statusEffects.LevitationStatusEffect;
 
@@ -38,6 +39,9 @@ public class RevivalCharm extends Item implements RevivalItem {
 
 	@Override
 	public void use(Creature user){
+		if (user instanceof Player){
+			((Player)user).game.logMessage("You cannot use this item.",Color.RED);
+		}
 	}
 
 	@Override

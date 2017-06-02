@@ -224,6 +224,15 @@ public class Player extends Creature {
 		}
 
 	}
+
+	public void useSpecial() {
+		if (myInv.getMySpecial() != null) {
+			myInv.getMySpecial().use(this);
+		} else {
+			game.logMessage("You don't have a special item.");
+		}
+
+	}
 	
 	public void interact(){
 		int foundTraps = 0;
