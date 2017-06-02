@@ -117,94 +117,7 @@ public class DungeonLevel {
 
 	}
 
-	/*
-	 * obsolete
-	 *
-	private void populateLevel(int times) {
-		int chests = 0;
-		int choice;
-		Entity e;
-		if (level == 1) {
-			for (int i = 1; i < map.length - 1; i++) {
-				for (int j = 1; j < map.length - 1; j++) {
-					if (map[i][j].getRegion() == -1) {
-						for (int[] loc : getValidSpots(i, j)) {
-							if (map[loc[0]][loc[1]].getRegion() == 1) {
-								map[loc[0]][loc[1]].addEntity(new SpikeTrap(true));
-								i = map.length - 1;
-								j = map.length - 1;
-								break;
-							}
-						}
-					}
-				}
-			}
-		}
-		if (level > 0) {
-			for (int i = 1; i < map.length - 1; i++) {
-				for (int j = 1; j < map.length - 1; j++) {
-					if (map[i][j].getRegion() == -1 && Math.random() < 0.2) {
-						addTrap(map[i][j]);
-					}
-				}
-			}
 
-			for (int currentRegion = 0; currentRegion < rooms.size(); currentRegion++) {
-				// fills each room with 1-5 entities
-				for (int i = 0; i < (int) (Math.random() * 6) + 1; i++) {
-					e = getRandomEntity();
-					getRandomEmptyTileInARoomExcludingSpawnRegion().addEntity(e);
-				}
-
-				for (int i = 0; i < times; i++) {
-					choice = (int) (Math.random() * 4);
-					switch (choice) {
-					case 0:
-						e = Game.createMonsterOfLevel((int) (Math.random() * 4 - 2 + level));
-						break;
-					case 1:
-						switch ((int) (Math.random() * 4)) {
-						case 0:
-							chests++;
-							// e = new Chest(new Armor(2, "Leather Armor"));
-
-							break;
-						case 1:
-							chests++;
-
-							// e = new Chest(new Armor(6, "Scale Armor"));
-							break;
-						case 2:
-							e = new Chest(new RevivalCharm());
-							break;
-						default:
-							if (Math.random() > 0.75)
-								e = new Chest(new HealthPotion());
-							else if (Math.random() > 0.5)
-								e = new Chest(
-										new StatusPotion("Makes the user levitate", new LevitationStatusEffect(10)));
-							else if (Math.random() > 0.2)
-								e = new Chest(new LifePotion());
-							else
-								e = new Chest(new RevivePotion());
-						}
-						chests++;
-						break;
-					case 2:
-						e = new HealthPotion();
-						break;
-					case 3:
-						e = new Gold((int) (Math.random() * 50 * (level + 1)) + 1);
-						break;
-					default:
-						e = Game.createLevel1Monster();
-					}
-					getRandomEmptyTileInARoomExcludingSpawnRegion().addEntity(e);
-				}
-			}
-		}
-	}
-	*/
 	
 	/*
 	 * returns a random entity 0. monster with strength based on level 1. chest
@@ -251,12 +164,14 @@ public class DungeonLevel {
 				break;
 			default:
 				getRandomEmptyTileInARoomExcludingSpawnRegion().addEntity(new Key());
-				if (Math.random() > 0.5)
-					e = new Chest(new HealthPotion());
-				else if (Math.random() > 0.5)
-					e = new Chest(new RevivePotion());
-				else
-					e = new Chest(new LifePotion());
+				if (Math.random() > 0.75)
+    				e = new Chest(new HealthPotion());
+    			else if(Math.random() > 0.5)
+    				e = new Chest(new StatusPotion("Makes the user levitate", new LevitationStatusEffect(10)));
+    			else if(Math.random() > 0.2)
+    				e = new Chest(new LifePotion());
+    			else
+    				e = new Chest(new RevivePotion());
 			}
 			break;
 		// a health potion
