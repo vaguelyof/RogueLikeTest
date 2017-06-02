@@ -122,10 +122,37 @@ public class DungeonLevel
     		case 1:
     			switch((int)(Math.random()*4)){
     			case 0:
-    				e = new Chest(new Armor(2, "Leather Armor"));
+    				//e = new Chest(new Armor(2, "Leather Armor"));
+    				if(Math.random() > 0.5){
+    					e = new Chest(new Armor(2, "Leather Armor"));
+    				}
+    				else if(Math.random() > 0.5){
+    					e = new Chest(new Armor(4, "Mail Armor"));
+    				}
+    				else if(Math.random()>0.1){
+    					e = new Chest(new Armor(6, "Scale Armor"));
+    				}
+    				else{
+    					e = new Chest(new Armor(10, "Plate Armor"));
+    				}
     				break;
     			case 1:
-    				e = new Chest(new Armor(6, "Scale Armor"));
+    				if(Math.random() > 0.5){
+    					e = new Chest(new Weapon(1, "Sharp Stick"));
+    				}
+    				else if(Math.random() > 0.5){
+    					e = new Chest(new Weapon(3, "Worn Club"));
+    				}
+    				else if(Math.random()>0.5){
+    					e = new Chest(new Weapon(5, "Sword"));
+    				}
+    				else if(Math.random() > 0.1){
+    					e = new Chest(new Weapon(7, "Greataxe"));
+    				}
+    				else{
+    					e = new Chest(new Armor(10, "Greatsword"));
+    				}
+    				//e = new Chest(new Armor(6, "Scale Armor"));
     				break;
     			case 2:
     				e = new Chest(new RevivalCharm());
