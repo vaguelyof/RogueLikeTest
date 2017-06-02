@@ -44,11 +44,11 @@ public class PotionPouch extends Item {
 		inv.setMyPotion(heldPotion);
 		heldPotion = temp;
 		if (heldPotion!=null && inv.getMyPotion()!=null)
-			((Player)user).getGame().logMessage("You swapped potions");
+			((Player)user).getGame().logMessage("You put your "+heldPotion.getName()+" away and took out a "+inv.getMyPotion().getName());
 		else if (heldPotion!=null && inv.getMyPotion()==null)
-			((Player)user).getGame().logMessage("You took a potion out of your poutch");
+			((Player)user).getGame().logMessage("You put the "+heldPotion.getName()+" in your poutch");
 		else if (heldPotion==null && inv.getMyPotion()!=null)
-			((Player)user).getGame().logMessage("You put the potion in your poutch");
+			((Player)user).getGame().logMessage("You took a "+inv.getMyPotion().getName()+" out of your poutch");
 		else
 			((Player)user).getGame().logMessage("You don't have any potions");
 	}
