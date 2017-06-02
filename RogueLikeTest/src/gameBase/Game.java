@@ -373,8 +373,7 @@ public class Game {
 	public void movePlayer(int direction) {
 		if (player.isStunned()&&!searching){
 			logMessage("You can't move!",Color.RED);
-			displayLog();
-			panel.updateUI();
+			endTurn();
 		}
 		else if (creatureCanMoveInDirection(player, direction)) {
 			player.getTile().getTileInDirection(direction).addEntity(player);
