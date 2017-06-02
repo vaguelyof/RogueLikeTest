@@ -311,4 +311,9 @@ public class Creature extends Entity{
     protected void setChar(char c) {
     	myChar = c;
     }
+
+	public void act() {
+		// TODO Auto-generated method stub
+		
+	}
 }

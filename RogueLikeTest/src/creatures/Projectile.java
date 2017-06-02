@@ -10,67 +10,67 @@ import level.Tile;
  * moves up to two spaces per turn until it hits a player or a wall
  * then it deals damage and deletes itself
  */
-public class Projectile extends Entity{
+public class Projectile extends Creature{
 
-	private String myName;
-	private String myDescription;
 	private int dir;
-	private Tile myT;
-	private int myDamage;
-	private Color myColor;
 	private Item thrownItem;
-	private char icon;
 	
-	public Projectile(int direction, int damage)
+	public Projectile()
 	{
-
-		myName = "dart";
-		myDescription = "small, fast, and deadly";
-		myColor = Color.WHITE;
+		super("dart", "small, fast, and deadly", 999, 1);
+		setColor(Color.WHITE);
+		dir = 0;
+		setChar(determineChar());
+	}
+	
+	public Projectile(int direction)
+	{
+		super("dart", "small, fast, and deadly", 999, 1);
+		setColor(Color.WHITE);
 		dir = direction;
-		myDamage = damage;
-		icon = determineChar();
-		
+		setChar(determineChar());
 	}
 	
 	public Projectile(int direction, int damage, Color color)
 	{
-		myName = "dart";
-		myDescription = "small, fast, and deadly";
-		myColor = color;
+		super("dart", "small, fast, and deadly", 999, damage);
+		setColor(color);
 		dir = direction;
-		myDamage = damage;
-		icon = determineChar();
+		setChar(determineChar());
 	}
 	
 	//default constructor for magic projectiles
 	public Projectile(int direction, int damage, String name, String description)
 	{
-		myName = name;
-		myDescription = description;
+		super(name, description, 999, damage);
 		dir = direction;
-		myDamage = damage;
-		myColor = Color.CYAN;
-		icon = '*';
+		setColor(Color.CYAN);
+		setChar('*');
 	}
+	
+	//default constructor for magic projectiles
+		public Projectile(int direction, int damage, Color color, String name, String description)
+		{
+			super(name, description, 999, damage);
+			dir = direction;
+			setColor(color);
+			setChar('*');
+		}
 	
 	public Projectile(int direction, int damage, Color color, String name, String description, char character)
 	{
-		myName = name;
-		myDescription = description;
+		super(name, description, 999, damage);
 		dir = direction;
-		myDamage = damage;
-		myColor = color;
-		icon = character;
+		setColor(color);
+		setChar(character);
 	}
 	
 	public Projectile(int direction, Item thrown){
-		myName = thrown.getName();
-		myDescription = thrown.getDescription();
-		myColor = thrown.getColor();
+		super(thrown.getName(), thrown.getDescription(), 999, 0);
+		setColor(thrown.getColor());
 		dir = direction;
 		thrownItem = thrown;
-		icon = determineChar();
+		setChar(determineChar());
 	}
 	
 	public void act(){
@@ -81,10 +81,10 @@ public class Projectile extends Entity{
 		{
 			//projectile will move if it can
 			if(this.getTile().getTileInDirection(dir).getIsRock()){
-				getTile().removeEntity(this);
+				this.die();
 				return;
 			}
-			else if(nextEntity != null){
+			else if(nextEntity instanceof Creature){
 				attack((Creature)nextEntity);
 				return;
 			}
@@ -97,23 +97,13 @@ public class Projectile extends Entity{
 		if (thrownItem!=null)
 			thrownItem.use(c);
 		else
-			c.takeDamage(myDamage);
-		getTile().removeEntity(this);	//deletes itself when it hits
+			c.takeDamage(getDamage());
+			this.die();	//deletes itself when it hits
 	}
 	
 	private void move(){
-		getTile().getTileInDirection(dir).addEntity(this);
+		(getTile().getTileInDirection(dir)).addEntity(this);
 	}
-	
-	public String getName()
-	{
-		return myName;
-	}
-	
-	public String getDescription()
-    {
-    	return myDescription;
-    }
 	
 	public Tile getTile()
     {
@@ -127,11 +117,6 @@ public class Projectile extends Entity{
 	
 	public int getDirection(){
 		return dir;
-	}
-	
-	@Override
-	public Color getColor() {
-		return myColor;
 	}
 	
 	/*
@@ -155,15 +140,5 @@ public class Projectile extends Entity{
 			return 'L';
 		else
 			return '<';
-	}
-	
-	public void setChar(char c)
-	{
-		icon = c;
-	}
-	
-	public char getChar()
-	{
-		return icon;
 	}
 }

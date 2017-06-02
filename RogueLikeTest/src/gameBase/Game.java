@@ -121,23 +121,24 @@ public class Game {
 		}
 		if(level <= 2)
 		{
-			return new Wizard("Maniacal Warlock", "Insane, Arcane, he'll wipe the floor with your membrane", 3, 2);
+			return new Wizard("Maniacal Warlock", "Insane, Arcane, he'll wipe the floor with your membrane", new Color(255, 153, 51), 3, 2);
 		}
 		if(level <= 4)
 		{
-			return new Wizard("Honored Illusionist", "A well regarded professor of magic, I'm sure he'd love to chat over tea", 5, 4);
+			return new Wizard("Honored Illusionist", "A well regarded professor of magic, I'm sure he'd love to chat over tea", new Color(0, 204, 0), 5, 4);
 		}
 		if(level <= 6)
 		{
-			return new Wizard("Prodigal Magician", "A gifted student of the arcane arts", 7, 5);
+			return new Wizard("Prodigal Magician", "A gifted student of the arcane arts", new Color(204, 51, 0), 7, 5);
 		}
 		else
 		{
-			return new Wizard("Grand Master Illustionist", "Gets stronger as your will to go deeper continues", level * 3, level * 2 - 3);
+			//purple for royalty
+			return new Wizard("Grand Master Illustionist", "Gets stronger as your will to go deeper continues", new Color(153, 51, 153), level * 3, level * 2 - 3);
 		}
 	}
 	
-	public void insertEntity(Entity e, Tile t) {
+	public static void insertEntity(Entity e, Tile t) {
 		t.addEntity(e);
 	}
 
@@ -426,8 +427,8 @@ public class Game {
 
 	public void endTurn() {
 		player.tickAllEffects();
-		for (Monster m : getLevel(currentLevel).getAllMonsters()) {
-			m.act();
+		for (Creature c : getLevel(currentLevel).getAllActors()) {
+			c.act();
 		}
 
 		displayMapAroundTile(player.getTile(), currentLevel);

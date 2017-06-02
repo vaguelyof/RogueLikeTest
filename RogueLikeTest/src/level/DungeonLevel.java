@@ -1,7 +1,9 @@
 package level;
 import java.util.ArrayList;
 
+import creatures.Creature;
 import creatures.Monster;
+import creatures.Projectile;
 import gameBase.Game;
 import gameEntities.Chest;
 import gameEntities.Door;
@@ -50,16 +52,20 @@ public class DungeonLevel
         connectedRegions = new ArrayList<Integer>();
     }
     
-    public ArrayList<Monster> getAllMonsters(){
-    	ArrayList<Monster> monsters = new ArrayList<Monster>();
+    /*
+     * gets all Monsters and Projectiles that need to act every turn
+     */
+    public ArrayList<Creature> getAllActors(){
+    	ArrayList<Creature> creatures = new ArrayList<Creature>();	//array to store creatures to act
     	for(int i = 0; i < map.length; i++){
     		for(int j = 0; j < map.length; j ++){
-    			if( map[i][j].getTopEntity() instanceof Monster){
-    				monsters.add((Monster)map[i][j].getTopEntity());
+    			if( map[i][j].getTopEntity() instanceof Monster || map[i][j].getTopEntity() instanceof Projectile) //adds to array if the entity is a projectile or a monster
+    			{
+    				creatures.add((Creature)(map[i][j].getTopEntity()));
     			}
     		}
     	}
-    	return monsters;
+    	return creatures;
     }
     
     /**

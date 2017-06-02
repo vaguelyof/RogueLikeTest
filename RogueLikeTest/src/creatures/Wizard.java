@@ -9,12 +9,16 @@ import level.Tile;
 
 public class Wizard extends Monster{
 
-	Game game;
-	
 	public Wizard(String aName, String description, int health, int dmg){
 		super(aName, description, health, dmg);
 		setChar(')');
-		setColor(new Color(200, 0, 0));
+		setColor(Color.red);
+	}
+	
+	public Wizard(String aName, String description, Color color, int health, int dmg){
+		super(aName, description, health, dmg);
+		setChar(')');
+		setColor(color);
 	}
 	
 	public void act()
@@ -37,16 +41,19 @@ public class Wizard extends Monster{
 		if(canSeePlayer() && canAct){
 			
 			//if the wizard has direct line of sight to the player, it shoots at it
-			for(Tile t : getTile().getAdjacentTiles())
+			for(Tile t : seeable)
 			{
-				if(tileHasPlayer(t) && hasDirectPathTo(getTile(), t))
+				//wizards have a weak 
+				
+				if(tileHasPlayer(t) && projectileHasDirectPathTo(getTile(), t))
 				{
-					attack((Creature)t.getTopEntity());
+					shoot(getTile().getDirectionToTile(t));
 					canAct = false;		//monster must wait one turn after attacking
 					return;
 				}
 			}
 		}
+		canAct = true;
 	
 			//if the monster can see the player and has a direct path to the player
 			//monster moves towards player
@@ -57,25 +64,27 @@ public class Wizard extends Monster{
 					if(tileHasPlayer(t))
 					{
 						//stores a simple tile location as instance variable for use in a room
-						lastSeen = new Tile(t.getIsRock(), t.getDungeon(), t.getX(), t.getY());
+						lastSeen = t;
 						
-						//if the monster is in a room and the player is on a door
-						//or if the monster and the player are in a room together, the monster moves directly toward the player
+						//if the wizard is in a room and the player is on a door
+						//or if the wizard and the player are in a room together, the wizard moves directly away the player
 						//no questions asked
 						if(getTile().isInRoom() && (t.isInRoom() || t.hasDoor()))
 						{
-							move((getTile().getDirectionToTile(t)));						
+							move((t.getDirectionToTile(getTile())));						
 							return;		//these returns indicate the end of the monster's turn
 						}
 						
-						//should only execute if the monster is in a maze
+						//wizard chases player around a maze
+						
+						//should only execute if the wizard is in a maze
 						if(!getTile().isInRoom() && !getTile().hasDoor())
 						{						
 							move(getTile().getDirectionToTile(getTile().getNextTileInMazeTowardTile(lastSeen)));
 							return;
 						}
 						
-						//if the monster is in on a door and the player is in a maze, it moves into the maze automatically
+						//if the wizard is in on a door and the player is in a maze, it moves into the maze automatically
 						if(getTile().hasDoor() && !t.isInRoom())
 						{
 							move(getTile().getDirectionToTile(getTile().getEmptyAdjacentMazeTiles().get(0)));
@@ -94,14 +103,14 @@ public class Wizard extends Monster{
 			}
 			//to continue to chase the player, the monster must have a tile stored in lastSeen
 			
-			//if the monster has reached lastSeen without seeing the player, it forgets lastSeen and stops moving
+			//if the wizard has reached lastSeen without seeing the player, it forgets lastSeen and stops moving
 			if(lastSeen != null && lastSeen.getX() == getTile().getX() && lastSeen.getY() == getTile().getY())
 			{
 				lastSeen = null;
 				return;
 			}
 			
-			//if the monster has lost sight of the player and is in a room
+			//if the wizard has lost sight of the player and is in a room
 			//it goes directly toward door near lastSeen
 			else if(getTile().isInRoom() && lastSeen != null)
 			{
@@ -119,27 +128,55 @@ public class Wizard extends Monster{
 			}
 	}
 	
-	protected void attack(Creature c)
+	protected void shoot(int direction)
 	{
-		game.insertEntity(
-				(Entity)(new Projectile(dmg, getTile().getDirectionToTile(c.getTile()), "magic bolt", "a fast and deadly conjuring by a wizard")), 	//projectile object cast as an Entity
-				getTile().getTileInDirection(getTile().getDirectionToTile(c.getTile())));	//tile to insert projectile at
+		Game.insertEntity(
+				(new Projectile(direction, dmg, getColor(), "magic bolt", "a fast and deadly conjuring by a wizard")), 	//projectile object cast as an Entity
+				getTile().getTileInDirection(direction));	//tile to insert projectile at
 	}
 	
 	/*
 	 * returns true if this can get to Tile t by a direct path
 	 * returns false if otherwise
 	 */
-	protected boolean hasDirectPathTo(Tile start, Tile end)
+	protected boolean projectileHasDirectPathTo(Tile start, Tile end)
 	{
-		if(start.equals(end))
+		int direction = start.getDirectionToTile(end);
+		Tile next = start.getTileInDirection(direction);
+		while(true)
 		{
-			return true;
+			if(next == end)
+				return true;
+			if(next.getIsRock())
+				return false;
+			
+			next = next.getTileInDirection(direction);
 		}
-		if(Game.creatureCanMoveInDirection(this, start.getDirectionToTile(end)))
-		{
-			return hasDirectPathTo(end, end.getTileInDirection(start.getDirectionToTile(end)));
-		}
-		return false;
 	}
+	
+	protected boolean move(int direction)
+	{
+			for (int i = 0; i < speed; i++)
+			{
+				if (Game.creatureCanMoveInDirection(this, direction)) 
+				{
+					getTile().getTileInDirection(direction).addEntity(this);
+					return true;
+				}
+				if (getTile().getTileInDirection(direction).getIsRock()) 
+				{
+					if (Game.creatureCanMoveInDirection(this, direction + 2)) 
+					{
+						getTile().getTileInDirection(direction + 2).addEntity(this);
+						return true;
+					}
+					if(Game.creatureCanMoveInDirection(this, direction - 2)) 
+					{
+						getTile().getTileInDirection(direction - 2).addEntity(this);
+						return true;
+					}
+				}
+			}
+		return false;
+	}	
 }
