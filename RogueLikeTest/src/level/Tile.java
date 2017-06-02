@@ -1,4 +1,5 @@
 package level;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -62,13 +63,14 @@ public class Tile
 	        thingsInTile.add(e);
 	        e.setTile(this);
     	}
-    	if (e instanceof Creature && hasTrap() && !((Creature) e).hasEffect(1)){
-	    	for (int i=0;i<thingsInTile.size();i++){
-	    		if (thingsInTile.get(i) instanceof Trap)
-	    			((Trap)thingsInTile.get(i)).trigger((Creature)e);
-	    	}
+    	if (e instanceof Creature){
+    		if (hasTrap())
+    			activateTrap((Creature)e);
+    		if (e instanceof Player)
+    			checkForNearbyTraps((Player)e);
     	}
     }
+    
     public void removeEntity(Entity e){
     	thingsInTile.remove(e);
     	e.setTile(null);
@@ -156,9 +158,9 @@ public class Tile
     	}
     	if (hasTrap()){
 	    	for (int i=0;i<thingsInTile.size();i++){
-	    		if (thingsInTile.get(i) instanceof Trap &&!((Trap)thingsInTile.get(i)).isVisible()){
+	    		if (thingsInTile.get(i) instanceof Trap && !((Trap)thingsInTile.get(i)).isVisible()){
 	    			Trap.reveal();
-		    		return "Found a trap!"; //there should only be one trap per tile
+	    			return "Found a trap!"; //there should only be one trap per tile
 	    		}
 	    	}
     	}
@@ -180,6 +182,55 @@ public class Tile
     				return true;
     	}
     	return false;
+    }
+    
+    private void activateTrap(Creature e){
+		if (e.hasEffect(1)) {
+	    	for (int i=0;i<thingsInTile.size();i++){
+	    		if (thingsInTile.get(i) instanceof Trap && ((Trap)thingsInTile.get(i)).isRevealable() && e instanceof Player){
+	    			((Trap)thingsInTile.get(i)).reveal();
+	    			((Player)e).getGame().logMessage("You noticed a trap!",Color.YELLOW);
+	    			return; //there shouldn't be more than one trap
+	    		}
+	    	}
+		}
+		else {
+	    	for (int i=0;i<thingsInTile.size();i++){
+	    		if (thingsInTile.get(i) instanceof Trap){
+		    		if (e instanceof Player)
+	    				((Player)e).getGame().logMessage("You stepped on a "+thingsInTile.get(i).getName()+"!", Color.RED);
+	    			((Trap)thingsInTile.get(i)).trigger((Creature)e);
+	    			return; //there shouldn't be more than one trap
+	    		}
+	    	}
+		}
+    }
+    
+    private void checkForNearbyTraps(Player e){
+    	Tile t;
+		for (int j=0;j<8;j++){
+			t = this.getTileInDirection(j);
+			if (t.hasTrap()){
+		    	for (Entity ent: t.thingsInTile){
+		    		if (ent instanceof Trap && ((Trap)ent).isRevealable() && Math.random()<0.5){
+		    			((Trap)ent).reveal();
+		    			e.getGame().logMessage("You noticed a trap!",Color.YELLOW);
+		    		}
+		    	}
+			}
+		}
+    }
+    
+    public boolean disarmTrap(){
+		if (this.hasTrap()){
+		    for (Entity ent: thingsInTile){
+		    	if (ent instanceof Trap && ((Trap)ent).isVisible()){
+		    		((Trap)ent).disarm();
+		    		return true;
+		    	}
+		    }
+		}
+		return false;
     }
     
     public int getDirectionToTile(Tile t){

@@ -27,6 +27,4 @@ public abstract class Item extends Entity
 	}
 	
 	public abstract void use(Creature user);
-	
-	public abstract int getValue();
 }

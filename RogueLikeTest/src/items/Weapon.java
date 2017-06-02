@@ -50,12 +50,6 @@ public class Weapon extends Item{
 	public void use(Creature user) {
 		
 	}
-
-	@Override
-	public int getValue() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 	
 	public void upgrade(){
 		damage+=2;

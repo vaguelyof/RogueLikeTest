@@ -217,8 +217,6 @@ public class DungeonLevel
 			case 2:
 				e = new Chest(new RevivalCharm());
 				break;
-			case 3:
-				e = Game.createWizardOfLevel((int)(Math.random() * 4 - 2 + level));
 			default:
 				getRandomEmptyTileInARoomExcludingSpawnRegion().addEntity(new Key());
 				if (Math.random() > 0.5)
@@ -236,6 +234,10 @@ public class DungeonLevel
 		//random amount of gold
 		case 3:
 			e = new Gold((int)(Math.random() * 50 * (level+1))+1);
+			break;
+		//
+		case 4:
+			e = Game.createWizardOfLevel((int)(Math.random() * 4 - 2 + level));
 			break;
 		//a wispy spirit monster
 		default:

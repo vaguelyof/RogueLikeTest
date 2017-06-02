@@ -18,7 +18,7 @@ import statusEffects.StatusEffect;
 
 public class Player extends Creature {
 	Inventory myInv;
-	public Game game;
+	Game game;
 	private int experience;
 	private int level;
 	private int xpNeeded;
@@ -84,12 +84,19 @@ public class Player extends Creature {
 				game.logMessage("You were hit!", Color.RED);
 		}
 	}
+	public Inventory getInventory() {
+		return myInv;
+	}
 
 	public int getGold() {
 		return myInv.getGold();
 	}
 	public int getKeys() {
 		return myInv.getKeys();
+	}
+
+	public Game getGame() {
+		return game;
 	}
 
 	public int getDamage() {
@@ -178,14 +185,19 @@ public class Player extends Creature {
 			myInv.setMyPotion(null);
 			return;
 		}
+		Tile t = getTile();
 		super.die();
+		t.addEntity(this);
 		// drop all items
 		// gold is lost
 		dropItem(myInv.getMySpecial());
 		dropItem(myInv.getMyArmor());
 		dropItem(myInv.getMyWeapon());
 		dropItem(myInv.getMyPotion());
+		myInv.clear();
 		game.revertToBeginning();
+		game.logMessage(" ");
+		game.logMessage(" ");
 		game.logMessage("YOU DIED", Color.RED);
 	}
 	
@@ -224,8 +236,30 @@ public class Player extends Creature {
 		}
 
 	}
+
+	public void useSpecial() {
+		if (myInv.getMySpecial() != null) {
+			myInv.getMySpecial().use(this);
+		} else {
+			game.logMessage("You don't have a special item.");
+		}
+
+	}
 	
 	public void interact(){
+		int foundTraps = 0;
+		for (int i=0;i<8;i++){
+			if (getTile().getTileInDirection(i).disarmTrap())
+				foundTraps++;
+		}
+		if (foundTraps == 1){
+			game.logMessage("You disarmed the trap!", Color.YELLOW);
+			return;
+		}
+		if (foundTraps > 1){
+			game.logMessage("You disarmed nearby traps!", Color.YELLOW);
+			return;
+		}
 		if(getTile().getEntities().size()<2){
 			game.logMessage("There is nothing here.", Color.RED);
 			return;

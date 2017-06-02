@@ -37,10 +37,4 @@ public class RevivePotion extends Potion implements RevivalItem {
 	public boolean isDrinkable(){
 		return false;
 	}
-
-	@Override
-	public int getValue() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 }

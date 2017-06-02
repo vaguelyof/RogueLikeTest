@@ -53,6 +53,7 @@ public class Game {
 		helpItems.add("I - Interact");
 		helpItems.add("O - Wait 1 turn");
 		helpItems.add("P - Drink Potion");
+		helpItems.add("L - Use Item");
 
 		fov = new FOV(FOV.SHADOW);
 		seenTiles = new ArrayList<ArrayList<Tile>>();
@@ -272,7 +273,7 @@ public class Game {
 		panel.setCursorPosition(0, 15);
 		panel.write("+", Color.GRAY); panel.write("   This is a door. You can't see through it from far away.");
 		panel.setCursorPosition(0, 16);
-		panel.write("X", Color.RED); panel.write("   This is a trap! The color indicates its effect. Reveal invisible traps by Inspecting them.");
+		panel.write("X", Color.RED); panel.write("   This is a trap! Disarm a trap by Interacting near it.");
 		panel.setCursorPosition(0, 17);
 		panel.write("K ", Color.ORANGE); panel.write("$",new Color(255,215,0)); panel.write(" Keys and chests. Pick up a key to unlock a chest.");
 		panel.setCursorPosition(0, 18);
@@ -399,8 +400,7 @@ public class Game {
 	public void movePlayer(int direction) {
 		if (player.isStunned()&&!searching){
 			logMessage("You can't move!",Color.RED);
-			displayLog();
-			panel.updateUI();
+			endTurn();
 		}
 		else if (creatureCanMoveInDirection(player, direction)) {
 			player.getTile().getTileInDirection(direction).addEntity(player);
@@ -473,8 +473,8 @@ public class Game {
 					}
 					else {
 						player.interact();
-						endTurn();
 					}
+					endTurn();
 				}
 				break;
 			case 'O':
@@ -491,16 +491,28 @@ public class Game {
 					}
 					else {
 						player.usePotion();
-						endTurn();
 					}
+					endTurn();
 				}
 				break;
 			case 'H':
 				helpOpen = !helpOpen;
 				showHelp();
 				break;
+			case 'L':
+				if (!searching) {
+					if (player.isStunned()) {
+						logMessage("You can't move!",Color.RED);
+						displayMapAroundTile(player.getTile(),currentLevel);
+						panel.updateUI();
+					}
+					else {
+						player.useSpecial();
+					}
+					endTurn();
+				}
+				break;
 			}
-
 			return;
 		}
 		else{

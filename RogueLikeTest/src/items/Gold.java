@@ -40,12 +40,6 @@ public class Gold extends Item {
 		
 	}
 
-	@Override
-	public int getValue() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 
 
 }
