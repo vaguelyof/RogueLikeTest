@@ -112,6 +112,30 @@ public class Game {
 		}
 	}
 
+	public static Wizard createWizardOfLevel(int level)
+	{
+		if(level <= 1)
+		{
+			return new Wizard("Exiled Illusionist", "A former member of the fabled illusionists", 1, 1);
+		}
+		if(level <= 2)
+		{
+			return new Wizard("Maniacal Warlock", "Insane, Arcane, he'll wipe the floor with your membrane", 3, 2);
+		}
+		if(level <= 4)
+		{
+			return new Wizard("Honored Illusionist", "A well regarded professor of magic, I'm sure he'd love to chat over tea", 5, 4);
+		}
+		if(level <= 6)
+		{
+			return new Wizard("Prodigal Magician", "A gifted student of the arcane arts", 7, 5);
+		}
+		else
+		{
+			return new Wizard("Grand Master Illustionist", "Gets stronger as your will to go deeper continues", level * 3, level * 2 - 3);
+		}
+	}
+	
 	public void insertEntity(Entity e, Tile t) {
 		t.addEntity(e);
 	}

@@ -200,7 +200,7 @@ public class DungeonLevel
     private Entity getRandomEntity()
     {
     	Entity e;
-    	switch((int)(Math.random() * 4)){
+    	switch((int)(Math.random() * 5)){
     	//a monster with strength based on level
 		case 0:
 			e = Game.createMonsterOfLevel((int)(Math.random() * 4 - 2 + level));
@@ -217,6 +217,8 @@ public class DungeonLevel
 			case 2:
 				e = new Chest(new RevivalCharm());
 				break;
+			case 3:
+				e = Game.createWizardOfLevel((int)(Math.random() * 4 - 2 + level));
 			default:
 				getRandomEmptyTileInARoomExcludingSpawnRegion().addEntity(new Key());
 				if (Math.random() > 0.5)

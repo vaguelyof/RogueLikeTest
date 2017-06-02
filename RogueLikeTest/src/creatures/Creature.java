@@ -21,7 +21,7 @@ public class Creature extends Entity{
 	private String des;
 	private int currentHealth;
 	private int maxHealth;
-	private int dmg;
+	protected int dmg;
 	protected Tile myT;
 	private Color myColor;
 	private char myChar;

@@ -10,9 +10,9 @@ import statusEffects.StatusEffect;
 
 public class Monster extends Creature{
 	
-	private int speed;	//how many blocks the creature moves per turn
-	private boolean canAct;
-	private Tile lastSeen;
+	protected int speed;	//how many blocks the creature moves per turn
+	protected boolean canAct;
+	protected Tile lastSeen;
 
 	public Monster(String aName, String description, int health, int dmg)
 	{
@@ -135,7 +135,7 @@ public class Monster extends Creature{
 		}
 	
 
-	private boolean tileHasPlayer(Tile t){
+	protected boolean tileHasPlayer(Tile t){
 		return (t.getTopEntity() instanceof Player);
 	}
 	
@@ -146,7 +146,7 @@ public class Monster extends Creature{
 	 * @return false if monster cannot see player
 	 * 
 	 */
-	private boolean canSeePlayer(){
+	protected boolean canSeePlayer(){
 		for(Tile t : Game.calcFOV(this,14)){
 			if(tileHasPlayer(t))
 				return true;
@@ -158,7 +158,7 @@ public class Monster extends Creature{
 	 * returns true if monster changed tile
 	 * returns false otherwise
 	 */
-	private boolean move(int direction){
+	protected boolean move(int direction){
 		if(canAct){
 			for (int i = 0; i < speed; i++){
 				if (Game.creatureCanMoveInDirection(this, direction)) {
@@ -187,7 +187,7 @@ public class Monster extends Creature{
 		return false;
 	}	
 	
-	private void attack(Creature c){
+	protected void attack(Creature c){
 		c.takeDamage(getDamage());
 	}
 }

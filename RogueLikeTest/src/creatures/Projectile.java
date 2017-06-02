@@ -12,28 +12,65 @@ import level.Tile;
  */
 public class Projectile extends Entity{
 
+	private String myName;
+	private String myDescription;
 	private int dir;
 	private Tile myT;
 	private int myDamage;
 	private Color myColor;
 	private Item thrownItem;
+	private char icon;
 	
-	public Projectile(int direction, int damage){
+	public Projectile(int direction, int damage)
+	{
+
+		myName = "dart";
+		myDescription = "small, fast, and deadly";
 		myColor = Color.WHITE;
 		dir = direction;
 		myDamage = damage;
+		icon = determineChar();
+		
 	}
 	
-	public Projectile(int direction, int damage, Color color){
+	public Projectile(int direction, int damage, Color color)
+	{
+		myName = "dart";
+		myDescription = "small, fast, and deadly";
 		myColor = color;
 		dir = direction;
 		myDamage = damage;
+		icon = determineChar();
+	}
+	
+	//default constructor for magic projectiles
+	public Projectile(int direction, int damage, String name, String description)
+	{
+		myName = name;
+		myDescription = description;
+		dir = direction;
+		myDamage = damage;
+		myColor = Color.CYAN;
+		icon = '*';
+	}
+	
+	public Projectile(int direction, int damage, Color color, String name, String description, char character)
+	{
+		myName = name;
+		myDescription = description;
+		dir = direction;
+		myDamage = damage;
+		myColor = color;
+		icon = character;
 	}
 	
 	public Projectile(int direction, Item thrown){
+		myName = thrown.getName();
+		myDescription = thrown.getDescription();
 		myColor = thrown.getColor();
 		dir = direction;
 		thrownItem = thrown;
+		icon = determineChar();
 	}
 	
 	public void act(){
@@ -70,12 +107,12 @@ public class Projectile extends Entity{
 	
 	public String getName()
 	{
-		return "Dart";
+		return myName;
 	}
 	
 	public String getDescription()
     {
-    	return "Small, fast and deadly";
+    	return myDescription;
     }
 	
 	public Tile getTile()
@@ -97,15 +134,13 @@ public class Projectile extends Entity{
 		return myColor;
 	}
 	
-	@Override
-	//that's awesome
 	/*
 	 * (non-Javadoc)
 	 * @see gameEntities.Entity#getChar()
 	 * 
 	 * projectile has character resembling arrow pointing in the direction it moves
 	 */
-	public char getChar() {
+	public char determineChar() {
 		if (thrownItem!=null)
 			return thrownItem.getChar();
 		else if (dir==0)
@@ -120,5 +155,15 @@ public class Projectile extends Entity{
 			return 'L';
 		else
 			return '<';
+	}
+	
+	public void setChar(char c)
+	{
+		icon = c;
+	}
+	
+	public char getChar()
+	{
+		return icon;
 	}
 }
