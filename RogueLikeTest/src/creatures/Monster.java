@@ -13,7 +13,14 @@ public class Monster extends Creature{
 	protected int speed;	//how many blocks the creature moves per turn
 	protected boolean canAct;
 	protected Tile lastSeen;
-
+	
+	/**
+	 * Monster constructor
+	 * @param aName Monster name
+	 * @param description Description text
+	 * @param health MaxHealth
+	 * @param dmg attack power
+	 */
 	public Monster(String aName, String description, int health, int dmg)
 	{
 		super(aName, description, health, dmg);
@@ -24,7 +31,7 @@ public class Monster extends Creature{
 		lastSeen = null;
 	}
 	
-	/*
+	/**
 	 * monster acts in a step by step process
 	 * 1. applies any current status effects
 	 * 2. dies if its health is <= 0
