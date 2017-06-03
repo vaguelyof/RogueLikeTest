@@ -127,7 +127,6 @@ public class Projectile extends Creature{
 	 * projectile has character resembling arrow pointing in the direction it moves
 	 */
 	public char determineChar() {
-		System.out.println(dir);
 		int dir = this.dir%8;
 		if(dir < 0)
 			dir = 8 + dir;

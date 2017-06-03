@@ -263,7 +263,7 @@ public class Game {
 		panel.setCursorPosition(0,8);
 		panel.write("P ", Color.GREEN); panel.write("will drink the current potion you are holding. Some potions have different actions.");
 		panel.setCursorPosition(0, 9);
-		panel.write("H ", Color.PINK); panel.write("will open and close this menu.");
+		panel.write("L ", Color.GREEN); panel.write("will use your Spec. Item. Some of these items cannot be used this way.");
 		
 		panel.setCursorPosition(0, 11);
 		panel.write("Now you will learn about some basic things you will see in the dungeon.");
