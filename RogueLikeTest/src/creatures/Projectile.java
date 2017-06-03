@@ -54,7 +54,7 @@ public class Projectile extends Creature{
 			super(name, description, 999, damage);
 			dir = direction;
 			setColor(color);
-			setChar('*');
+			setChar(determineChar());
 		}
 	
 	public Projectile(int direction, int damage, Color color, String name, String description, char character)
@@ -127,19 +127,24 @@ public class Projectile extends Creature{
 	 * projectile has character resembling arrow pointing in the direction it moves
 	 */
 	public char determineChar() {
+		int dir = this.dir%8;
 		if (thrownItem!=null)
 			return thrownItem.getChar();
 		else if (dir==0)
 			return '^';
 		else if (dir==1)
-			return '7';
-		else if (dir<4)
+			return 191;
+		else if (dir==2)
 			return '>';
+		else if (dir==3)
+			return 217;
 		else if (dir==4)
 			return 'v';
 		else if (dir==5)
-			return 'L';
-		else
+			return 192;
+		if (dir<7)
 			return '<';
+		else
+			return 218;
 	}
 }

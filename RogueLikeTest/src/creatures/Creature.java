@@ -268,9 +268,9 @@ public class Creature extends Entity{
     		return;
     	}
     	deleteAllEffects();
-    	
-    	myT.removeEntity(this);
-    	
+    	if(myT != null){
+    		myT.removeEntity(this);
+    	}
     }
     
     
