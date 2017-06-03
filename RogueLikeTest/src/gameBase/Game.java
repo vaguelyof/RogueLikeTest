@@ -272,7 +272,7 @@ public class Game {
 		panel.setCursorPosition(1, 14);
 		panel.write("     Be careful; they will chase you and attack back.");
 		panel.setCursorPosition(0, 15);
-		panel.write(")", Color.red); panel.write("   This is a wizard. They will run away from you and shoot magic bolts at you.");
+		panel.write(";", Color.red); panel.write("   This is a wizard. They will run away from you and shoot magic bolts at you.");
 		panel.setCursorPosition(0, 16);
 		panel.write("      Their magic hurts friend and foe");
 		panel.setCursorPosition(0, 17);

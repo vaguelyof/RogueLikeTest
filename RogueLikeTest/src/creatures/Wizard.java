@@ -11,13 +11,13 @@ public class Wizard extends Monster{
 
 	public Wizard(String aName, String description, int health, int dmg){
 		super(aName, description, health, dmg);
-		setChar(')');
+		setChar(';');
 		setColor(Color.red);
 	}
 	
 	public Wizard(String aName, String description, Color color, int health, int dmg){
 		super(aName, description, health, dmg);
-		setChar(')');
+		setChar(';');
 		setColor(color);
 	}
 	
