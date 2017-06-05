@@ -211,7 +211,7 @@ public class DungeonLevel
     private Entity getRandomEntity()
     {
     	Entity e;
-    	switch((int)(Math.random() * 6)){
+    	switch((int)(Math.random() * 8)){
     	//a monster with strength based on level
 		case 0:
 			e = Game.createMonsterOfLevel((int)(Math.random() * 4 - 2 + level));
@@ -261,14 +261,16 @@ public class DungeonLevel
 		case 4:
 			e = Game.createWizardOfLevel((int)(Math.random() * 4 - 2 + level));
 			break;
+		//a wispy spirit monster
 		case 5:
+			e = Game.createLevel1Monster();
+		default:
 			if (Math.random() > 0.5)
 				e = new HealthPotion();
 			else if (Math.random() > 0.8)
 				e = new LifePotion();
-		//a wispy spirit monster
-		default:
-			e = Game.createLevel1Monster();
+			else
+				e = null;
     	}
     	return e;
     }
