@@ -98,14 +98,15 @@ public class DungeonLevel
     	/*
     	 * Temporary removal
     	 * Traps are you-know-what
-    	for (int i=1;i<map.length-1;i++){
-    		for (int j=1;j<map.length-1;j++){
-        		if (map[i][j].getRegion()==-1&&Math.random()<0.2){
-        			addTrap(map[i][j]);
-        		}
-        	}
-    	}
-    	*/
+    	if (level>1){
+	    	for (int i=1;i<map.length-1;i++){
+	    		for (int j=1;j<map.length-1;j++){
+	        		if (map[i][j].getRegion()==-1&&Math.random()<0.2){
+	        			addTrap(map[i][j]);
+	        		}
+	        	}
+	    	}
+    	}*/
     	for(int currentRegion = 0; currentRegion < rooms.size(); currentRegion++)
     	{
 	    	//fills each room with 1-5 entities
@@ -748,13 +749,19 @@ public class DungeonLevel
     			Trap trap;
     			switch((int)(Math.random()*4)){
     			case 1:
-    				trap = new Trap(new FrozenStatusEffect(3));
+    				if (level>5)
+    					trap = new Trap(new FrozenStatusEffect(3));
+    				else
+    					trap = new Trap(new FrozenStatusEffect(level/2));
     				break;
     			case 2:
-    				trap = new Trap(new BurnStatusEffect(5));
+    				if (level>17)
+    					trap = new Trap(new BurnStatusEffect(10));
+    				else
+    					trap = new Trap(new BurnStatusEffect((level/2)+1));
     				break;
     			case 3:
-    				trap = new SpikeTrap(2);
+    				trap = new SpikeTrap(level);
     				break;
     			default:
     				trap = new Trap(new PoisonStatusEffect(5));
