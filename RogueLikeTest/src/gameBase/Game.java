@@ -113,7 +113,32 @@ public class Game {
 		}
 	}
 
-	public void insertEntity(Entity e, Tile t) {
+	public static Wizard createWizardOfLevel(int level)
+	{
+		if(level <= 1)
+		{
+			return new Wizard("Exiled Illusionist", "A former member of the fabled illusionists", 1, 1);
+		}
+		if(level <= 2)
+		{
+			return new Wizard("Maniacal Warlock", "Insane, Arcane, he'll wipe the floor with your membrane", new Color(255, 153, 51), 3, 2);
+		}
+		if(level <= 4)
+		{
+			return new Wizard("Honored Illusionist", "A well regarded professor of magic, I'm sure he'd love to chat over tea", new Color(0, 204, 0), 5, 4);
+		}
+		if(level <= 6)
+		{
+			return new Wizard("Prodigal Magician", "A gifted student of the arcane arts", new Color(204, 51, 0), 7, 5);
+		}
+		else
+		{
+			//purple for royalty
+			return new Wizard("Grand Master Illustionist", "Gets stronger as your will to go deeper continues", new Color(153, 51, 153), level * 3, level * 2 - 3);
+		}
+	}
+	
+	public static void insertEntity(Entity e, Tile t) {
 		t.addEntity(e);
 	}
 
@@ -238,7 +263,7 @@ public class Game {
 		panel.setCursorPosition(0,8);
 		panel.write("P ", Color.GREEN); panel.write("will drink the current potion you are holding. Some potions have different actions.");
 		panel.setCursorPosition(0, 9);
-		panel.write("H ", Color.PINK); panel.write("will open and close this menu.");
+		panel.write("L ", Color.GREEN); panel.write("will use your Spec. Item. Some of these items cannot be used this way.");
 		
 		panel.setCursorPosition(0, 11);
 		panel.write("Now you will learn about some basic things you will see in the dungeon.");
@@ -247,24 +272,36 @@ public class Game {
 		panel.setCursorPosition(1, 14);
 		panel.write("     Be careful; they will chase you and attack back.");
 		panel.setCursorPosition(0, 15);
-		panel.write("+", Color.GRAY); panel.write("   This is a door. You can't see through it from far away.");
+		panel.write(";", Color.red); panel.write("   This is a wizard. They will run away from you and shoot magic bolts at you.");
 		panel.setCursorPosition(0, 16);
-		panel.write("X", Color.RED); panel.write("   This is a trap! Disarm a trap by Interacting near it.");
+		panel.write("      Their magic hurts friend and foe");
 		panel.setCursorPosition(0, 17);
-		panel.write("K ", Color.ORANGE); panel.write("$",new Color(255,215,0)); panel.write(" Keys and chests. Pick up a key to unlock a chest.");
+		panel.write("+", Color.GRAY); panel.write("   This is a door. You can't see through it from far away.");
 		panel.setCursorPosition(0, 18);
-		panel.write("+ ", Color.GREEN); panel.write("  This is a potion. They come in different colors and do different things.");
-		panel.setCursorPosition(0,19);
-		panel.write(". ", new Color(255,215,0)); panel.write("  This is a pile of gold. Collect 1000 to upgrade your weapons and armor!");
+		panel.write("X", Color.RED); panel.write("   This is a trap! Disarm a trap by Interacting near it.");
+		panel.setCursorPosition(0, 19);
+		panel.write("K ", Color.ORANGE); panel.write("$",new Color(255,215,0)); panel.write(" Keys and chests. Pick up a key to unlock a chest.");
 		panel.setCursorPosition(0, 20);
+		panel.write("+ ", Color.GREEN); panel.write("  This is a potion. They come in different colors and do different things.");
+		panel.setCursorPosition(0, 21);
+		panel.write(". ", new Color(255,215,0)); panel.write("  This is a pile of gold. Collect 1000 to upgrade your weapons and armor!");
+		panel.setCursorPosition(0, 22);
 		panel.write("< >", Color.GRAY); panel.write(" These are stairs. Pointing left goes up, pointing right goes down. Go as deep as you can!");
 		
-		panel.setCursorPosition(0, 23);
-		panel.write("You will encounter other things in the dungeon; some things aren't in here.");
 		panel.setCursorPosition(0, 24);
+		panel.write("You will encounter other things in the dungeon; some things aren't in here.");
+		panel.setCursorPosition(0, 25);
 		panel.write("Remember to "); panel.write("Inspect ", Color.YELLOW); panel.write("to learn about things you don't know.");
-		panel.setCursorPosition(0,26);
+		panel.setCursorPosition(0,27);
 		panel.write("Press H to exit this menu. Remember to get as far as you can and conquer the dungeon!");
+		panel.setCursorPosition(0,  29);
+		panel.write("GAME REQUIRES SCREEN RESOLUTION OF 1400x800 OR HIGHER TO DISPLAY PROPERLY");
+		panel.setCursorPosition(0, 46);
+		panel.write("If you read it this far, you may as well be our secret agent.");
+		panel.setCursorPosition(0, 47);
+		panel.write("Your mission, should you choose to accept:");
+		panel.setCursorPosition(13, 49);
+		panel.write("Find a bug that breaks the game");
 		
 		panel.updateUI();
 		}
@@ -345,9 +382,10 @@ public class Game {
 		if (c == null)
 			return false;
 
-		if (c.getTile().getTileInDirection(direction) != null
+		if ((c.getTile().getTileInDirection(direction) != null
 				&& !c.getTile().getTileInDirection(direction).getIsRock()
-				&& !(c.getTile().getTileInDirection(direction).getTopEntity() instanceof Creature)) {
+				&& !(c.getTile().getTileInDirection(direction).getTopEntity() instanceof Creature))
+				|| c.getTile().getTileInDirection(direction).getTopEntity() instanceof Projectile) {
 			return true;
 		}
 		return false;
@@ -402,8 +440,8 @@ public class Game {
 
 	public void endTurn() {
 		player.tickAllEffects();
-		for (Monster m : getLevel(currentLevel).getAllMonsters()) {
-			m.act();
+		for (Creature c : getLevel(currentLevel).getAllActors()) {
+			c.act();
 		}
 
 		displayMapAroundTile(player.getTile(), currentLevel);

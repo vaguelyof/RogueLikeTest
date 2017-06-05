@@ -21,7 +21,7 @@ public class Creature extends Entity{
 	private String des;
 	private int currentHealth;
 	private int maxHealth;
-	private int dmg;
+	protected int dmg;
 	protected Tile myT;
 	private Color myColor;
 	private char myChar;
@@ -268,9 +268,9 @@ public class Creature extends Entity{
     		return;
     	}
     	deleteAllEffects();
-    	
-    	myT.removeEntity(this);
-    	
+    	if(myT != null){
+    		myT.removeEntity(this);
+    	}
     }
     
     
@@ -311,4 +311,9 @@ public class Creature extends Entity{
     protected void setChar(char c) {
     	myChar = c;
     }
+
+	public void act() {
+		// TODO Auto-generated method stub
+		
+	}
 }

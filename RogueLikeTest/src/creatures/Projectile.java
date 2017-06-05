@@ -10,30 +10,67 @@ import level.Tile;
  * moves up to two spaces per turn until it hits a player or a wall
  * then it deals damage and deletes itself
  */
-public class Projectile extends Entity{
+public class Projectile extends Creature{
 
 	private int dir;
-	private Tile myT;
-	private int myDamage;
-	private Color myColor;
 	private Item thrownItem;
 	
-	public Projectile(int direction, int damage){
-		myColor = Color.WHITE;
-		dir = direction;
-		myDamage = damage;
+	public Projectile()
+	{
+		super("dart", "small, fast, and deadly", 999, 1);
+		setColor(Color.WHITE);
+		dir = 0;
+		setChar(determineChar());
 	}
 	
-	public Projectile(int direction, int damage, Color color){
-		myColor = color;
+	public Projectile(int direction)
+	{
+		super("dart", "small, fast, and deadly", 999, 1);
+		setColor(Color.WHITE);
 		dir = direction;
-		myDamage = damage;
+		setChar(determineChar());
+	}
+	
+	public Projectile(int direction, int damage, Color color)
+	{
+		super("dart", "small, fast, and deadly", 999, damage);
+		setColor(color);
+		dir = direction;
+		setChar(determineChar());
+	}
+	
+	//default constructor for magic projectiles
+	public Projectile(int direction, int damage, String name, String description)
+	{
+		super(name, description, 999, damage);
+		dir = direction;
+		setColor(Color.CYAN);
+		setChar('*');
+	}
+	
+	//default constructor for magic projectiles
+		public Projectile(int direction, int damage, Color color, String name, String description)
+		{
+			super(name, description, 999, damage);
+			dir = direction;
+			setColor(color);
+			setChar(determineChar());
+		}
+	
+	public Projectile(int direction, int damage, Color color, String name, String description, char character)
+	{
+		super(name, description, 999, damage);
+		dir = direction;
+		setColor(color);
+		setChar(character);
 	}
 	
 	public Projectile(int direction, Item thrown){
-		myColor = thrown.getColor();
+		super(thrown.getName(), thrown.getDescription(), 999, 0);
+		setColor(thrown.getColor());
 		dir = direction;
 		thrownItem = thrown;
+		setChar(determineChar());
 	}
 	
 	public void act(){
@@ -42,12 +79,13 @@ public class Projectile extends Entity{
 		//move for a maximum of two spaces per turn until it hits a wall or a player
 		for(int i = 1; i <= 2; i++)
 		{
+			nextEntity = getTile().getTileInDirection(dir).getTopEntity();
 			//projectile will move if it can
 			if(this.getTile().getTileInDirection(dir).getIsRock()){
-				getTile().removeEntity(this);
+				this.die();
 				return;
 			}
-			else if(nextEntity != null){
+			else if(nextEntity instanceof Creature){
 				attack((Creature)nextEntity);
 				return;
 			}
@@ -60,23 +98,13 @@ public class Projectile extends Entity{
 		if (thrownItem!=null)
 			thrownItem.use(c);
 		else
-			c.takeDamage(myDamage);
-		getTile().removeEntity(this);	//deletes itself when it hits
+			c.takeDamage(getDamage());
+			this.die();	//deletes itself when it hits
 	}
 	
 	private void move(){
-		getTile().getTileInDirection(dir).addEntity(this);
+		(getTile().getTileInDirection(dir)).addEntity(this);
 	}
-	
-	public String getName()
-	{
-		return "Dart";
-	}
-	
-	public String getDescription()
-    {
-    	return "Small, fast and deadly";
-    }
 	
 	public Tile getTile()
     {
@@ -92,33 +120,33 @@ public class Projectile extends Entity{
 		return dir;
 	}
 	
-	@Override
-	public Color getColor() {
-		return myColor;
-	}
-	
-	@Override
-	//that's awesome
 	/*
 	 * (non-Javadoc)
 	 * @see gameEntities.Entity#getChar()
 	 * 
 	 * projectile has character resembling arrow pointing in the direction it moves
 	 */
-	public char getChar() {
+	public char determineChar() {
+		int dir = this.dir%8;
+		if(dir < 0)
+			dir = 8 + dir;
 		if (thrownItem!=null)
 			return thrownItem.getChar();
 		else if (dir==0)
 			return '^';
 		else if (dir==1)
-			return '7';
-		else if (dir<4)
+			return 191;
+		else if (dir==2)
 			return '>';
+		else if (dir==3)
+			return 217;
 		else if (dir==4)
 			return 'v';
 		else if (dir==5)
-			return 'L';
-		else
+			return 192;
+		else if (dir==6)
 			return '<';
+		else
+			return 218;
 	}
 }
