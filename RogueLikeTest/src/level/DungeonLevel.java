@@ -211,23 +211,22 @@ public class DungeonLevel
     private Entity getRandomEntity()
     {
     	Entity e;
-    	switch((int)(Math.random() * 5)){
+    	switch((int)(Math.random() * 6)){
     	//a monster with strength based on level
 		case 0:
 			e = Game.createMonsterOfLevel((int)(Math.random() * 4 - 2 + level));
 			break;
 		// a chest with random treasure
 		case 1:
+			getRandomEmptyTileInARoomExcludingSpawnRegion().addEntity(new Key());
 			switch((int)(Math.random()*4)){
 			case 0:
-				getRandomEmptyTileInARoomExcludingSpawnRegion().addEntity(new Key());
 				if(level>5)
 					e = new Chest(new Armor(6, "Scale Armor"));
 				else
 					e = new Chest(new Armor(2, "Leather Armor"));
 				break;
 			case 1:
-				getRandomEmptyTileInARoomExcludingSpawnRegion().addEntity(new Key());
 				if(level>10)
 					e = new Chest(new Weapon(6, "Iron Sword"));
 				else if(level>5)
@@ -236,19 +235,12 @@ public class DungeonLevel
 					e = new Chest(new Weapon(2, "Stick"));
 				break;
 			case 2:
-				getRandomEmptyTileInARoomExcludingSpawnRegion().addEntity(new Key());
 				if((level==1 || level == 2 || level % 5 == 0) && Math.random() > 0.8)
     				e = new Chest(new PotionPouch());
     			else
     				e = new Chest(new RevivalCharm());
 				break;
-			case 3:
-				if (Math.random() > 0.5)
-					e = new HealthPotion();
-				else if (Math.random() > 0.8)
-					e = new LifePotion();
 			default:
-				getRandomEmptyTileInARoomExcludingSpawnRegion().addEntity(new Key());
 				if (Math.random() > 0.75)
     				e = new Chest(new HealthPotion());
     			else if(Math.random() > 0.5)
@@ -269,6 +261,11 @@ public class DungeonLevel
 		case 4:
 			e = Game.createWizardOfLevel((int)(Math.random() * 4 - 2 + level));
 			break;
+		case 5:
+			if (Math.random() > 0.5)
+				e = new HealthPotion();
+			else if (Math.random() > 0.8)
+				e = new LifePotion();
 		//a wispy spirit monster
 		default:
 			e = Game.createLevel1Monster();
