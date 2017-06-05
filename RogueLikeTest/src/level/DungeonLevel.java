@@ -110,7 +110,7 @@ public class DungeonLevel
     	for(int currentRegion = 0; currentRegion < rooms.size(); currentRegion++)
     	{
 	    	//fills each room with 1-5 entities
-	    	for(int i = 0; i < (int)(Math.random() * 6) + 1; i++){
+	    	for(int i = 0; i < (int)(Math.random() * 7) + 1; i++){
 	    		e = getRandomEntity();
 	    		getRandomEmptyTileInARoomExcludingSpawnRegion().addEntity(e);
 	    	}
@@ -265,12 +265,12 @@ public class DungeonLevel
 		case 5:
 			e = Game.createLevel1Monster();
 		default:
-			if (Math.random() > 0.5)
-				e = new HealthPotion();
-			else if (Math.random() > 0.8)
-				e = new LifePotion();
-			else
+			if (Math.random() > 0.3)
 				e = null;
+			else if (Math.random() > 0.2)
+				e = new HealthPotion();
+			else
+				e = new LifePotion();
     	}
     	return e;
     }
