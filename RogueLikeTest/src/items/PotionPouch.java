@@ -32,7 +32,10 @@ public class PotionPouch extends Item {
 
 	@Override
 	public String getDescription() {
-		return "Holds a single potion";
+		String desc = "Holds a single potion";
+		if (heldPotion!=null)
+			desc+=(". Currently contains a "+heldPotion.getName());
+		return desc;
 	}
 
 	@Override
