@@ -230,6 +230,8 @@ public class DungeonLevel
 				getRandomEmptyTileInARoomExcludingSpawnRegion().addEntity(new Key());
 				e = new Chest(new RevivalCharm());
 				break;
+			case 3:	//health potions will spawn less frequently
+				e = new HealthPotion();
 			default:
 				getRandomEmptyTileInARoomExcludingSpawnRegion().addEntity(new Key());
 				if (Math.random() > 0.5)
@@ -240,15 +242,15 @@ public class DungeonLevel
     				e = new Chest(new LifePotion());
 			}
 			break;
-		// a health potion
+		// another case for monsters
 		case 2:
-			e = new HealthPotion();
+			e = Game.createMonsterOfLevel((int)(Math.random() * 4 - 2 + level));
 			break;
 		//random amount of gold
 		case 3:
 			e = new Gold((int)(Math.random() * 50 * (level+1))+1);
 			break;
-		//
+		//a wizard creature
 		case 4:
 			e = Game.createWizardOfLevel((int)(Math.random() * 4 - 2 + level));
 			break;
