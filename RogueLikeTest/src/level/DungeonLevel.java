@@ -219,12 +219,15 @@ public class DungeonLevel
 		case 1:
 			switch((int)(Math.random()*4)){
 			case 0:
+				getRandomEmptyTileInARoomExcludingSpawnRegion().addEntity(new Key());
 				e = new Chest(new Armor(2, "Leather Armor"));
 				break;
 			case 1:
+				getRandomEmptyTileInARoomExcludingSpawnRegion().addEntity(new Key());
 				e = new Chest(new Armor(6, "Scale Armor"));
 				break;
 			case 2:
+				getRandomEmptyTileInARoomExcludingSpawnRegion().addEntity(new Key());
 				e = new Chest(new RevivalCharm());
 				break;
 			default:
