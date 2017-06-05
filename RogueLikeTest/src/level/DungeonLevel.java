@@ -229,7 +229,10 @@ public class DungeonLevel
 				break;
 			case 2:
 				getRandomEmptyTileInARoomExcludingSpawnRegion().addEntity(new Key());
-				e = new Chest(new RevivalCharm());
+				if((level==1 || level == 2 || level % 5 == 0) && Math.random() > 0.8)
+    				e = new Chest(new PotionPouch());
+    			else
+    				e = new Chest(new RevivalCharm());
 				break;
 			default:
 				getRandomEmptyTileInARoomExcludingSpawnRegion().addEntity(new Key());
