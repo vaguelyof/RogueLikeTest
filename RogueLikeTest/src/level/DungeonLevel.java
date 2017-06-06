@@ -219,7 +219,7 @@ public class DungeonLevel
 		// a chest with random treasure
 		case 1:
 			getRandomEmptyTileInARoomExcludingSpawnRegion().addEntity(new Key());
-			switch((int)(Math.random()*4)){
+			switch(3){//(int)(Math.random()*5)){
 			case 0:
 				if(Math.random()<0.1 && Math.random()<(level-5.0)/5.0)
 					e = new Chest(new Armor(6, "Scale Armor"));
@@ -240,13 +240,21 @@ public class DungeonLevel
     			else
     				e = new Chest(new RevivalCharm());
 				break;
-			default:
-				if (Math.random() > 0.75)
-    				e = new Chest(new HealthPotion());
-    			else if(Math.random() > 0.5)
-    				e = new Chest(new LifePotion());
+			case 3:
+				if (Math.random() > 0)
+    				e = new Chest(new StatusPotion("Slowly regenerate a lot of health", new RegenStatusEffect(40,0.5)));
+    			else if (Math.random() > 0.5)
+    				e = new Chest(new StatusPotion("Makes the user levitate", new LevitationStatusEffect(20)));
     			else
+    				e = new Chest(new StatusPotion("Makes the user immune to external attacks", new StoneskinStatusEffect(15)));
+				break;
+			default:
+				if (Math.random() > level/5.0&&Math.random() > 0.9)
+    				e = new Chest(new HealthPotion());
+    			else if(Math.random() < 0.3 + ((3.0-level)/4.0))
     				e = new Chest(new RevivePotion());
+    			else
+    				e = new Chest(new LifePotion());
 			}
 			break;
 		// another case for monsters
