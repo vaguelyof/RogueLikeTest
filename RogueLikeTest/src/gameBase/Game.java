@@ -76,6 +76,10 @@ public class Game {
 		showHelp();
 		log = new Logger(rightSideMenuWidth - 1, panel.getHeightInCharacters() - 6 - helpItems.size());
 	}
+	
+	public int getCurrentLevel(){
+		return currentLevel;
+	}
 
 	public void addPanel(AsciiPanel p) {
 		panel = p;
@@ -391,6 +395,28 @@ public class Game {
 		return false;
 	}
 
+	public void revealLevel(int level) {
+		Tile[][] map = getLevel(level).getMap();
+		int upperBound;
+		Tile t;
+		for (int i = 1; i < map.length - 1; i++) {
+			upperBound = 8;
+			for (int j = 1; j < map[i].length - 1; j++) {
+				if (map[i][j].getRegion() != 0 && !map[i][j].getIsRock()) {
+					map[i][j].revealTrap();
+					seenTiles.get(level).add(map[i][j]);
+					for (int k = 0; k < upperBound; k++) {
+						t = map[i][j].getTileInDirection(k);
+						if (t.getIsRock() || t.getRegion() == -1)
+							seenTiles.get(level).add(t);
+					}
+					upperBound = 4;
+				} else
+					upperBound = 8;
+			}
+		}
+	}
+
 	public void addRegionToSeen(int region, int level) {
 		Tile[][] map = getLevel(level).getMap();
 		int upperBound;
@@ -399,6 +425,7 @@ public class Game {
 			upperBound = 8;
 			for (int j = 1; j < map[i].length - 1; j++) {
 				if (map[i][j].getRegion() == region && !map[i][j].getIsRock()) {
+					seenTiles.get(level).add(map[i][j]);
 					for (int k = 0; k < upperBound; k++) {
 						t = map[i][j].getTileInDirection(k);
 						if (t.getIsRock() || t.getRegion() == -1)

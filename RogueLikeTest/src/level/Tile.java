@@ -156,14 +156,16 @@ public class Tile
     	if(isRock){
     		return "There is an impassable wall here";
     	}
-    	if (hasTrap()){
+    	if (revealTrap())
+    		return "Found a trap!";
+    	/*if (hasTrap()){
 	    	for (int i=0;i<thingsInTile.size();i++){
 	    		if (thingsInTile.get(i) instanceof Trap && !((Trap)thingsInTile.get(i)).isVisible()){
 	    			Trap.reveal();
 	    			return "Found a trap!"; //there should only be one trap per tile
 	    		}
 	    	}
-    	}
+    	}*/
     	if(getTopEntity() != null){
     		des = new String(getTopEntity().getName());
     		if(getTopEntity().getDescription() != null && getTopEntity().getDescription().length() > 0){
@@ -186,13 +188,15 @@ public class Tile
     
     private void activateTrap(Creature e){
 		if (e.hasEffect(1)) {
-	    	for (int i=0;i<thingsInTile.size();i++){
+			if (revealTrap())
+				((Player)e).getGame().logMessage("You noticed a trap!",Color.YELLOW);
+	    	/*for (int i=0;i<thingsInTile.size();i++){
 	    		if (thingsInTile.get(i) instanceof Trap && ((Trap)thingsInTile.get(i)).isRevealable() && e instanceof Player){
 	    			((Trap)thingsInTile.get(i)).reveal();
 	    			((Player)e).getGame().logMessage("You noticed a trap!",Color.YELLOW);
 	    			return; //there shouldn't be more than one trap
 	    		}
-	    	}
+	    	}*/
 		}
 		else {
 	    	for (int i=0;i<thingsInTile.size();i++){
@@ -211,7 +215,7 @@ public class Tile
 		for (int j=0;j<8;j++){
 			t = this.getTileInDirection(j);
 			if (t.hasTrap()){
-		    	for (Entity ent: t.thingsInTile){
+				for (Entity ent: t.thingsInTile){
 		    		if (ent instanceof Trap && ((Trap)ent).isRevealable() && Math.random()<0.5){
 		    			((Trap)ent).reveal();
 		    			e.getGame().logMessage("You noticed a trap!",Color.YELLOW);
@@ -219,6 +223,18 @@ public class Tile
 		    	}
 			}
 		}
+    }
+    
+    public boolean revealTrap(){
+		if (this.hasTrap()){
+		    for (Entity ent: thingsInTile){
+		    	if (ent instanceof Trap && !((Trap)ent).isVisible()){
+		    		((Trap)ent).reveal();
+		    		return true;
+		    	}
+		    }
+		}
+		return false;
     }
     
     public boolean disarmTrap(){

@@ -218,8 +218,12 @@ public class DungeonLevel
 			break;
 		// a chest with random treasure
 		case 1:
+			int r = 5;
+			if (level==0){
+				r = 3;
+			}
 			getRandomEmptyTileInARoomExcludingSpawnRegion().addEntity(new Key());
-			switch(3){//(int)(Math.random()*5)){
+			switch((int)(Math.random()*r)){
 			case 0:
 				if(Math.random()<0.1 && Math.random()<(level-5.0)/5.0)
 					e = new Chest(new Armor(6, "Scale Armor"));
@@ -235,26 +239,28 @@ public class DungeonLevel
 					e = new Chest(new Weapon(2, "Stick"));
 				break;
 			case 2:
-				if((level==1 || level == 2 || level % 5 == 0) && Math.random() > 0.8)
-    				e = new Chest(new PotionPouch());
-    			else
-    				e = new Chest(new RevivalCharm());
-				break;
-			case 3:
-				if (Math.random() > 0)
-    				e = new Chest(new StatusPotion("Slowly regenerate a lot of health", new RegenStatusEffect(40,0.5)));
-    			else if (Math.random() > 0.5)
-    				e = new Chest(new StatusPotion("Makes the user levitate", new LevitationStatusEffect(20)));
-    			else
-    				e = new Chest(new StatusPotion("Makes the user immune to external attacks", new StoneskinStatusEffect(15)));
-				break;
-			default:
 				if (Math.random() > level/5.0&&Math.random() > 0.9)
     				e = new Chest(new HealthPotion());
     			else if(Math.random() < 0.3 + ((3.0-level)/4.0))
     				e = new Chest(new RevivePotion());
     			else
     				e = new Chest(new LifePotion());
+				break;
+			case 3:
+				if((level==1 || level == 2 || level % 5 == 0) && Math.random() > 0.8)
+    				e = new Chest(new PotionPouch());
+    			else if (Math.random()<=0.75)
+    				e = new Chest(new RevealScroll());
+    			else
+    				e = new Chest(new RevivalCharm());
+				break;
+			default:
+				if (Math.random() > 0.5)
+    				e = new Chest(new StatusPotion("Slowly regenerate a lot of health", new RegenStatusEffect(40,0.5)));
+    			else if (Math.random() > 0.5)
+    				e = new Chest(new StatusPotion("Makes the user levitate", new LevitationStatusEffect(20)));
+    			else
+    				e = new Chest(new StatusPotion("Makes the user immune to external attacks", new StoneskinStatusEffect(15)));
 			}
 			break;
 		// another case for monsters
