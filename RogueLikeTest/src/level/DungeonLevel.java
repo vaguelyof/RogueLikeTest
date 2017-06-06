@@ -110,7 +110,7 @@ public class DungeonLevel
     	for(int currentRegion = 0; currentRegion < rooms.size(); currentRegion++)
     	{
 	    	//fills each room with 1-5 entities
-	    	for(int i = 0; i < (int)(Math.random() * 7) + 1; i++){
+	    	for(int i = 0; i < (int)(Math.random() * 5) + 2; i++){
 	    		e = getRandomEntity();
 	    		getRandomEmptyTileInARoomExcludingSpawnRegion().addEntity(e);
 	    	}
@@ -211,7 +211,7 @@ public class DungeonLevel
     private Entity getRandomEntity()
     {
     	Entity e;
-    	switch((int)(Math.random() * 8)){
+    	switch((int)(Math.random() * 7)){
     	//a monster with strength based on level
 		case 0:
 			e = Game.createMonsterOfLevel((int)(Math.random() * 4 - 2 + level));
@@ -221,15 +221,15 @@ public class DungeonLevel
 			getRandomEmptyTileInARoomExcludingSpawnRegion().addEntity(new Key());
 			switch((int)(Math.random()*4)){
 			case 0:
-				if(level>5)
+				if(Math.random()<0.1 && Math.random()<(level-5.0)/5.0)
 					e = new Chest(new Armor(6, "Scale Armor"));
 				else
 					e = new Chest(new Armor(2, "Leather Armor"));
 				break;
 			case 1:
-				if(level>10)
+				if(Math.random()<0.1 && Math.random()<(level-5.0)/5.0)
 					e = new Chest(new Weapon(6, "Iron Sword"));
-				else if(level>5)
+				else if(Math.random()<0.1 && Math.random()<level/5.0)
 					e = new Chest(new Weapon(4, "Wooden Sword"));
 				else
 					e = new Chest(new Weapon(2, "Stick"));
@@ -259,18 +259,25 @@ public class DungeonLevel
 			break;
 		//a wizard creature
 		case 4:
-			e = Game.createWizardOfLevel((int)(Math.random() * 4 - 2 + level));
+			if (Math.random() < level/5.0)
+				e = Game.createWizardOfLevel((int)(Math.random() * 4 - 2 + level));
+			else if (Math.random() < 0.5)
+				e = Game.createMonsterOfLevel((int)(Math.random() * 4 - 2 + level));
+			else
+				e = null;
 			break;
 		//a wispy spirit monster
 		case 5:
 			e = Game.createLevel1Monster();
 		default:
-			if (Math.random() > 0.3)
+			if (Math.random() > 0.5)
 				e = null;
-			else if (Math.random() > 0.2)
+			else if (Math.random() < 0.1)
 				e = new HealthPotion();
-			else
+			else if (Math.random() < level/22.5)
 				e = new LifePotion();
+			else
+				e = new HealthPotion();
     	}
     	return e;
     }
