@@ -19,7 +19,7 @@ public class PotionPouch extends Item {
 	
 	@Override
 	public Color getColor() {
-		return new Color(255,180,180);
+		return new Color(200,100,0);
 	}
 	
 	@Override
