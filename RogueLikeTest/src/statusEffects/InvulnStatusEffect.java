@@ -25,8 +25,10 @@ public class InvulnStatusEffect extends StatusEffect{
 	}
 	
 	@Override
-	public void start(Creature target) {
+	public boolean start(Creature target) {
 		targetHealth = target.getHealth();
+		target.deleteAllNegativeEffects();
+		return true;
 	}
 	
 	@Override

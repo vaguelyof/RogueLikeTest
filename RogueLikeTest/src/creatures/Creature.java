@@ -81,8 +81,8 @@ public class Creature extends Entity{
 	
 	public void addEffect(StatusEffect e){
 		if (getIndexOfEffect(e.getId())==-1){
-			status.add(e);
-			e.start(this);
+			if (e.start(this))
+				status.add(e);
 		}
 		else
 			setDuration(e.getId(),e.getDuration());
@@ -100,6 +100,15 @@ public class Creature extends Entity{
 			e.end(this);
 		}
 		status = new ArrayList<StatusEffect>();
+	}
+	
+	public void deleteAllNegativeEffects(){
+		for (StatusEffect e:status){
+			if (e.isHazardous()){
+				e.end(this);
+				status.remove(e);
+			}
+		}
 	}
 	
 	public boolean hasEffect(int id){
@@ -293,7 +302,9 @@ public class Creature extends Entity{
 	 * returns the color of the creature
 	 */
 	public Color getColor() {
-		return myColor;
+		if (status.size()==0)
+			return myColor;
+		return status.get(0).getColor();
 	}
 	
 	/**

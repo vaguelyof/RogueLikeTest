@@ -22,27 +22,17 @@ public class Trap extends Entity {
 	
 	public Trap(StatusEffect effect){
 		this(effect.getAdjective()+" Trap",effect.getName().substring(0, 1).toUpperCase() + effect.getName().substring(1)+"s the victim",effect);
-		/*myName = effect.getAdjective()+" Trap";
-		myDesc = effect.getName().substring(0, 1).toUpperCase() + effect.getName().substring(1)+"s the victim";
-		myEffect = effect;
-		isVisible = false;
-		isArmed = true;*/
 	}
 	
 	public Trap(String desc, StatusEffect effect){
 		this(effect.getAdjective()+" Trap",desc,effect);
-		/*myName = effect.getAdjective()+" Trap";
-		myDesc = desc;
-		myEffect = effect;
-		isVisible = false;
-		isArmed = true;*/
 	}
 	
 	public Trap(String name, String desc, StatusEffect effect){
 		myName = name;
 		myDesc = desc;
 		myEffect = effect;
-		isVisible = false;
+		isVisible = true;
 		isArmed = true;
 		isRevealable = Math.random()<0.5;
 	}

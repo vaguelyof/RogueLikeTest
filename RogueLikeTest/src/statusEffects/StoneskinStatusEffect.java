@@ -23,8 +23,9 @@ public class StoneskinStatusEffect extends StatusEffect {
 	}
 	
 	@Override
-	public void start(Creature target) {
+	public boolean start(Creature target) {
 		target.deleteEffect(2);
+		return true;
 	}
 	
 	public Color getColor(){

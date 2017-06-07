@@ -67,7 +67,8 @@ public abstract class StatusEffect {
 	 * What the effect does when it is first added
 	 * @param target the creature that is affected
 	 */
-	public void start(Creature target) {
+	public boolean start(Creature target) {
+		return true;
 	}
 	
 	/**

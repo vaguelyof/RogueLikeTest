@@ -8,17 +8,10 @@ import statusEffects.StoneskinStatusEffect;
 
 public class SpikeTrap extends Trap {
 	int damage;
-	boolean isTutorial;
 	
 	public SpikeTrap(){
-		this(false);
-	}
-	
-	public SpikeTrap(boolean visible){
-		super("Spike Trap","Deals 1 damage",null);
-		isTutorial = visible;
-		if (isTutorial)
-			reveal();
+		super("Spike Trap","A basic damage-dealing trap",null);
+		damage = 0;
 	}
 	
 	public SpikeTrap(int dam){
@@ -27,7 +20,7 @@ public class SpikeTrap extends Trap {
 	}
 
 	public String getDescription() {
-		if (isTutorial&&isArmed)
+		if (isArmed)
 			return "A trap that injures the player when stepped on";
 		return super.getDescription();
 	}
@@ -40,21 +33,17 @@ public class SpikeTrap extends Trap {
 	
 	public void trigger(Creature user){
 		if (isArmed){
-			if (isTutorial&& user instanceof Player){
-				if (user.getHealth()>1){
+			if (damage==0)
+				if (user.getMaxHealth()/4<1)
 					user.setHealth(user.getHealth()-1);
-					((Player)user).getGame().logMessage("You were hit by the trap!",Color.RED);
-				}
 				else
-					((Player)user).getGame().logMessage("The trap broke...");
-				isVisible = true;
-				isArmed = false;
-			}
-			else if (!isTutorial){
-				user.takeDamage(damage);
-				isVisible = true;
-				isArmed = false;
-			}
+					user.setHealth(user.getHealth()-(user.getMaxHealth()/4));
+			else
+				user.setHealth(user.getHealth()-damage);
+			if (user instanceof Player)
+				((Player) user).getGame().logMessage("You were hit!", Color.RED);
+			isVisible = true;
+			isArmed = false;
 		}
 	}
 }

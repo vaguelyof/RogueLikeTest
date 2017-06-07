@@ -19,9 +19,10 @@ public class FrozenStatusEffect extends StatusEffect {
 	}
 	
 	@Override
-	public void start(Creature target) {
+	public boolean start(Creature target) {
 		target.deleteEffect(2);
 		target.addStun();
+		return true;
 	}
 	
 	@Override

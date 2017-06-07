@@ -95,31 +95,57 @@ public class DungeonLevel
      */
     private void populateLevel(){
     	Entity e = null;
-    	/*
-    	 * Temporary removal
-    	 * Traps are you-know-what
-    	if (level>1){
-	    	for (int i=1;i<map.length-1;i++){
-	    		for (int j=1;j<map.length-1;j++){
-	        		if (map[i][j].getRegion()==-1&&Math.random()<0.2){
-	        			addTrap(map[i][j]);
-	        		}
-	        	}
-	    	}
-    	}*/
     	for(int currentRegion = 0; currentRegion < rooms.size(); currentRegion++)
     	{
 	    	//fills each room with 1-5 entities
 	    	for(int i = 0; i < (int)(Math.random() * 5) + 2; i++){
-	    		e = getRandomEntity();
+	    		e = getRandomEntity(level);
 	    		getRandomEmptyTileInARoomExcludingSpawnRegion().addEntity(e);
 	    	}
+    	}
+    	if (level>0){
+    		int[] tile;
+    		ArrayList<int[]> tiles;
+			Trap trap;
+        	for (int i=1;i<rooms.size();i++){
+        		if (((level==1 && Math.random()<0.1)||(level>1 && Math.random()<0.2))&&map[rooms.get(i)[0]][rooms.get(i)[1]].getTopEntity()==null){
+        			tiles = getValidSpots(map[rooms.get(i)[0]][rooms.get(i)[1]].getX(),map[rooms.get(i)[0]][rooms.get(i)[1]].getY());
+        			tile = tiles.get((int) (Math.random()*tiles.size()));
+        			while (tiles.size()>0 && map[tile[0]][tile[1]].getTopEntity() != null){
+        				tiles.remove(tile);
+            			tile = tiles.get((int) (Math.random()*tiles.size()));
+        			}
+        			if (tiles.size()>0){
+	            		switch((int)(Math.random()*4)){
+	            		case 1:
+	            			if (level>7)
+	            				trap = new Trap(new FrozenStatusEffect(5));
+	            			else
+	            				trap = new Trap(new FrozenStatusEffect((level/2)+1));
+	            			break;
+	            		case 2:
+	            			if (level>27)
+	            				trap = new Trap(new BurnStatusEffect(15,level-27));
+	            			else
+	            				trap = new Trap(new BurnStatusEffect((level/2)+2));
+	            			break;
+	            		case 3:
+	            			trap = new SpikeTrap();
+	            			break;
+	            		default:
+	            			trap = new Trap(new PoisonStatusEffect(5));
+	            			break;
+	            		}
+	            		map[tile[0]][tile[1]].addEntity(trap);
+            		}
+        		}
+        	}
     	}
     }
 
     /*
      * obsolete
-     */
+     *
     private void populateLevel(int times){
     	int chests = 0;
     	int choice;
@@ -199,55 +225,58 @@ public class DungeonLevel
     	}
     	}
     	}
-    }
+    }*/
+    
     /*
      * returns a random entity 
      * 0. monster with strength based on level
      * 1. chest with random treasure
-     * 2. health potion
+     * 2. monster with strength based on level
      * 3. random amount of gold
+     * 4. wizard with strength based on level, or a monster if the level is low
+     * 5. a healing potion of some sort
      * default: a wispy spirit monster
      */
-    private Entity getRandomEntity()
+    private Entity getRandomEntity(int levelValue)
     {
     	Entity e;
-    	switch((int)(Math.random() * 7)){
+    	switch((int)(Math.random() * 6)){
     	//a monster with strength based on level
 		case 0:
-			e = Game.createMonsterOfLevel((int)(Math.random() * 4 - 2 + level));
+			e = Game.createMonsterOfLevel((int)(Math.random() * 4 - 2 + levelValue));
 			break;
 		// a chest with random treasure
 		case 1:
 			int r = 5;
-			if (level==0){
+			if (levelValue==0){
 				r = 3;
 			}
 			getRandomEmptyTileInARoomExcludingSpawnRegion().addEntity(new Key());
 			switch((int)(Math.random()*r)){
 			case 0:
-				if(Math.random()<0.1 && Math.random()<(level-5.0)/5.0)
+				if(Math.random()<0.1 && Math.random()<(levelValue-5.0)/5.0)
 					e = new Chest(new Armor(6, "Scale Armor"));
 				else
 					e = new Chest(new Armor(2, "Leather Armor"));
 				break;
 			case 1:
-				if(Math.random()<0.1 && Math.random()<(level-5.0)/5.0)
+				if(Math.random()<0.1 && Math.random()<(levelValue-5.0)/5.0)
 					e = new Chest(new Weapon(6, "Iron Sword"));
-				else if(Math.random()<0.1 && Math.random()<level/5.0)
+				else if(Math.random()<0.1 && Math.random()<levelValue/5.0)
 					e = new Chest(new Weapon(4, "Wooden Sword"));
 				else
 					e = new Chest(new Weapon(2, "Stick"));
 				break;
 			case 2:
-				if (Math.random() > level/5.0&&Math.random() > 0.9)
+				if (Math.random() > levelValue/5.0&&Math.random() > 0.9)
     				e = new Chest(new HealthPotion());
-    			else if(Math.random() < 0.3 + ((3.0-level)/4.0))
+    			else if(Math.random() < 0.3 + ((3.0-levelValue)/4.0))
     				e = new Chest(new RevivePotion());
     			else
     				e = new Chest(new LifePotion());
 				break;
 			case 3:
-				if((level==1 || level == 2 || level % 5 == 0) && Math.random() > 0.8)
+				if((levelValue==1 || levelValue == 2 || levelValue % 5 == 0) && Math.random() > 0.8)
     				e = new Chest(new PotionPouch());
     			else if (Math.random()<=0.75)
     				e = new Chest(new RevealScroll());
@@ -265,33 +294,34 @@ public class DungeonLevel
 			break;
 		// another case for monsters
 		case 2:
-			e = Game.createMonsterOfLevel((int)(Math.random() * 4 - 2 + level));
+			e = Game.createMonsterOfLevel((int)(Math.random() * 4 - 2 + levelValue));
 			break;
 		//random amount of gold
 		case 3:
-			e = new Gold((int)(Math.random() * 50 * (level+1))+1);
+			e = new Gold((int)(Math.random() * 50 * (levelValue+1))+1);
 			break;
 		//a wizard creature
 		case 4:
-			if (Math.random() < level/5.0)
-				e = Game.createWizardOfLevel((int)(Math.random() * 4 - 2 + level));
+			if (Math.random() < levelValue/5.0)
+				e = Game.createWizardOfLevel((int)(Math.random() * 4 - 2 + levelValue));
 			else if (Math.random() < 0.5)
-				e = Game.createMonsterOfLevel((int)(Math.random() * 4 - 2 + level));
+				e = Game.createMonsterOfLevel((int)(Math.random() * 4 - 2 + levelValue));
 			else
 				e = null;
 			break;
-		//a wispy spirit monster
 		case 5:
-			e = Game.createLevel1Monster();
-		default:
 			if (Math.random() > 0.5)
 				e = null;
 			else if (Math.random() < 0.1)
 				e = new HealthPotion();
-			else if (Math.random() < level/22.5)
+			else if (Math.random() < levelValue/22.5)
 				e = new LifePotion();
 			else
 				e = new HealthPotion();
+			break;
+		//a wispy spirit monster
+		default:
+			e = Game.createLevel1Monster();
     	}
     	return e;
     }

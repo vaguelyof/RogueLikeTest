@@ -33,7 +33,10 @@ public class PoisonStatusEffect extends StatusEffect {
 	
 	@Override
 	protected void act(Creature target) {
-		target.setHealth(target.getHealth()-(damage*target.getMaxHealth()/20));
+		if (damage*target.getMaxHealth()/20<1)
+			target.setHealth(target.getHealth()-1);
+		else
+			target.setHealth(target.getHealth()-(damage*target.getMaxHealth()/20));
 	}
 	
 	public Color getColor(){
