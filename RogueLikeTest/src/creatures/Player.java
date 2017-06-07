@@ -265,16 +265,16 @@ public class Player extends Creature {
 			myInv.setMySpecial(null);
 			return;
 		}
-		if (myInv.getMySpecial() != null && myInv.getMySpecial() instanceof PotionPouch && ((PotionPouch) myInv.getMySpecial()).getPotion() instanceof RevivalItem){
-			game.logMessage("You were revived by your " + ((PotionPouch) myInv.getMySpecial()).getPotion().getName() + "!", Color.YELLOW);
-			((RevivalItem) ((PotionPouch) myInv.getMySpecial()).getPotion()).revive(this);
-			((PotionPouch) myInv.getMySpecial()).setPotion(null);
-			return;
-		}
 		if (myInv.getMyPotion() != null && myInv.getMyPotion() instanceof RevivalItem) {
 			game.logMessage("You were revived by your " + myInv.getMyPotion().getName() + "!", Color.YELLOW);
 			((RevivalItem) myInv.getMyPotion()).revive(this);
 			myInv.setMyPotion(null);
+			return;
+		}
+		if (myInv.getMySpecial() != null && myInv.getMySpecial() instanceof PotionPouch && ((PotionPouch) myInv.getMySpecial()).getPotion() instanceof RevivalItem){
+			game.logMessage("You were revived by your " + ((PotionPouch) myInv.getMySpecial()).getPotion().getName() + "!", Color.YELLOW);
+			((RevivalItem) ((PotionPouch) myInv.getMySpecial()).getPotion()).revive(this);
+			((PotionPouch) myInv.getMySpecial()).setPotion(null);
 			return;
 		}
 		Tile t = getTile();
