@@ -26,6 +26,7 @@ public class PotionPouch extends Item {
 	public char getChar() {
 		return 'P';
 	}
+	
 	public String getName(){
 		return "Potion Pouch";
 	}
@@ -36,6 +37,14 @@ public class PotionPouch extends Item {
 		if (heldPotion!=null)
 			desc+=(". Currently contains a "+heldPotion.getName());
 		return desc;
+	}
+	
+	public Potion getPotion(){
+		return heldPotion;
+	}
+	
+	public void setPotion(Potion potion){
+		heldPotion = potion;
 	}
 
 	@Override

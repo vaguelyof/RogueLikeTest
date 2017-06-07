@@ -11,6 +11,7 @@ import gameEntities.UpStairs;
 import gameBase.Game;
 import items.Inventory;
 import items.Item;
+import items.PotionPouch;
 import items.RevivalItem;
 import items.RevivePotion;
 import level.Tile;
@@ -259,14 +260,20 @@ public class Player extends Creature {
 			return;
 		}
 		if (myInv.getMySpecial() != null && myInv.getMySpecial() instanceof RevivalItem) {
-			((RevivalItem) myInv.getMySpecial()).revive(this);
 			game.logMessage("You were revived by your " + myInv.getMySpecial().getName() + "!", Color.YELLOW);
+			((RevivalItem) myInv.getMySpecial()).revive(this);
 			myInv.setMySpecial(null);
 			return;
 		}
+		if (myInv.getMySpecial() != null && myInv.getMySpecial() instanceof PotionPouch && ((PotionPouch) myInv.getMySpecial()).getPotion() instanceof RevivalItem){
+			game.logMessage("You were revived by your " + ((PotionPouch) myInv.getMySpecial()).getPotion().getName() + "!", Color.YELLOW);
+			((RevivalItem) ((PotionPouch) myInv.getMySpecial()).getPotion()).revive(this);
+			((PotionPouch) myInv.getMySpecial()).setPotion(null);
+			return;
+		}
 		if (myInv.getMyPotion() != null && myInv.getMyPotion() instanceof RevivalItem) {
-			((RevivalItem) myInv.getMyPotion()).revive(this);
 			game.logMessage("You were revived by your " + myInv.getMyPotion().getName() + "!", Color.YELLOW);
+			((RevivalItem) myInv.getMyPotion()).revive(this);
 			myInv.setMyPotion(null);
 			return;
 		}
@@ -342,7 +349,7 @@ public class Player extends Creature {
 	 * interacts with things on the ground. Used for most player actions.
 	 */
 	public void interact() {
-		int foundTraps = 0;
+		/*int foundTraps = 0;
 		for (int i = 0; i < 8; i++) {
 			if (getTile().getTileInDirection(i).disarmTrap())
 				foundTraps++;
@@ -354,7 +361,7 @@ public class Player extends Creature {
 		if (foundTraps > 1) {
 			game.logMessage("You disarmed nearby traps!", Color.YELLOW);
 			return;
-		}
+		}*/
 		if (getTile().getEntities().size() < 2) {
 			game.logMessage("There is nothing here.", Color.RED);
 			return;

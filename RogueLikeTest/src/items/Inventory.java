@@ -61,6 +61,10 @@ public class Inventory {
 
 	public Potion setMyPotion(Potion myPotion) {
 		Potion p = this.myPotion;
+		if (p!=null && getMySpecial() instanceof PotionPouch && ((PotionPouch) getMySpecial()).getPotion()==null){
+			((PotionPouch) getMySpecial()).setPotion(myPotion);
+			return null;
+		}	
 		this.myPotion = myPotion;
 		return p;
 	}
